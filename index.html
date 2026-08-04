@@ -554,7 +554,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="1.2";
+const APP_VERSION="1.3";
 const APP_UPDATED="4.8.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 
@@ -1159,17 +1159,18 @@ const CPARTIES=[
  {id:"yachad", n:"ביחד", bloc:"dem"},
  {id:"lib", n:"ישראל ביתנו", bloc:"dem"},
  {id:"demp", n:"הדמוקרטים", bloc:"dem"},
+ {id:"yesodot", n:"יסודות ישראל", bloc:"mid"},
  {id:"raam", n:"רע\"ם", bloc:"arab"},
  {id:"hadash", n:"חד\"ש־תע\"ל", bloc:"arab"}
 ];
-const BLOC_COLOR={bibi:"#FF5964", dem:"#3D7BFF", arab:"#33D69F"};
+const BLOC_COLOR={bibi:"#FF5964", dem:"#3D7BFF", arab:"#33D69F", mid:"#B48CF2"};
 const SCENARIOS=[
- {name:"תמונת הסקרים של היום", desc:"המחנה הדמוקרטי 59, גוש נתניהו 51, הערביות 10. אף גוש יהודי לא מגיע לבד ל־61. בהצלחה 🙃",
-  seats:{yashar:23, likud:22, yachad:16, lib:10, demp:10, otzma:8, shas:8, utj:8, rz:5, hadash:5, raam:5}},
+ {name:"תמונת הסקרים של היום", desc:"המחנה 57, גוש נתניהו 51, הערביות 8 — ושחקנית חדשה על קו החסימה: יסודות ישראל עם 4. אף גוש לא מגיע לבד ל־61. בהצלחה 🙃",
+  seats:{yashar:23, likud:22, yachad:15, lib:9, demp:10, otzma:8, shas:8, utj:8, rz:5, hadash:4, raam:4, yesodot:4}},
  {name:"מהפך קטן", desc:"המחנה הדמוקרטי מתחזק ל־62. נשמע קל? תבדקו כמה קומבינציות בכלל אפשריות.",
-  seats:{yashar:24, yachad:17, demp:11, lib:10, likud:21, otzma:8, shas:8, utj:7, rz:4, hadash:5, raam:5}},
- {name:"לילה צמוד 😰", desc:"55–55 בין הגושים. עשרה מנדטים ערביים באמצע. מי יכול בכלל להרכיב ממשלה?",
-  seats:{yashar:21, yachad:15, demp:10, lib:9, likud:24, utj:9, otzma:8, shas:8, rz:6, raam:6, hadash:4}}
+  seats:{yashar:24, yachad:16, demp:11, lib:10, likud:20, otzma:8, shas:8, utj:7, rz:4, hadash:4, raam:4, yesodot:4}},
+ {name:"לילה צמוד 😰", desc:"נתניהו 55, המחנה 53, הערביות 8 — ויסודות ישראל עם 4 מנדטים היא לשון המאזניים המושלמת. למי היא תלך? אף אחד לא יודע. גם היא לא.",
+  seats:{yashar:21, yachad:14, demp:10, lib:8, likud:24, utj:9, otzma:8, shas:8, rz:6, raam:4, hadash:4, yesodot:4}}
 ];
 const DEMS=["yashar","yachad","lib","demp"], HARDR=["likud","otzma","rz"], HAREDI=["shas","utj"];
 let cScn=null, cSel=new Set();
@@ -1213,7 +1214,7 @@ function renderBoard(msg){
           <span>${cSel.has(pt.id)?"✓ ":""}${pt.n}</span><span class="seats" style="color:${BLOC_COLOR[pt.bloc]}">${cScn.seats[pt.id]}</span>
         </button>`).join("")}
     </div>
-    <p class="caveat">🔴 גוש נתניהו · 🔵 המחנה הדמוקרטי · 🟢 המפלגות הערביות. הקווים האדומים מבוססים על הצהרות פומביות — המציאות תמיד יותר מפתיעה.</p>
+    <p class="caveat">🔴 גוש נתניהו · 🔵 המחנה הדמוקרטי · 🟢 המפלגות הערביות · 🟣 הגוש שבין הגושים (לא מחויב לאף צד). הקווים האדומים מבוססים על הצהרות פומביות — המציאות תמיד יותר מפתיעה.</p>
     <button class="btn backbtn" data-back>⬅ לעמוד הראשי</button>`;
   $("#cBackScn").onclick=()=>renderScnSelect();
   coal.querySelector("[data-back]").onclick=()=>goBack();
@@ -1228,13 +1229,18 @@ function tapParty(btn){
     const m=ruleMsg(id,sel);
     if(m){ renderBoard(m+` <b>(${CPARTIES.find(p=>p.id===id).n} ↔ ${CPARTIES.find(p=>p.id===sel).n})</b>`); return; }
   }
-  cSel.add(id); renderBoard();
+  cSel.add(id);
+  if(id==="yesodot"){ renderBoard("🟣 צירפתם את יסודות ישראל — מפלגה שמסרבת להתחייב לאף גוש. במשחק היא תשב עם כולם; במציאות אף אחד לא יודע לאן תלך, כולל המצביעים שלה. צ'ק פתוח."); return; }
+  renderBoard();
 }
 
 function winCard(total){
   const has=id=>cSel.has(id);
   const withoutRaam = total - (has("raam")?cScn.seats.raam:0);
   let lines=[`<b>יש ממשלה! ${total} מנדטים.</b>`];
+  const withoutYesodot = total - (has("yesodot")?cScn.seats.yesodot:0);
+  if(has("yesodot") && withoutYesodot<61)
+    lines.push("🟣 הממשלה שלכם עומדת על יסודות ישראל — מפלגה שלא התחייבה לאף גוש והייתה מצטרפת באותה קלות לנתניהו. ממשלה על צ'ק פתוח. (וכן, בדיוק על זה עמוד ״הגוש שבין הגושים״ בתכל'ס)");
   if(has("raam") && withoutRaam<61)
     lines.push("🔑 שימו לב: בלי רע\"ם לא הייתם מגיעים ל־61 — מנסור עבאס הוא לשון המאזניים, בדיוק כמו שאמרנו.");
   if(has("likud") && has("raam"))
