@@ -554,7 +554,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="1.5.1";
+const APP_VERSION="1.5.2";
 const APP_UPDATED="15.8.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 
@@ -1138,6 +1138,7 @@ function endWho(){
 }
 
 function confetti(color){
+  try{
   if(matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   const colors=[color,"#F7F8FC","#F5B841","#3D7BFF"];
   for(let i=0;i<70;i++){
@@ -1146,6 +1147,7 @@ function confetti(color){
     p.style.cssText=`left:${Math.random()*100}vw;width:${s}px;height:${s*1.4}px;background:${colors[i%4]};animation-duration:${2+Math.random()*2.2}s;animation-delay:${Math.random()*.6}s`;
     document.body.appendChild(p);setTimeout(()=>p.remove(),5200);
   }
+  }catch(_){/* אפקט קישוטי — לעולם לא מפיל מסך */}
 }
 
 /* ================= COALITION GAME ================= */
