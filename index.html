@@ -254,6 +254,8 @@
   .voteres.bad{background:rgba(255,89,100,.12);border:1px solid rgba(255,89,100,.4);color:#FFD5D8}
   .voteres.mid{background:rgba(245,184,65,.12);border:1px solid rgba(245,184,65,.4);color:#F1E3C0}
   .voteres b{color:var(--paper)}
+  .dlchip{display:inline-block;margin:2px 2px;padding:3px 9px;border-radius:99px;font-size:10.5px;font-weight:800;background:rgba(255,89,100,.12);border:1px solid rgba(255,89,100,.45);color:#F7A3A9;cursor:pointer}
+  .dlchip.gold{background:rgba(245,184,65,.10);border-color:rgba(245,184,65,.5);color:var(--gold)}
   /* version + countdown */
   .countpill{display:block;text-align:center;margin:0 auto 10px;background:rgba(245,184,65,.12);border:1.5px solid rgba(245,184,65,.5);color:var(--gold);border-radius:999px;padding:7px 16px;font-family:'Secular One';font-size:15px;width:fit-content}
   .verline{text-align:center;color:var(--muted);font-size:10.5px;margin-top:14px;opacity:.8}
@@ -554,8 +556,8 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="1.5.2";
-const APP_UPDATED="15.8.2026";
+const APP_VERSION="1.6";
+const APP_UPDATED="18.8.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 
 /* ---------------- data ---------------- */
@@ -1757,12 +1759,28 @@ function renderDict(){
     <div class="ledsec">🟩 המפלגות הערביות</div>
     <div class="infocard"><p><b>רע\"ם</b> (מנסור עבאס) · <b>חד\"ש–תע\"ל</b> (עודה וטיבי) · <b>בל\"ד</b>. כ־10 מנדטים שעשויים להכריע את הבחירות:</p></div>
     <button class="btn btn-copy" id="dToArab" style="width:100%;max-width:320px;margin:0 auto">🕌 לעמוד המפלגות הערביות</button>
+    <div class="ledsec">🔴 ומנגד — הליכוד, אחרי הפריימריז</div>
+    <div class="acc" style="margin-bottom:8px">
+      <div class="acc-head"><span class="ae">🔴</span><span class="at">הליכוד — הרשימה החדשה<div style="font-weight:500;font-size:11px;color:var(--muted)">ספירה סופית 18.8 · שיבוץ המשוריינים יושלם בקרוב</div></span><span class="chev">▼</span></div>
+      <div class="acc-body">
+        <div class="xsec xbg" style="margin-bottom:8px"><b>🪪 תעודת זהות</b>מפלגת השלטון. כ־22–24 מנדטים בסקרים. כ־142 אלף מתפקדים; בפריימריז (17.8) הצביעו 53.6%.</div>
+        <div class="xsec xbg" style="margin-bottom:8px"><b>👤 בראש הרשימה</b>בנימין נתניהו — נאשם בשלושה כתבי אישום (שוחד, מרמה והפרת אמונים); ההליך מתנהל וחזקת החפות שמורה. מסרב באופן עקבי להקמת ועדת חקירה ממלכתית ל־7.10 ולקבלת אחריות.</div>
+        <div class="xsec xcon" style="margin-bottom:8px"><b>⚖️ שורת הבסיס — לפני השמות</b>גם מי שרקורדו האישי נקי לחלוטין — כל הסיעה, פה אחד: הצביעה שוב ושוב <b>נגד</b> הקמת ועדת חקירה ממלכתית ל־7.10, <b>בעד</b> חוקי ההפיכה המשטרית, <b>ובעד</b> הכספים הקואליציוניים בשיא המלחמה. בליכוד של 2026, ״רקורד נקי״ פירושו: הצבעה נקייה בעד כל אלה. <button class="dlchip gold" data-pg="core" data-k="ועדת חקירה">🧠 ההעמקה: ועדת חקירה</button><button class="dlchip gold" data-pg="core" data-k="שומרי">🧠 שומרי הסף</button></div>
+        <div class="xsec xbg" style="margin-bottom:8px"><b>🗳️ נבחרי הפריימריז (סדר הספירה)</b>
+        1 אלי כהן (שר החוץ) · 2 אמיר אוחנה (יו״ר הכנסת) · 3 יריב לוין (שר המשפטים, אדריכל ההפיכה המשטרית) <button class="dlchip" data-pg="facts" data-k="בג״ץ והיועמ״שית">🔍 ״בג״ץ אשם״</button> · 4 מירי רגב · 5 אופיר כץ (יו״ר הקואליציה) · 6 יואב קיש · 7 מיקי זוהר · 8 אלמוג כהן · 9 עמיחי שיקלי · 10 דודי אמסלם<br>
+        בהמשך: משה סעדה (מהמסע נגד הפרקליטות) <button class="dlchip" data-pg="core" data-k="שומרי">🧠 שומרי הסף</button> · טלי גוטליב · שלמה קרעי (שר התקשורת) <button class="dlchip" data-pg="core" data-k="תקשורת">🧠 שליטה בתקשורת</button> · <b>בועז ביסמוט (22)</b> <button class="dlchip" data-pg="facts" data-k="בוטים איראניים">🔍 ״הבוטים האיראניים״</button> · דוד ביטן (23) · <b>ניר ברקת (24, על הקו)</b> <button class="dlchip" data-pg="facts" data-k="הפוטש">🔍 הפוטש</button> · עמית הלוי <button class="dlchip" data-pg="facts" data-k="בוטים איראניים">🔍</button> · גילה גמליאל · מאי גולן · אביחי בוארון · אריאל קלנר · חנוך מילביצקי ועוד.</div>
+        <div class="xsec xbg" style="margin-bottom:8px"><b>🔒 שמונת השריונים (מקומות 3, 5, 9, 11, 15, 18, 26, 29)</b>בהם ישבץ נתניהו את: <b>ישראל כ״ץ</b> — שר הביטחון שצנח למקום 13 אצל המתפקדים <button class="dlchip" data-pg="led" data-k="מגלנט">📓 בפנקס</button><button class="dlchip" data-pg="facts" data-k="לא הדחתי">🔍 פרשת בלוט</button> · <b>חיים כץ</b> (הורשע בעבר בעבירת מרמה בעסקת טיעון) · <b>גדעון סער</b> · <b>אורן דוברונסקי</b> — איש עסקים שעל פי הפרסומים חי שנים בחו״ל, והשריון שלו מגיע על רקע חשיפת הפוטש <button class="dlchip" data-pg="facts" data-k="הפוטש">🔍</button>. מי שלא חי כאן בוחר לאמץ מפלגה שמסרבת לחקור את 7.10 — שפטו בעצמכם · + חמישה שריונים שטרם נחשפו.</div>
+        <div class="xsec xcon" style="margin-bottom:8px"><b>📢 ואיך הם רואים אתכם</b>מהודעת הליכוד הרשמית אמש: ״זאת הדרך היחידה למנוע ממשלת שמאל של איזנקוט, יאיר גולן, ליברמן והמפלגות הערביות״. שימו לב לתבנית — בדיוק שני קמפייני ההפחדה שכבר פירקנו במחלקת האקטואליה.</div>
+        <a class="srch" target="_blank" rel="noopener" href="https://www.google.com/search?q=%D7%AA%D7%95%D7%A6%D7%90%D7%95%D7%AA%20%D7%A4%D7%A8%D7%99%D7%99%D7%9E%D7%A8%D7%99%D7%96%20%D7%94%D7%9C%D7%99%D7%9B%D7%95%D7%93%20%D7%94%D7%A8%D7%A9%D7%99%D7%9E%D7%94%20%D7%94%D7%9E%D7%9C%D7%90%D7%94">🔎 בדקו בעצמכם — התוצאות המלאות</a>
+      </div>
+    </div>
     <div class="ledsec">🗑️ והגוש שבין הגושים</div>
-    <div class="infocard"><p>הבית הציוני (הנדל־טרופר), כחול לבן (גנץ), זליכה ואחרים — מרחפים מתחת לאחוז החסימה. לפני שמצביעים להם, כדאי להבין לאן הקול באמת הולך:</p></div>
+    <div class="infocard"><p>בית ציוני–המילואימניקים (הנדל־טרופר), כחול לבן (גנץ), האחדות (ארדן–אדלשטיין), זליכה ואחרים — מרחפים מתחת לאחוז החסימה. לפני שמצביעים להם, כדאי להבין לאן הקול באמת הולך:</p></div>
     <button class="btn btn-copy" id="dToVotes" style="width:100%;max-width:320px;margin:0 auto">🗑️ הקול השרוף ובאדר־עופר</button>
     <button class="btn backbtn" data-back>⬅ חזרה</button>`;
   dict.querySelectorAll(".acc-head").forEach(h=>h.onclick=()=>h.parentElement.classList.toggle("open"));
   dict.querySelectorAll(".cmpbtn").forEach(b=>b.onclick=(e)=>{e.stopPropagation();b.nextElementSibling.classList.toggle("on");});
+  dict.querySelectorAll(".dlchip").forEach(b=>b.onclick=(e)=>{e.stopPropagation();deepOpen(b.dataset.pg,b.dataset.k);});
   dict.querySelector("[data-back]").onclick=()=>goBack();
   $("#dToBibi").onclick=()=>show(bibi);
   $("#dToArab").onclick=()=>show(arab);
@@ -2684,6 +2702,23 @@ $("#coreCount").textContent = CORE_ISSUES.length+" נושאים · לכל אחד
   else el.textContent="🗳️ הבחירות מאחורינו — תודה שהצבעתם";
   $("#verline").textContent="פתק בקלפי · גרסה "+APP_VERSION+" · עודכן לאחרונה: "+APP_UPDATED;
 })();
+
+/* ================= DEEP LINKS: jump into a specific card ================= */
+function deepOpen(pg,key){
+  lastTab="learn";
+  if(pg==="led"){ renderLedger(); show(led); }
+  else if(pg==="facts"){ renderFacts(); show(facts); }
+  else if(pg==="core"){ renderCore(); show(core); }
+  const host = pg==="led"?led : pg==="facts"?facts : core;
+  const target=[...host.querySelectorAll(".acc")].find(a=>{
+    const t=a.querySelector(".at"); return t && t.textContent.includes(key);
+  });
+  if(target){
+    host.querySelectorAll(".acc.open").forEach(a=>{ if(a!==target) a.classList.remove("open"); });
+    target.classList.add("open");
+    setTimeout(()=>{ try{ target.scrollIntoView({behavior:"smooth",block:"start"}); }catch(_){ } },120);
+  }
+}
 </script>
 </body>
 </html>
