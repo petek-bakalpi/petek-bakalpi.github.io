@@ -489,6 +489,9 @@
   <!-- PARTY DICTIONARY -->
   <section class="screen infopage" id="dict"></section>
 
+  <!-- WASTED VOTE LAB -->
+  <section class="screen infopage" id="wv"></section>
+
   <!-- IDLE CLICKER -->
   <section class="screen infopage" id="idle"></section>
 
@@ -517,6 +520,7 @@
     <button class="menucard" id="gMdl"><span class="me">🟩</span><span><div class="mt">מנדטל</div><div class="md">וורדל פוליטי — נחשו את המועמד/ת בשש ניחושים. חידה יומית!</div></span><span class="mtime">3 דק'</span></button>
     <button class="menucard" id="gRace"><span class="me">🏃</span><span><div class="mt">המרוץ לקלפי</div><div class="md">קפצו מעל מכונת הרעל ורוצו 2,026 מטר להצבעה — עם עצירות עדכון אמיתיות</div></span><span class="mtime">2 דק'</span></button>
     <div class="ledsec">🎯 הקלאסיקות</div>
+    <button class="menucard" id="gWv"><span class="me">🗑️</span><span><div class="mt">מעבדת הקול השרוף</div><div class="md">ניסוי באדר–עופר: לאן באמת הולך קול למפלגה שלא עוברת?</div></span><span class="mtime">2 דק'</span></button>
     <button class="menucard" id="gIdle"><span class="me">📣</span><span><div class="mt">מטה הבחירות</div><div class="md">קליקר התמכרותי: משיחה אחת על קפה ועד 4 מנדטים</div></span><span class="mtime">~8 דק'</span></button>
     <button class="menucard" id="gMatch"><span class="me">🗳️</span><span><div class="mt">פתק בקלפי — השידוך הפוליטי</div><div class="md">איזו מפלגה במחנה מתאימה לכם? גרסה מהירה או מעמיקה</div></span><span class="mtime">60 שנ' / 3 דק'</span></button>
     <button class="menucard" id="gCoal"><span class="me">🏛️</span><span><div class="mt">משחק הקואליציות</div><div class="md">תגיעו ל־61 בלי לשבור קו אדום. אם תצליחו</div></span><span class="mtime">5 דק'</span></button>
@@ -556,8 +560,8 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="1.6.1";
-const APP_UPDATED="18.8.2026";
+const APP_VERSION="1.7";
+const APP_UPDATED="24.8.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 
 /* ---------------- data ---------------- */
@@ -730,7 +734,7 @@ function calcMax(){ MAX={}; for(const k in PARTIES){ MAX[k]=0; }
 /* ---------------- state ---------------- */
 let idx=0, scores={lib:0,yachad:0,yashar:0,dem:0}, busy=false, mode="quick", hist=[];
 const $=s=>document.querySelector(s);
-const intro=$("#intro"), quiz=$("#quiz"), result=$("#result"), bibi=$("#bibi"), arab=$("#arab"), who=$("#who"), coal=$("#coal"), core=$("#core"), cmp=$("#cmp"), led=$("#led"), votes=$("#votes"), gmenu=$("#gmenu"), lmenu=$("#lmenu"), quote=$("#quote"), dict=$("#dict"), facts=$("#facts"), poison=$("#poison"), budget=$("#budget"), gov=$("#gov"), hl=$("#hl"), mdl=$("#mdl"), race=$("#race"), idle=$("#idle");
+const intro=$("#intro"), quiz=$("#quiz"), result=$("#result"), bibi=$("#bibi"), arab=$("#arab"), who=$("#who"), coal=$("#coal"), core=$("#core"), cmp=$("#cmp"), led=$("#led"), votes=$("#votes"), gmenu=$("#gmenu"), lmenu=$("#lmenu"), quote=$("#quote"), dict=$("#dict"), facts=$("#facts"), poison=$("#poison"), budget=$("#budget"), gov=$("#gov"), hl=$("#hl"), mdl=$("#mdl"), race=$("#race"), idle=$("#idle"), wv=$("#wv");
 const zone=$("#cardzone"), slips=$("#slips"), count=$("#count"), box=$("#box");
 
 function startGame(m){
@@ -744,7 +748,7 @@ function startGame(m){
 $("#startQuick").onclick=()=>startGame("quick");
 $("#startDeep").onclick=()=>startGame("deep");
 
-function show(sc){[intro,quiz,result,bibi,arab,who,coal,core,cmp,led,votes,gmenu,lmenu,quote,dict,facts,poison,budget,gov,hl,mdl,race,idle].forEach(x=>x.classList.remove("on"));sc.classList.add("on");sc.scrollTop=0;
+function show(sc){[intro,quiz,result,bibi,arab,who,coal,core,cmp,led,votes,gmenu,lmenu,quote,dict,facts,poison,budget,gov,hl,mdl,race,idle,wv].forEach(x=>x.classList.remove("on"));sc.classList.add("on");sc.scrollTop=0;
   if(sc!==arab){const m=$("#arabMore"),b=$("#proArab");if(m){m.classList.remove("on");}if(b){b.style.display="";}}}
 $("#toCore").onclick=()=>{renderCore();show(core);};
 $("#toCmp").onclick=()=>{renderCompass();show(cmp);};
@@ -1165,7 +1169,7 @@ const CPARTIES=[
  {id:"demp", n:"הדמוקרטים", bloc:"dem"},
  {id:"yesodot", n:"בית ציוני–המילואימניקים", bloc:"mid"},
  {id:"raam", n:"רע\"ם", bloc:"arab"},
- {id:"hadash", n:"חד\"ש־תע\"ל", bloc:"arab"}
+ {id:"hadash", n:"המשותפת (חד\"ש־תע\"ל־בל\"ד)", bloc:"arab"}
 ];
 const BLOC_COLOR={bibi:"#FF5964", dem:"#3D7BFF", arab:"#33D69F", mid:"#B48CF2"};
 const SCENARIOS=[
@@ -1234,7 +1238,7 @@ function tapParty(btn){
     if(m){ renderBoard(m+` <b>(${CPARTIES.find(p=>p.id===id).n} ↔ ${CPARTIES.find(p=>p.id===sel).n})</b>`); return; }
   }
   cSel.add(id);
-  if(id==="yesodot"){ renderBoard("🟣 צירפתם את בית ציוני–המילואימניקים — מפלגה שמסרבת להתחייב לאף גוש. במשחק היא תשב עם כולם; במציאות אף אחד לא יודע לאן תלך, כולל המצביעים שלה. צ'ק פתוח."); return; }
+  if(id==="yesodot"){ renderBoard("🟣 צירפתם את בית ציוני–המילואימניקים — עדכון (18.8): טרופר הצהיר — ״לא נשב בממשלה של נתניהו״. צעד חשוב! ובכל זאת: המפלגה כגוף טרם התחייבה רשמית, ולכן במשחק היא עדיין מצטרפת לכולם. צ'ק חצי־פתוח."); return; }
   renderBoard();
 }
 
@@ -1244,7 +1248,7 @@ function winCard(total){
   let lines=[`<b>יש ממשלה! ${total} מנדטים.</b>`];
   const withoutYesodot = total - (has("yesodot")?cScn.seats.yesodot:0);
   if(has("yesodot") && withoutYesodot<61)
-    lines.push("🟣 הממשלה שלכם עומדת על בית ציוני–המילואימניקים — מפלגה שלא התחייבה לאף גוש והייתה מצטרפת באותה קלות לנתניהו. ממשלה על צ'ק פתוח. (וכן, בדיוק על זה עמוד ״הגוש שבין הגושים״ בתכל'ס)");
+    lines.push("🟣 הממשלה שלכם נשענת על בית ציוני–המילואימניקים. טרופר אמנם הצהיר שלא יישבו עם נתניהו (18.8) — אך המפלגה טרם התחייבה רשמית כגוף. ממשלה על הצהרה של איש אחד. (ההסבר המלא: ״הגוש שבין הגושים״ בתכל'ס)");
   if(has("raam") && withoutRaam<61)
     lines.push("🔑 שימו לב: בלי רע\"ם לא הייתם מגיעים ל־61 — מנסור עבאס הוא לשון המאזניים, בדיוק כמו שאמרנו.");
   if(has("likud") && has("raam"))
@@ -1540,7 +1544,7 @@ function renderVotes(){
   votes.innerHTML=`
     <h2>הגוש שבין הגושים<br><span class="hl">והקולות שהולכים לאיבוד 🗑️</span></h2>
 
-    <div class="infocard"><p><b>מי זה ״הגוש שבין הגושים״?</b> מפלגות שמסרבות להתחייב לאף מחנה — כחול לבן של גנץ, ״בית ציוני–המילואימניקים״ של הנדל וטרופר, זליכה ואחרים. למה הן לא מתחייבות? כי הן מנסות לדוג קולות <b>מכל הצדדים</b>. ויש להן עוד מכנה משותף: כולן רוקדות על קו החסימה. נכון לסוף יולי: בית ציוני–המילואימניקים נעה בין 3.1% (לא עוברת, כאן 11) ל־3.3% (עוברת בקושי, חדשות 12) — פרומיל לכאן או לכאן; כחול לבן על 2.7%; ואפילו תרחיש איחוד גנץ־שמחי שנבדק בסקר חדשות 12 — לא עובר. ובאוגוסט נולדה עוד אחת: ״האחדות״ של ארדן ואדלשטיין (1.6%–2.6% בסקרים) — פיצול נוסף של בדיוק אותם קולות.</p></div>
+    <div class="infocard"><p><b>מי זה ״הגוש שבין הגושים״?</b> מפלגות שמסרבות להתחייב לאף מחנה — כחול לבן של גנץ, ״בית ציוני–המילואימניקים״ של הנדל וטרופר, זליכה ואחרים. למה הן לא מתחייבות? כי הן מנסות לדוג קולות <b>מכל הצדדים</b>. ויש להן עוד מכנה משותף: כולן רוקדות על קו החסימה. נכון לסוף יולי: בית ציוני–המילואימניקים נעה בין 3.1% (לא עוברת, כאן 11) ל־3.3% (עוברת בקושי, חדשות 12) — פרומיל לכאן או לכאן; כחול לבן על 2.7%; ואפילו תרחיש איחוד גנץ־שמחי שנבדק בסקר חדשות 12 — לא עובר. ובאוגוסט נולדה עוד אחת: ״האחדות״ של ארדן ואדלשטיין (1.6%–2.6% בסקרים), ובדרך אולי גם מפלגת האלוף עופר וינטר — פיצול ועוד פיצול של בדיוק אותם קולות. עדכון חשוב (18.8): טרופר הצהיר ש״לא נשב בממשלה של נתניהו״ — הצהרה אישית ראשונה מסוגה מהגוש הזה; התחייבות מפלגתית רשמית עדיין אין.</p></div>
 
     <div class="ledsec">🚪 אז מה קורה לקול שלכם? שני תרחישים</div>
     <div class="acc" style="margin-bottom:8px"><div class="acc-head"><span class="ae">🟡</span><span class="at">תרחיש א׳: המפלגה עוברת — אבל יש קולות עודפים</span><span class="chev">▼</span></div>
@@ -1601,6 +1605,7 @@ $("#gHL").onclick=()=>{lastTab="games";startHL();};
 $("#gMdl").onclick=()=>{lastTab="games";startMdl(false);};
 $("#gRace").onclick=()=>{lastTab="games";startRace();};
 $("#gIdle").onclick=()=>{lastTab="games";startIdle();};
+$("#gWv").onclick=()=>{lastTab="games";startWv();};
 /* learn menu */
 $("#lFacts").onclick=()=>{lastTab="learn";renderFacts();show(facts);};
 $("#lBudget").onclick=()=>{lastTab="learn";renderBudget();show(budget);};
@@ -1773,8 +1778,8 @@ function renderDict(){
         <b>4 · מירי רגב</b> — שרת התחבורה בעידן שיאי הפקקים; תחקירים ופרסומים חוזרים על מינויי מקורבים במערכות שבאחריותה (היא מכחישה) <a class="srch" style="display:inline;padding:2px 8px;margin:0" target="_blank" rel="noopener" href="https://www.google.com/search?q=%D7%9E%D7%99%D7%A8%D7%99%20%D7%A8%D7%92%D7%91%20%D7%AA%D7%97%D7%A7%D7%99%D7%A8%20%D7%9E%D7%99%D7%A0%D7%95%D7%99%D7%99%D7%9D%20%D7%9E%D7%A7%D7%95%D7%A8%D7%91%D7%99%D7%9D">🔎</a><br>
         <b>5 · אופיר כץ</b> (יו״ר הקואליציה) — האיש שהעביר בפועל את חוקי ההפיכה והכספים הקואליציוניים במליאה.<br>
         <b>6–10:</b> <b>יואב קיש</b> (חינוך) · <b>מיקי זוהר</b> (תרבות) — התערבויות פוליטיות חוזרות בפרסים ובתקצוב יצירה ביקורתית <a class="srch" style="display:inline;padding:2px 8px;margin:0" target="_blank" rel="noopener" href="https://www.google.com/search?q=%D7%9E%D7%99%D7%A7%D7%99%20%D7%96%D7%95%D7%94%D7%A8%20%D7%A4%D7%A8%D7%A1%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%20%D7%94%D7%AA%D7%A2%D7%A8%D7%91%D7%95%D7%AA%20%D7%AA%D7%A8%D7%91%D7%95%D7%AA">🔎</a> · <b>אלמוג כהן</b> — עבר מעוצמה יהודית של בן גביר לליכוד · <b>עמיחי שיקלי</b> — הפורש מימינה שפעל מבפנים להפלת ממשלת בנט · <b>דודי אמסלם</b> — ממובילי המתקפות על מערכת המשפט.<br>
-        <b>ובהמשך:</b> <b>משה סעדה</b> — סגן ראש מח״ש לשעבר, ממובילי המסע נגד הפרקליטות <button class="dlchip" data-pg="core" data-k="שומרי">🧠 שומרי הסף</button> · <b>טלי גוטליב</b> · <b>שלמה קרעי</b> (תקשורת) — פעל לסגירת תאגיד ״כאן״ ולפירוק הרגולציה <button class="dlchip" data-pg="core" data-k="תקשורת">🧠</button> · <b>אביחי בוארון</b> — השלישי ביוזמת אי־ההכרה בפסיקות בג״ץ · <b>מאי גולן</b> — ״אני אישית גאה בחורבות עזה״, מהציטוטים שהגיעו לכתב התביעה בהאג · <b>בועז ביסמוט (22)</b> — עורך ״ישראל היום״ לשעבר <button class="dlchip" data-pg="facts" data-k="בוטים איראניים">🔍 ״הבוטים״</button> · <b>דוד ביטן (23)</b> — נאשם בפרשת שוחד (ההליך מתנהל; חזקת החפות שמורה) · <b>ניר ברקת (24, על הקו)</b> <button class="dlchip" data-pg="facts" data-k="הפוטש">🔍 הפוטש</button> · <b>עמית הלוי</b> <button class="dlchip" data-pg="facts" data-k="בוטים איראניים">🔍</button> · גילה גמליאל · אריאל קלנר · חנוך מילביצקי ועוד.</div>
-        <div class="xsec xbg" style="margin-bottom:8px"><b>🔒 שמונת השריונים (מקומות 3, 5, 9, 11, 15, 18, 26, 29)</b>בהם ישבץ נתניהו את: <b>ישראל כ״ץ</b> — שר הביטחון שצנח למקום 13 אצל המתפקדים <button class="dlchip" data-pg="led" data-k="מגלנט">📓 בפנקס</button><button class="dlchip" data-pg="facts" data-k="לא הדחתי">🔍 פרשת בלוט</button> · <b>חיים כץ</b> (הורשע בעבר בעבירת מרמה בעסקת טיעון) · <b>גדעון סער</b> · <b>אורן דוברונסקי</b> — איש עסקים שעל פי הפרסומים חי שנים בחו״ל, והשריון שלו מגיע על רקע חשיפת הפוטש <button class="dlchip" data-pg="facts" data-k="הפוטש">🔍</button>. מי שלא חי כאן בוחר לאמץ מפלגה שמסרבת לחקור את 7.10 — שפטו בעצמכם · + חמישה שריונים שטרם נחשפו.</div>
+        <b>ובהמשך:</b> <b>משה סעדה</b> — סגן ראש מח״ש לשעבר, ממובילי המסע נגד הפרקליטות <button class="dlchip" data-pg="core" data-k="שומרי">🧠 שומרי הסף</button> · <b>טלי גוטליב</b> · <b>שלמה קרעי</b> (תקשורת) — פעל לסגירת תאגיד ״כאן״ ולפירוק הרגולציה (ולזכותו ייאמר: יצא בפומבי נגד שיטת השריונים — ״שיקבלו את דין הבוחר״) <button class="dlchip" data-pg="core" data-k="תקשורת">🧠</button> · <b>אביחי בוארון</b> — השלישי ביוזמת אי־ההכרה בפסיקות בג״ץ · <b>מאי גולן</b> — ״אני אישית גאה בחורבות עזה״, מהציטוטים שהגיעו לכתב התביעה בהאג · <b>בועז ביסמוט (22)</b> — עורך ״ישראל היום״ לשעבר <button class="dlchip" data-pg="facts" data-k="בוטים איראניים">🔍 ״הבוטים״</button> · <b>דוד ביטן (23)</b> — נאשם בפרשת שוחד (ההליך מתנהל; חזקת החפות שמורה) · <b>ניר ברקת (24, על הקו)</b> <button class="dlchip" data-pg="facts" data-k="הפוטש">🔍 הפוטש</button> · <b>עמית הלוי</b> <button class="dlchip" data-pg="facts" data-k="בוטים איראניים">🔍</button> · גילה גמליאל · אריאל קלנר · חנוך מילביצקי ועוד.</div>
+        <div class="xsec xbg" style="margin-bottom:8px"><b>🔒 שמונת השריונים (מקומות 3, 5, 9, 11, 15, 18, 26, 29)</b>בהם ישבץ נתניהו את: <b>ישראל כ״ץ</b> — שר הביטחון שצנח למקום 13 אצל המתפקדים; לפי חשיפת i24, בקשת השריון שלו אושרה בבית הדין בתוך כרבע שעה, אחרי שההקלטה והפרוטוקול הופסקו, על בסיס סעיף עמום בחוקה <button class="dlchip" data-pg="led" data-k="מגלנט">📓 בפנקס</button><button class="dlchip" data-pg="facts" data-k="לא הדחתי">🔍 פרשת בלוט</button> · <b>חיים כץ</b> (הורשע בעבר בעבירת מרמה בעסקת טיעון) · <b>גדעון סער</b> · <b>אורן דוברונסקי</b> — איש עסקים שעל פי הפרסומים חי שנים בחו״ל, והשריון שלו מגיע על רקע חשיפת הפוטש <button class="dlchip" data-pg="facts" data-k="הפוטש">🔍</button>. מי שלא חי כאן בוחר לאמץ מפלגה שמסרבת לחקור את 7.10 — שפטו בעצמכם · + חמישה שריונים שטרם נחשפו.</div>
         <div class="xsec xcon" style="margin-bottom:8px"><b>📢 ואיך הם רואים אתכם</b>מהודעת הליכוד הרשמית אמש: ״זאת הדרך היחידה למנוע ממשלת שמאל של איזנקוט, יאיר גולן, ליברמן והמפלגות הערביות״. שימו לב לתבנית — בדיוק שני קמפייני ההפחדה שכבר פירקנו במחלקת האקטואליה.</div>
         <a class="srch" target="_blank" rel="noopener" href="https://www.google.com/search?q=%D7%AA%D7%95%D7%A6%D7%90%D7%95%D7%AA%20%D7%A4%D7%A8%D7%99%D7%99%D7%9E%D7%A8%D7%99%D7%96%20%D7%94%D7%9C%D7%99%D7%9B%D7%95%D7%93%20%D7%94%D7%A8%D7%A9%D7%99%D7%9E%D7%94%20%D7%94%D7%9E%D7%9C%D7%90%D7%94">🔎 בדקו בעצמכם — התוצאות המלאות</a>
       </div>
@@ -1817,6 +1822,16 @@ $("#toDisc").onclick=()=>openDisclaimer();
 
 /* ================= FACT CHECK / ACTUALIA ================= */
 const FACTS=[
+ {e:"🤝", t:"״הבגידה של בנט״ — בואו נדבר על זה באמת", dt:"2021 · ומאז, בכל קמפיין",
+  claim:"קלף הניגוח הקבוע נגד ביחד: ב־2021 בנט הבטיח שלא יקים ממשלה עם לפיד והגוש — והפר. ״אי אפשר להאמין לו״.",
+  said:"והאמת? נכון. בנט הבטיח, כולל בהתחייבות חתומה בשידור — והפר. הוא עצמו הודה בזה בפומבי לא פעם, והסביר את המלכוד: אחרי ארבע מערכות בחירות בשנתיים הוא נתן שתי הבטחות שהתנגשו חזיתית — לא ממשלה עם הגוש של לפיד, ולא בחירות חמישיות. כשאי אפשר היה לקיים את שתיהן, הוא בחר: ממשלה. ואת הממשלה ההיא הוא מבקש לשפוט לגופה — ממשלה מתפקדת שהעבירה תקציב אחרי שלוש שנים בלעדיו, עם ליברמן, לפיד, סער ואפילו רע״ם, שהחזיקה מעמד שנה בקושי בזכות ולמרות הכול.",
+  twist:"ועכשיו לשאלה המעניינת באמת: מי צועק ״שקרן״? מפלגתו של האיש שסמוטריץ׳ — שותפו הבכיר — כינה בעבר ״שקרן בן שקרן״. האיש שהבטיח לגנץ רוטציה בחתימה ובחוק — ולא קיים, כשסירב להעביר תקציב רק כדי לא להגיע ליום המסירה. שצעק ״הערבים נוהרים לקלפי״ ב־2015. שלפי עדות המתווך האמריקאי ניהל מו״מ חשאי עם אסד על הגולן — והכחיש. ההבדל היחיד: בנט מודה ומבקש להישפט על התוצאה; נתניהו מכחיש גם את מה שמצולם.",
+  bottom:"לא חייבים לסלוח לבנט על 2021 — אבל חייבים מבחן אחד לכולם. מי שסולח לנתניהו על עשרים שנות הבטחות שבורות וזועם רק על בנט — לא כועס על השקר. הוא כועס שהשקר, פעם אחת, לא שירת אותו.",
+  srch:"בנט הבטחה 2021 הודה ממשלת השינוי רוטציה גנץ נתניהו תקציב סמוטריץ שקרן",
+  race:{h:"🤝 ״הבגידה של בנט״", parts:[
+   "״בנט הבטיח ב־2021 ולא קיים — שקרן!״ נכון, הוא הפר. הוא גם הודה בזה בפומבי, לא פעם. שתי הבטחות שהתנגשו: לא ממשלה עם הגוש, ולא בחירות חמישיות. הוא בחר ממשלה.",
+   "ומי צועק ״שקרן״? מי שסמוטריץ׳ כינה ״שקרן בן שקרן״. שהבטיח רוטציה לגנץ בחוק — וחנק את התקציב כדי לא לקיים. ש״הערבים נוהרים״ 2015. ההבדל: בנט מודה. נתניהו מכחיש גם את המצולם.",
+   "מבחן אחד לכולם: מי שזועם רק על בנט — לא כועס על שקר. הוא כועס שהשקר לא שירת אותו. 27.10."]}},
  {e:"🗡️", t:"הפוטש שנחשף בליכוד — והנקמה שלפני הפריימריז", dt:"10–17.8.2026",
   claim:"התדמית שמשווקים: הליכוד מלוכד כחומה מאחורי המנהיג, וההתמקדות ב״עריקים״ בודדים.",
   said:"מה שנחשף השבוע: ח״כ לשעבר דן אילוז סיפר בקולו (פודקאסט ״120 ואחת״ של ynet, עוד בהיותו בליכוד) ששליש מסיעת הליכוד התגבשה לתוכנית להדיח את נתניהו באי־אמון קונסטרוקטיבי — להחליף ראש ממשלה בלי בחירות, כדי לשמור את השלטון בידי המפלגה. לפי פרסום חדשות 12, בסביבת נתניהו חושדים ששניים הובילו, בנפרד: יולי אדלשטיין (שהציע ממשלת אחדות בראשותו ואז פריימריז בלעדיו) — וניר ברקת. המהלך קרס על מאבקי אגו: לא הצליחו להסכים מי יחליף.",
@@ -2724,6 +2739,75 @@ function deepOpen(pg,key){
     setTimeout(()=>{ try{ target.scrollIntoView({behavior:"smooth",block:"start"}); }catch(_){ } },120);
   }
 }
+
+/* ================= WASTED VOTE LAB (Bader-Ofer) ================= */
+const WV_BASE=[
+ {id:"bigB", n:"הכחולה הגדולה", bloc:"b", v:1910000},
+ {id:"smallB",n:"הכחולה הקטנה", bloc:"b", v:140000},
+ {id:"bigR", n:"האדומה הגדולה", bloc:"r", v:2000000},
+ {id:"smallR",n:"האדומה הקטנה", bloc:"r", v:350000}
+];
+function dhondt(parties, seats){
+  const alloc=parties.map(_=>0);
+  for(let k=0;k<seats;k++){
+    let bi=0,bq=-1;
+    parties.forEach((pt,i)=>{ const q=pt.v/(alloc[i]+1); if(q>bq){bq=q;bi=i;} });
+    alloc[bi]++;
+  }
+  return alloc;
+}
+function wvCompute(choice){
+  const ps=WV_BASE.map(x=>({...x}));
+  if(choice==="big") ps[0].v+=10000;
+  if(choice==="small") ps[1].v+=10000;
+  const total=ps.reduce((a,x)=>a+x.v,0);
+  const thr=Math.round(total*0.0325);
+  const passing=ps.filter(x=>x.v>=thr);
+  const burned=ps.filter(x=>x.v<thr);
+  const alloc=dhondt(passing,120);
+  const seats={}; passing.forEach((x,i)=>seats[x.id]=alloc[i]);
+  ps.forEach(x=>{ if(!(x.id in seats)) seats[x.id]=0; });
+  const blocB=ps.filter(x=>x.bloc==="b").reduce((a,x)=>a+seats[x.id],0);
+  const blocR=ps.filter(x=>x.bloc==="r").reduce((a,x)=>a+seats[x.id],0);
+  return {ps,thr,total,seats,burned,blocB,blocR};
+}
+function wvFmt(n){return n.toLocaleString("he-IL");}
+function startWv(){ renderWv(null); show(wv); }
+function renderWv(choice){
+  const base=wvCompute("small"); // המצב שבו אף קול לא נשרף — נקודת ההשוואה
+  const r=choice?wvCompute(choice):null;
+  wv.innerHTML=`
+    <h2>מעבדת הקול השרוף<br><span class="hl">ניסוי חי בשיטת באדר–עופר 🧪</span></h2>
+    <div class="infocard"><p>ארבע מפלגות, שני גושים. <b style="color:var(--blue)">הכחולה הקטנה</b> עומדת על ${wvFmt(WV_BASE[1].v)} קולות — <b>מתחת</b> לאחוז החסימה (${wvFmt(base.thr)}). בידיים שלכם שכונה שלמה: <b>10,000 קולות</b>. למי?</p></div>
+    <div class="row2" style="flex-wrap:wrap;gap:7px">
+      <button class="btn ${choice==="big"?"btn-again":"backbtn"}" data-c="big" style="flex:1;min-width:100px">🔵 לגדולה</button>
+      <button class="btn ${choice==="small"?"btn-again":"backbtn"}" data-c="small" style="flex:1;min-width:100px">🔵 לקטנה</button>
+      <button class="btn ${choice==="home"?"btn-again":"backbtn"}" data-c="home" style="flex:1;min-width:100px">🛋️ נשארים בבית</button>
+    </div>
+    <div id="wvOut">${r?wvOutHtml(choice,r,base):""}</div>
+    <button class="linkbtn" data-back>יציאה</button>`;
+  wv.querySelectorAll("[data-c]").forEach(b=>b.onclick=()=>renderWv(b.dataset.c));
+  wv.querySelector("[data-back]").onclick=()=>goBack();
+  const vp=$("#wvVotes"); if(vp) vp.onclick=()=>{lastTab="learn";show(votes);};
+}
+function wvOutHtml(choice,r,base){
+  const P={bigB:"🔵 הכחולה הגדולה",smallB:"🔵 הכחולה הקטנה",bigR:"🔴 האדומה הגדולה",smallR:"🔴 האדומה הקטנה"};
+  const burnedNote=r.burned.length
+    ? `<div class="voteres bad" style="margin:8px 0"><b>🗑️ ${wvFmt(r.burned[0].v)} קולות כחולים נשרפו.</b> הם לא נעלמו סתם — הם הוקטנו מהמכנה: 120 המנדטים חולקו רק בין העוברות, לפי גודלן. מי הגדולה בחדר? האדומה. <b>התוצאה: ${base.blocB-r.blocB} מנדטים שהיו כחולים עברו — רובם לגוש האדום.</b></div>`
+    : `<div class="voteres good" style="margin:8px 0"><b>🎉 הכחולה הקטנה עברה בזכותכם!</b> ${wvFmt(r.ps[1].v)} קולות מעל הסף — ואף קול כחול לא נשרף.</div>`;
+  return `
+    <div class="rescard" style="margin-top:10px">
+      <p style="font-size:12px;color:var(--muted);margin:0 0 6px">אחוז החסימה בניסוי: ${wvFmt(r.thr)} קולות (3.25%) · חלוקה בשיטת באדר–עופר (מחיר מנדט = הקולות חלקי המנדטים+1)</p>
+      ${r.ps.map(x=>`<div style="display:flex;justify-content:space-between;font-size:13.5px;margin:3px 0"><span>${P[x.id]} — ${wvFmt(x.v)}</span><b style="color:${x.bloc==="b"?"var(--blue)":"var(--coral)"}">${r.seats[x.id]||"❌ 0"} מנדטים</b></div>`).join("")}
+      <div style="display:flex;justify-content:space-between;font-family:'Secular One';font-size:17px;margin-top:8px;border-top:1px solid rgba(139,147,184,.3);padding-top:7px">
+        <span style="color:var(--blue)">הגוש הכחול: ${r.blocB}</span><span style="color:var(--coral)">האדום: ${r.blocR}</span>
+      </div>
+      ${burnedNote}
+      <div class="blurb">📖 <b>וזה לא ניסוי תיאורטי — זה 2022:</b> למרצ חסרו <b>4,124 קולות בלבד</b> לעבור; יחד עם בל״ד נשרפו כ־290 אלף קולות של הגוש. פער הקולות בין הגושים בקול הפופולרי היה כ־30 אלף בלבד — אבל פער המנדטים: 64 מול 56, וממשלת נתניהו-בן גביר קמה. <a class="srch" style="display:inline;padding:2px 8px;margin:0" target="_blank" rel="noopener" href="https://www.google.com/search?q=%D7%9E%D7%A8%D7%A6%202022%204124%20%D7%A7%D7%95%D7%9C%D7%95%D7%AA%20%D7%90%D7%97%D7%95%D7%96%20%D7%94%D7%97%D7%A1%D7%99%D7%9E%D7%94">🔎</a></div>
+      <button class="btn btn-copy" id="wvVotes" style="width:100%;margin-top:8px">🧠 ההסבר המלא: הקול השרוף ובאדר–עופר</button>
+    </div>`;
+}
+
 </script>
 </body>
 </html>
