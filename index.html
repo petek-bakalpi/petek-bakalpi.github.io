@@ -581,7 +581,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="1.7.2";
+const APP_VERSION="1.7.3";
 const APP_UPDATED="24.8.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 
@@ -2891,7 +2891,7 @@ function wvSettle(choice,r){
       <div class="blurb">📖 <b>וזה בדיוק מה שקרה ב־2022:</b> למרצ חסרו <b>4,124 קולות</b> לעבור את הקו; יחד עם בל״ד נשרפו כ־<b>290 אלף</b> קולות של הגוש. פער הקולות בין הגושים כולו היה כ־30 אלף בלבד — אבל בזכות הקולות השרופים: 64 מול 56 במנדטים, וממשלת נתניהו–בן גביר קמה. <a class="srch" style="display:inline;padding:2px 8px;margin:0" target="_blank" rel="noopener" href="https://www.google.com/search?q=%D7%9E%D7%A8%D7%A6%202022%204124%20%D7%A7%D7%95%D7%9C%D7%95%D7%AA%20%D7%90%D7%97%D7%95%D7%96%20%D7%94%D7%97%D7%A1%D7%99%D7%9E%D7%94">🔎</a></div>
       <p style="text-align:center;font-size:12px;color:var(--muted)">נסו בחירה אחרת למעלה 👆 · <a href="#" id="wvVotes" style="color:var(--blue)">ההסבר המלא: הקול השרוף ובאדר–עופר</a></p>
     </div>`;
-  const vp=$("#wvVotes"); if(vp) vp.onclick=(e)=>{e.preventDefault();lastTab="learn";show(votes);};
+  const vp=$("#wvVotes"); if(vp) vp.onclick=(e)=>{e.preventDefault();lastTab="learn";renderVotes();show(votes);};
   wvBusy=false;
 }
 </script>
