@@ -256,6 +256,23 @@
   .voteres b{color:var(--paper)}
   .dlchip{display:inline-block;margin:2px 2px;padding:3px 9px;border-radius:99px;font-size:10.5px;font-weight:800;background:rgba(255,89,100,.12);border:1px solid rgba(255,89,100,.45);color:#F7A3A9;cursor:pointer}
   .dlchip.gold{background:rgba(245,184,65,.10);border-color:rgba(245,184,65,.5);color:var(--gold)}
+  /* wasted-vote cups */
+  .wvchart{position:relative;height:250px;margin:12px 4px 4px;border-right:2px solid rgba(139,147,184,.4);border-bottom:2px solid rgba(139,147,184,.4);display:flex;align-items:flex-end;justify-content:space-around;padding:0 6px}
+  .wvgrid{position:absolute;left:0;right:0;height:1px;background:rgba(139,147,184,.12)}
+  .wvthr{position:absolute;left:0;right:0;height:0;border-top:2.5px dashed var(--gold);z-index:2}
+  .wvthr span{position:absolute;right:4px;top:-17px;font-size:10px;font-weight:900;color:var(--gold)}
+  .wvcol{position:relative;width:20%;max-width:64px;display:flex;flex-direction:column;justify-content:flex-end;height:100%}
+  .wvcup{position:relative;width:100%;border-radius:8px 8px 3px 3px;overflow:visible;transition:height .7s cubic-bezier(.3,1.2,.5,1)}
+  .wvfill-b{background:linear-gradient(180deg,#5E93FF,#2B5FD9)}
+  .wvfill-bs{background:linear-gradient(180deg,#8FB6FF,#4E7FE8)}
+  .wvfill-r{background:linear-gradient(180deg,#FF7A83,#D93B46)}
+  .wvfill-rs{background:linear-gradient(180deg,#FFA1A8,#E8555F)}
+  .wvcup.over::before{content:"";position:absolute;top:-2px;left:0;right:0;height:8px;background:repeating-linear-gradient(115deg,var(--ink) 0 5px,transparent 5px 10px)}
+  .wvval{position:absolute;top:-20px;left:0;right:0;text-align:center;font-size:9.5px;font-weight:900;color:var(--paper);white-space:nowrap}
+  .wvname{text-align:center;font-size:9.5px;font-weight:800;color:var(--muted);margin-top:5px;line-height:1.2;min-height:26px}
+  .wvseats{text-align:center;font-family:'Secular One';font-size:15px;min-height:20px}
+  .wvdot{position:fixed;width:11px;height:11px;border-radius:50%;z-index:60;pointer-events:none;transition:transform .85s cubic-bezier(.4,.1,.4,1),opacity .2s}
+  .wvcup.burnt{opacity:.25;filter:grayscale(1)}
   /* version + countdown */
   .countpill{display:block;text-align:center;margin:0 auto 10px;background:rgba(245,184,65,.12);border:1.5px solid rgba(245,184,65,.5);color:var(--gold);border-radius:999px;padding:7px 16px;font-family:'Secular One';font-size:15px;width:fit-content}
   .verline{text-align:center;color:var(--muted);font-size:10.5px;margin-top:14px;opacity:.8}
@@ -560,7 +577,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="1.7";
+const APP_VERSION="1.7.1";
 const APP_UPDATED="24.8.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 
@@ -2742,11 +2759,13 @@ function deepOpen(pg,key){
 
 /* ================= WASTED VOTE LAB (Bader-Ofer) ================= */
 const WV_BASE=[
- {id:"bigB", n:"הכחולה הגדולה", bloc:"b", v:1910000},
- {id:"smallB",n:"הכחולה הקטנה", bloc:"b", v:140000},
- {id:"bigR", n:"האדומה הגדולה", bloc:"r", v:2000000},
- {id:"smallR",n:"האדומה הקטנה", bloc:"r", v:350000}
+ {id:"bigB", n:"הכחולה הגדולה", cls:"wvfill-b", bloc:"b", v:1910000},
+ {id:"smallB",n:"הכחולה הקטנה", cls:"wvfill-bs", bloc:"b", v:140000},
+ {id:"smallR",n:"האדומה הקטנה", cls:"wvfill-rs", bloc:"r", v:350000},
+ {id:"bigR", n:"האדומה הגדולה", cls:"wvfill-r", bloc:"r", v:2000000}
 ];
+const WV_MAX=460000; /* תקריב על אזור החסימה; הגדולות גולשות מעבר */
+let wvBusy=false;
 function dhondt(parties, seats){
   const alloc=parties.map(_=>0);
   for(let k=0;k<seats;k++){
@@ -2763,51 +2782,104 @@ function wvCompute(choice){
   const total=ps.reduce((a,x)=>a+x.v,0);
   const thr=Math.round(total*0.0325);
   const passing=ps.filter(x=>x.v>=thr);
-  const burned=ps.filter(x=>x.v<thr);
   const alloc=dhondt(passing,120);
   const seats={}; passing.forEach((x,i)=>seats[x.id]=alloc[i]);
   ps.forEach(x=>{ if(!(x.id in seats)) seats[x.id]=0; });
-  const blocB=ps.filter(x=>x.bloc==="b").reduce((a,x)=>a+seats[x.id],0);
-  const blocR=ps.filter(x=>x.bloc==="r").reduce((a,x)=>a+seats[x.id],0);
-  return {ps,thr,total,seats,burned,blocB,blocR};
+  return {ps,thr,total,seats,
+    burned:ps.filter(x=>x.v<thr),
+    blocB:ps.filter(x=>x.bloc==="b").reduce((a,x)=>a+seats[x.id],0),
+    blocR:ps.filter(x=>x.bloc==="r").reduce((a,x)=>a+seats[x.id],0)};
 }
-function wvFmt(n){return n.toLocaleString("he-IL");}
-function startWv(){ renderWv(null); show(wv); }
-function renderWv(choice){
-  const base=wvCompute("small"); // המצב שבו אף קול לא נשרף — נקודת ההשוואה
-  const r=choice?wvCompute(choice):null;
+const wvFmt=n=>n>=1e6?(n/1e6).toFixed(2)+"M":Math.round(n/1000)+"K";
+function startWv(){ wvBusy=false; renderWv(); show(wv); }
+function renderWv(){
+  const r0=wvCompute(null);
   wv.innerHTML=`
-    <h2>מעבדת הקול השרוף<br><span class="hl">ניסוי חי בשיטת באדר–עופר 🧪</span></h2>
-    <div class="infocard"><p>ארבע מפלגות, שני גושים. <b style="color:var(--blue)">הכחולה הקטנה</b> עומדת על ${wvFmt(WV_BASE[1].v)} קולות — <b>מתחת</b> לאחוז החסימה (${wvFmt(base.thr)}). בידיים שלכם שכונה שלמה: <b>10,000 קולות</b>. למי?</p></div>
-    <div class="row2" style="flex-wrap:wrap;gap:7px">
-      <button class="btn ${choice==="big"?"btn-again":"backbtn"}" data-c="big" style="flex:1;min-width:100px">🔵 לגדולה</button>
-      <button class="btn ${choice==="small"?"btn-again":"backbtn"}" data-c="small" style="flex:1;min-width:100px">🔵 לקטנה</button>
-      <button class="btn ${choice==="home"?"btn-again":"backbtn"}" data-c="home" style="flex:1;min-width:100px">🛋️ נשארים בבית</button>
+    <h2>מעבדת הקול השרוף<br><span class="hl">ניסוי חי בבאדר–עופר 🧪</span></h2>
+    <p style="text-align:center;color:var(--muted);font-size:12px;margin:2px 0 4px">הקו הזהוב = אחוז החסימה (${wvFmt(r0.thr)} קולות). <b style="color:#8FB6FF">הכחולה הקטנה</b> מתחתיו. בידכם 10,000 קולות — למי?</p>
+    <div class="wvchart" id="wvChart">
+      ${[0.25,0.5,0.75].map(f=>`<div class="wvgrid" style="bottom:${f*100}%"></div>`).join("")}
+      <div class="wvthr" style="bottom:${r0.thr/WV_MAX*100}%"><span>— אחוז החסימה</span></div>
+      ${WV_BASE.map(x=>{
+        const h=Math.min(100, x.v/WV_MAX*100);
+        return `<div class="wvcol" data-id="${x.id}">
+          <div class="wvcup ${x.cls} ${x.v>WV_MAX?"over":""}" style="height:${h}%"><div class="wvval">${wvFmt(x.v)}</div></div>
+        </div>`;}).join("")}
     </div>
-    <div id="wvOut">${r?wvOutHtml(choice,r,base):""}</div>
+    <div style="display:flex;justify-content:space-around;padding:0 6px">
+      ${WV_BASE.map(x=>`<div style="width:20%;max-width:64px"><div class="wvname">${x.n}</div><div class="wvseats" id="wvS-${x.id}"></div></div>`).join("")}
+    </div>
+    <div class="row2" style="flex-wrap:wrap;gap:7px;margin-top:8px">
+      <button class="btn backbtn" data-c="big" style="flex:1;min-width:96px;font-size:13px">🔵 לגדולה</button>
+      <button class="btn backbtn" data-c="small" style="flex:1;min-width:96px;font-size:13px">🔵 לקטנה</button>
+      <button class="btn backbtn" data-c="home" style="flex:1;min-width:96px;font-size:13px">🛋️ בבית</button>
+    </div>
+    <div id="wvOut"></div>
     <button class="linkbtn" data-back>יציאה</button>`;
-  wv.querySelectorAll("[data-c]").forEach(b=>b.onclick=()=>renderWv(b.dataset.c));
+  wv.querySelectorAll("[data-c]").forEach(b=>b.onclick=()=>wvChoose(b.dataset.c));
   wv.querySelector("[data-back]").onclick=()=>goBack();
-  const vp=$("#wvVotes"); if(vp) vp.onclick=()=>{lastTab="learn";show(votes);};
 }
-function wvOutHtml(choice,r,base){
-  const P={bigB:"🔵 הכחולה הגדולה",smallB:"🔵 הכחולה הקטנה",bigR:"🔴 האדומה הגדולה",smallR:"🔴 האדומה הקטנה"};
+function wvCup(id){ return wv.querySelector(`.wvcol[data-id="${id}"] .wvcup`); }
+function wvChoose(choice){
+  if(wvBusy) return; wvBusy=true;
+  renderWv(); // איפוס ויזואלי לניסוי נקי
+  const r=wvCompute(choice);
+  const btn=wv.querySelector(`[data-c="${choice}"]`); if(btn){btn.classList.remove("backbtn");btn.classList.add("btn-again");}
+  /* שלב 1: הקול שלכם נמזג פנימה */
+  const target=choice==="big"?"bigB":choice==="small"?"smallB":null;
+  if(target){
+    const pt=r.ps.find(x=>x.id===target);
+    const cup=wvCup(target);
+    cup.style.height=Math.min(100,pt.v/WV_MAX*100)+"%";
+    cup.querySelector(".wvval").textContent=wvFmt(pt.v);
+  }
+  /* שלב 2: בדיקת החסימה + זרימת הכוח */
+  setTimeout(()=>{
+    if(r.burned.length){
+      const dead=r.burned[0];
+      const deadCup=wvCup(dead.id);
+      deadCup.classList.add("burnt");
+      const from=deadCup.getBoundingClientRect();
+      const passers=r.ps.filter(x=>x.v>=r.thr);
+      const totPass=passers.reduce((a,x)=>a+x.v,0);
+      let di=0;
+      passers.forEach(pt=>{
+        const nDots=Math.max(1,Math.round(pt.v/totPass*9));
+        const to=wvCup(pt.id).getBoundingClientRect();
+        for(let k=0;k<nDots;k++){
+          const d=document.createElement("span");
+          d.className="wvdot"; d.style.background=pt.bloc==="b"?"#5E93FF":"#FF7A83";
+          d.style.left=(from.left+from.width/2-5)+"px"; d.style.top=(from.top+6)+"px";
+          document.body.appendChild(d);
+          setTimeout(()=>{ d.style.transform=`translate(${to.left+to.width/2-(from.left+from.width/2)}px, ${to.top-(from.top)}px)`; },80+di*90);
+          setTimeout(()=>{ d.style.opacity="0"; setTimeout(()=>d.remove(),250); },1000+di*90);
+          di++;
+        }
+      });
+      setTimeout(()=>wvSettle(choice,r),1500);
+    } else {
+      setTimeout(()=>wvSettle(choice,r),350);
+    }
+  },800);
+}
+function wvSettle(choice,r){
+  r.ps.forEach(x=>{ const el=$("#wvS-"+x.id); if(el) el.innerHTML=r.seats[x.id]?`<b style="color:${x.bloc==="b"?"#5E93FF":"#FF7A83"}">${r.seats[x.id]}</b>`:"❌"; });
+  const base=wvCompute("small");
   const burnedNote=r.burned.length
-    ? `<div class="voteres bad" style="margin:8px 0"><b>🗑️ ${wvFmt(r.burned[0].v)} קולות כחולים נשרפו.</b> הם לא נעלמו סתם — הם הוקטנו מהמכנה: 120 המנדטים חולקו רק בין העוברות, לפי גודלן. מי הגדולה בחדר? האדומה. <b>התוצאה: ${base.blocB-r.blocB} מנדטים שהיו כחולים עברו — רובם לגוש האדום.</b></div>`
-    : `<div class="voteres good" style="margin:8px 0"><b>🎉 הכחולה הקטנה עברה בזכותכם!</b> ${wvFmt(r.ps[1].v)} קולות מעל הסף — ואף קול כחול לא נשרף.</div>`;
-  return `
-    <div class="rescard" style="margin-top:10px">
-      <p style="font-size:12px;color:var(--muted);margin:0 0 6px">אחוז החסימה בניסוי: ${wvFmt(r.thr)} קולות (3.25%) · חלוקה בשיטת באדר–עופר (מחיר מנדט = הקולות חלקי המנדטים+1)</p>
-      ${r.ps.map(x=>`<div style="display:flex;justify-content:space-between;font-size:13.5px;margin:3px 0"><span>${P[x.id]} — ${wvFmt(x.v)}</span><b style="color:${x.bloc==="b"?"var(--blue)":"var(--coral)"}">${r.seats[x.id]||"❌ 0"} מנדטים</b></div>`).join("")}
-      <div style="display:flex;justify-content:space-between;font-family:'Secular One';font-size:17px;margin-top:8px;border-top:1px solid rgba(139,147,184,.3);padding-top:7px">
-        <span style="color:var(--blue)">הגוש הכחול: ${r.blocB}</span><span style="color:var(--coral)">האדום: ${r.blocR}</span>
+    ? `<div class="voteres bad" style="margin:8px 0"><b>🗑️ ${wvFmt(r.burned[0].v)} קולות כחולים נשרפו.</b> ראיתם לאן זרם הכוח שלהם? הקולות עצמם לא ״עוברים״ — אבל כשמוחקים אותם מהמכנה, כל מפלגה שעברה קונה מנדטים בזול, <b>לפי גודלה</b>. הגדולה בחדר היא האדומה. שורה תחתונה: <b>${base.blocB-r.blocB} מנדטים שהיו כחולים — עברו, רובם לגוש האדום.</b></div>`
+    : `<div class="voteres good" style="margin:8px 0"><b>🎉 הכחולה הקטנה עברה בזכותכם</b> — ואף קול כחול לא נשרף. שימו לב כמה קרוב זה היה לקו.</div>`;
+  $("#wvOut").innerHTML=`
+    <div class="rescard" style="margin-top:8px">
+      <div style="display:flex;justify-content:space-between;font-family:'Secular One';font-size:17px">
+        <span style="color:#5E93FF">הגוש הכחול: ${r.blocB}</span><span style="color:#FF7A83">האדום: ${r.blocR}</span>
       </div>
       ${burnedNote}
-      <div class="blurb">📖 <b>וזה לא ניסוי תיאורטי — זה 2022:</b> למרצ חסרו <b>4,124 קולות בלבד</b> לעבור; יחד עם בל״ד נשרפו כ־290 אלף קולות של הגוש. פער הקולות בין הגושים בקול הפופולרי היה כ־30 אלף בלבד — אבל פער המנדטים: 64 מול 56, וממשלת נתניהו-בן גביר קמה. <a class="srch" style="display:inline;padding:2px 8px;margin:0" target="_blank" rel="noopener" href="https://www.google.com/search?q=%D7%9E%D7%A8%D7%A6%202022%204124%20%D7%A7%D7%95%D7%9C%D7%95%D7%AA%20%D7%90%D7%97%D7%95%D7%96%20%D7%94%D7%97%D7%A1%D7%99%D7%9E%D7%94">🔎</a></div>
-      <button class="btn btn-copy" id="wvVotes" style="width:100%;margin-top:8px">🧠 ההסבר המלא: הקול השרוף ובאדר–עופר</button>
+      <div class="blurb">📖 <b>וזה בדיוק מה שקרה ב־2022:</b> למרצ חסרו <b>4,124 קולות</b> לעבור את הקו; יחד עם בל״ד נשרפו כ־<b>290 אלף</b> קולות של הגוש. פער הקולות בין הגושים כולו היה כ־30 אלף בלבד — אבל בזכות הקולות השרופים: 64 מול 56 במנדטים, וממשלת נתניהו–בן גביר קמה. <a class="srch" style="display:inline;padding:2px 8px;margin:0" target="_blank" rel="noopener" href="https://www.google.com/search?q=%D7%9E%D7%A8%D7%A6%202022%204124%20%D7%A7%D7%95%D7%9C%D7%95%D7%AA%20%D7%90%D7%97%D7%95%D7%96%20%D7%94%D7%97%D7%A1%D7%99%D7%9E%D7%94">🔎</a></div>
+      <p style="text-align:center;font-size:12px;color:var(--muted)">נסו בחירה אחרת למעלה 👆 · <a href="#" id="wvVotes" style="color:var(--blue)">ההסבר המלא: הקול השרוף ובאדר–עופר</a></p>
     </div>`;
+  const vp=$("#wvVotes"); if(vp) vp.onclick=(e)=>{e.preventDefault();lastTab="learn";show(votes);};
+  wvBusy=false;
 }
-
 </script>
 </body>
 </html>
