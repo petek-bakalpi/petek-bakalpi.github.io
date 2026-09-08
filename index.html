@@ -589,7 +589,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="2.1.5";
+const APP_VERSION="2.1.6";
 const APP_UPDATED="8.9.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
@@ -2819,10 +2819,10 @@ $("#coreCount").textContent = CORE_ISSUES.length+" נושאים · לכל אחד
     function step(ts){
       const W=track.clientWidth, T=txt.offsetWidth;
       if(W>0&&T>0){
-        if(x===null){ x=W; last=ts; }
-        if(!paused){ const dt=Math.min(50,ts-last); x-=dt*0.06; }
+        if(x===null){ x=-T; last=ts; }
+        if(!paused){ const dt=Math.min(50,ts-last); x+=dt*0.06; }
         last=ts;
-        if(x<-T) x=W;
+        if(x>W) x=-T;
         txt.style.transform="translateX("+x+"px)";
       }
       requestAnimationFrame(step);
