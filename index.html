@@ -279,12 +279,11 @@
   .wvcup.burnt{opacity:.25;filter:grayscale(1)}
   /* breaking news strip */
   .breaking{display:flex;align-items:center;margin:0 auto 12px;max-width:520px;border-radius:10px;overflow:hidden;cursor:pointer;border:1.5px solid rgba(255,89,100,.65);background:rgba(255,89,100,.12)}
-  .breaking .blabel{flex:0 0 auto;background:var(--coral);color:#fff;font-family:'Secular One';font-size:12.5px;padding:0 10px;line-height:32px;z-index:2}
-  .breaking .btrack{flex:1 1 auto;min-width:0;overflow:hidden;white-space:nowrap;height:32px;direction:ltr}
-  .breaking .btext{display:inline-block;direction:rtl;white-space:nowrap;line-height:32px;font-size:13px;font-weight:800;color:#FFD9DC;padding-left:100%;will-change:transform;animation:bmarquee 18s linear infinite}
-  @keyframes bmarquee{from{transform:translateX(0)}to{transform:translateX(-100%)}}
-  .breaking:active .btext{animation-play-state:paused}
-  @media (prefers-reduced-motion: reduce){.breaking .btext{animation:none;padding:0 8px;white-space:normal;line-height:1.3;font-size:12px}.breaking .btrack{height:auto;white-space:normal}}
+  .breaking .blabel{flex:0 0 auto;background:var(--coral);color:#fff;font-family:'Secular One';font-size:12.5px;padding:0 10px;line-height:32px}
+  .breaking .btrack{flex:1 1 0;min-width:0;overflow:hidden;height:32px;position:relative}
+  .breaking .btext{position:absolute;top:0;left:0;white-space:nowrap;line-height:32px;font-size:13px;font-weight:800;color:#FFD9DC;direction:rtl;will-change:transform}
+  .breaking .btext.static{position:static;white-space:normal;line-height:1.3;padding:6px 8px;font-size:12px}
+  .breaking .btrack.static{height:auto}
   /* version + countdown */
   .countpill{display:block;text-align:center;margin:0 auto 10px;background:rgba(245,184,65,.12);border:1.5px solid rgba(245,184,65,.5);color:var(--gold);border-radius:999px;padding:7px 16px;font-family:'Secular One';font-size:15px;width:fit-content}
   .verline{text-align:center;color:var(--muted);font-size:10.5px;margin-top:14px;opacity:.8}
@@ -590,7 +589,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="2.1.2";
+const APP_VERSION="2.1.3";
 const APP_UPDATED="8.9.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
@@ -2809,6 +2808,27 @@ $("#coreCount").textContent = CORE_ISSUES.length+" נושאים · לכל אחד
   else el.textContent="🗳️ הבחירות מאחורינו — תודה שהצבעתם";
   $("#btext").textContent=BREAKING.txt;
   $("#breaking").onclick=()=>deepOpen("facts",BREAKING.key);
+  /* גלילה ב-JS עם מדידה אמיתית — חסין לכל מוזרות CSS/RTL */
+  (function(){
+    const track=$("#breaking .btrack"), txt=$("#btext");
+    let reduce=false; try{ reduce=matchMedia("(prefers-reduced-motion: reduce)").matches; }catch(_){}
+    if(reduce){ track.classList.add("static"); txt.classList.add("static"); return; }
+    let x=null, last=null, paused=false;
+    $("#breaking").addEventListener("pointerdown",()=>{paused=true;});
+    $("#breaking").addEventListener("pointerup",()=>{paused=false;});
+    function step(ts){
+      const W=track.clientWidth, T=txt.offsetWidth;
+      if(W>0&&T>0){
+        if(x===null){ x=W; last=ts; }
+        if(!paused){ const dt=Math.min(50,ts-last); x-=dt*0.06; }
+        last=ts;
+        if(x<-T) x=W;
+        txt.style.transform="translateX("+x+"px)";
+      }
+      requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  })();
   $("#verline").textContent="פתק בקלפי · גרסה "+APP_VERSION+" · עודכן לאחרונה: "+APP_UPDATED;
 })();
 
