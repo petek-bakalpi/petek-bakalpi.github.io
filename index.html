@@ -593,7 +593,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="2.2";
+const APP_VERSION="2.2.1";
 const APP_UPDATED="8.9.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
@@ -1845,7 +1845,7 @@ function openDisclaimer(){
     <div class="xsec xbg"><b>📚 עובדות, דעות — וטעויות</b>הכלי משלב עובדות (בהתבסס על תחקירים ופרסומים עיתונאיים גלויים, עם כפתורי 🔎 לבדיקה עצמית בכל כרטיס) לצד פרשנות ודעה — והוא לא מתיימר להיות אמת חד־משמעית. למרות מאמצי הדיוק, ייתכנו טעויות, אי־דיוקים או מידע שהתיישן. מצאתם טעות? ספרו ליוצר — היא תתוקן במהירות ובשמחה. ההצבעה היא החלטתכם בלבד: קראו, הצליבו, והחליטו בעצמכם.</div>
     <div class="xsec xbg"><b>⚖️ חזקת החפות</b>כל אזכור של חקירה, חשד או הליך משפטי מתייחס לפרסומים בלבד; חזקת החפות שמורה לכל המוזכרים, וכל הליך יוכרע רק בערכאות המוסמכות. הציטוטים מובאים כלשונם מתוך פרסומים גלויים ולצורכי דיווח וביקורת.</div>
     <div class="xsec xbg"><b>🤖 שקיפות מלאה: נבנה בעזרת AI</b>חלק ניכר מהכלי — הקוד, הניסוחים וריכוז המידע — נוצר בסיוע בינה מלאכותית (Claude של Anthropic), בהנחיית היוצר ובבקרתו. AI עלול לטעות; זו עוד סיבה טובה ללחוץ על כפתורי הבדיקה ולקרוא מקורות ראשוניים. אגב, מיולי 2026 חלה בישראל חובת סימון על תעמולת בחירות שנוצרת ב־AI — אנחנו לא תעמולה מטעם אף גורם, אבל מסמנים בשמחה גם בלי החובה. שקיפות היא לא איום.</div>
-    <div class="xsec xbg"><b>🔒 פרטיות</b>הכלי רץ כולו אצלכם במכשיר: אין לנו שרת שאוסף נתונים, אין עוגיות, ושום תשובה או תוצאה לא נשמרת ולא נשלחת לאף אחד. (האתר מתארח כקובץ סטטי ב־GitHub Pages, שכמו כל ספק אחסון מנהל לוגים טכניים בסיסיים — אך אנחנו לא רואים אותם ולא אוספים דבר.) גילוי אחד נוסף: הפונטים נטענים משרתי Google Fonts — בקשה שחושפת לגוגל את כתובת ה־IP שלכם ותו לא, כמו כמעט בכל אתר; בעתיד נטמיע את הפונטים בקובץ עצמו ונסגור גם את זה. קישורי החיפוש מובילים לאתרים חיצוניים שבאחריות מפעיליהם.</div>
+    <div class="xsec xbg"><b>🔒 פרטיות</b>הכלי רץ כולו אצלכם במכשיר: אין לנו שרת שאוסף נתונים, אין עוגיות, ושום תשובה או תוצאה לא נשמרת ולא נשלחת לאף אחד. (האתר מתארח כקובץ סטטי ב־GitHub Pages, שכמו כל ספק אחסון מנהל לוגים טכניים בסיסיים — אך אנחנו לא רואים אותם ולא אוספים דבר.) גילוי אחד נוסף: הפונטים נטענים משרתי Google Fonts — בקשה שחושפת לגוגל את כתובת ה־IP שלכם ותו לא, כמו כמעט בכל אתר; בעתיד נטמיע את הפונטים בקובץ עצמו ונסגור גם את זה. ובמסך ״ציוצים ותגובות חמות״ בלבד נטען סקריפט ההטמעה הרשמי של X (עם דגל ״אל תעקוב״) כדי להציג ציוצים במקור — מי שלא רוצה, פשוט לא נכנס למסך הזה. קישורי החיפוש מובילים לאתרים חיצוניים שבאחריות מפעיליהם.</div>
     <div class="xsec xbg"><b>🧪 ולא, זה לא מדע</b>השאלון, המצפן והמשחקים הם כלי המחשה חינוכיים — לא סקר, לא מחקר ולא ייעוץ מכל סוג. המשקלות והמיקומים הם הערכות של היוצר, ומוזמנים לחלוק עליהן.</div>
     <p style="text-align:center;color:var(--muted);font-size:11px">גרסה ${APP_VERSION} · עודכן: ${APP_UPDATED}</p>
     <button class="closebtn">סבבה, הבנתי 👍</button>
@@ -2991,6 +2991,11 @@ function wvSettle(choice,r){
 /* ================= HOT TAKES ================= */
 /* {who,handle,dt,text,note,url?,srch,kind:"ציוץ"|"תגובה"|"הצהרה"} — note = ההערה שלנו (מסומנת כדעה) */
 const HOT=[
+ {who:"הסולידית", handle:"@hasolidit", dt:"8.9.2026", kind:"ציוץ",
+  tweet:"https://twitter.com/hasolidit/status/2097261661526605840",
+  text:"פוסט על חשיפת ההתרעה מאיחוד האמירויות — הציוץ המקורי מוצג כאן במלואו.",
+  note:"",
+  srch:"הסולידית hasolidit נתניהו התרעה איחוד האמירויות"},
  {who:"נפתלי בנט", handle:"@naftalibennett", dt:"8.9.2026", kind:"תגובה",
   text:"הפרסום הבוקר לפיו נתניהו הוזהר עשרה ימים לפני טבח השבעה באוקטובר על כוונותיו של סינוואר — אמת. נתניהו נושא באחריות אישית וישירה למחדל שהביא למותם של אלפי ישראלים במשמרת שלו. ההתעלמות שלו מהאזהרות היא רשלנות פושעת ולכן הוא עושה הכול כדי למנוע הקמת ועדת חקירה ממלכתית שתחשוף את האמת.",
   note:"ראש ממשלה לשעבר, עם גישה למידע, אומר ״אמת״ על תחקיר שלשכת רה״מ מכנה ״שקר מוחלט״. אחד מהשניים משקר — ורק ועדת חקירה ממלכתית יכולה לקבוע מי.",
@@ -3011,19 +3016,29 @@ const HOT=[
 function renderHot(){
   hot.innerHTML=`
     <h2>ציוצים ותגובות חמות<br><span class="hl">מה אומרים — ומה אנחנו חושבים על זה 🔥</span></h2>
-    <p style="text-align:center;color:var(--muted);font-size:12px">ציטוטים מדויקים עם קרדיט וקישור לאימות. ״ההערה שלנו״ — דעה, ומסומנת ככזו.</p>
+    <p style="text-align:center;color:var(--muted);font-size:12px">ציטוטים מדויקים עם קרדיט וקישור לאימות. ״ההערה שלנו״ — דעה, ומסומנת ככזו.<br><span style="font-size:10.5px">🔒 ציוצים מוטמעים נטענים דרך הסקריפט הרשמי של X, רק במסך הזה ועם דגל ״אל תעקוב״. בלי רשת/עם חוסם — יוצג הטקסט והקישור.</span></p>
     ${HOT.map(h=>`
       <div class="rescard" style="margin-bottom:10px;text-align:right">
         <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
           <b style="font-size:14px">${h.who}${h.handle?` <span style="color:var(--muted);font-weight:500;font-size:12px">${h.handle}</span>`:""}</b>
           <span style="font-size:10.5px;color:var(--muted)">${h.kind} · 🗓️ ${h.dt}</span>
         </div>
-        <p style="font-size:14px;line-height:1.55;margin:8px 0;border-right:3px solid var(--coral);padding-right:10px">״${h.text}״</p>
-        <div class="xsec xbg" style="margin:6px 0 8px;font-size:12.5px"><b>💬 ההערה שלנו (דעה)</b>${h.note}</div>
+        ${h.tweet
+          ? `<blockquote class="twitter-tweet" data-theme="dark" data-lang="he" data-dnt="true" data-align="center"><p dir="rtl">${h.text}</p><a href="${h.tweet}" target="_blank" rel="noopener">הציוץ המקורי ב-X ↗</a></blockquote>`
+          : `<p style="font-size:14px;line-height:1.55;margin:8px 0;border-right:3px solid var(--coral);padding-right:10px">״${h.text}״</p>`}
+        ${h.note?`<div class="xsec xbg" style="margin:6px 0 8px;font-size:12.5px"><b>💬 ההערה שלנו (דעה)</b>${h.note}</div>`:""}
         ${h.url?`<a class="srch" target="_blank" rel="noopener" href="${h.url}" style="background:rgba(61,123,255,.12);border-color:rgba(61,123,255,.5);color:#7FA8FF">🔗 למקור</a> `:""}<a class="srch" target="_blank" rel="noopener" href="https://www.google.com/search?q=${encodeURIComponent(h.srch)}">🔎 אמתו בעצמכם</a>
       </div>`).join("")}
     <button class="btn backbtn" data-back>⬅ חזרה</button>`;
   hot.querySelector("[data-back]").onclick=()=>goBack();
+  /* טעינה עצלה של סקריפט ההטמעה הרשמי — רק אם יש ציוץ מוטמע */
+  if(HOT.some(h=>h.tweet)){
+    if(window.twttr && window.twttr.widgets){ try{ window.twttr.widgets.load(hot); }catch(_){ } }
+    else if(!document.getElementById("twwidgets")){
+      const sc=document.createElement("script"); sc.id="twwidgets"; sc.async=true; sc.charset="utf-8";
+      sc.src="https://platform.twitter.com/widgets.js"; document.body.appendChild(sc);
+    }
+  }
 }
 </script>
 </body>
