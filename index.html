@@ -518,6 +518,9 @@
   <!-- PARTY DICTIONARY -->
   <section class="screen infopage" id="dict"></section>
 
+  <!-- HOT TAKES / TWEETS -->
+  <section class="screen infopage" id="hot"></section>
+
   <!-- WASTED VOTE LAB -->
   <section class="screen infopage" id="wv"></section>
 
@@ -562,6 +565,7 @@
     <p style="text-align:center;color:var(--muted);font-size:12.5px" id="lCount">אקטואליה, מפלגות, פנקס ושיטה — כל טענה עם כפתור 🔎 לבדיקה עצמית</p>
     <div class="ledsec">🚨 חם עכשיו</div>
     <button class="menucard" id="lFacts"><span class="me">🔍</span><span><div class="mt">מחלקת אקטואליה — בדיקת מציאות</div><div class="md">האשמות, ספינים וציטוטים מסולפים — מול מה שנאמר באמת</div></span></button>
+    <button class="menucard" id="lHot"><span class="me">🔥</span><span><div class="mt">ציוצים ותגובות חמות</div><div class="md">מה אומרים על הידיעה החמה — עם קרדיט, קישור, וההערה שלנו</div></span><span class="mtime">2 דק'</span></button>
     <button class="menucard" id="lPoison"><span class="me">🤖</span><span><div class="mt">מה זו ״מכונת הרעל״?</div><div class="md">איך עובדת תעשיית ההסתה המתואמת — ואיך מזהים אותה בשנייה</div></span></button>
     <button class="menucard" id="lBudget"><span class="me">💸</span><span><div class="mt">המספרים של התקציב</div><div class="md">כל הסכומים מהמשחק ״יותר או פחות״ — סטטי, ממוין, עם מקורות</div></span></button>
     <div class="ledsec">🗳️ מי נגד מי</div>
@@ -589,7 +593,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="2.1.6";
+const APP_VERSION="2.2";
 const APP_UPDATED="8.9.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
@@ -765,7 +769,7 @@ function calcMax(){ MAX={}; for(const k in PARTIES){ MAX[k]=0; }
 /* ---------------- state ---------------- */
 let idx=0, scores={lib:0,yachad:0,yashar:0,dem:0}, busy=false, mode="quick", hist=[];
 const $=s=>document.querySelector(s);
-const intro=$("#intro"), quiz=$("#quiz"), result=$("#result"), bibi=$("#bibi"), arab=$("#arab"), who=$("#who"), coal=$("#coal"), core=$("#core"), cmp=$("#cmp"), led=$("#led"), votes=$("#votes"), gmenu=$("#gmenu"), lmenu=$("#lmenu"), quote=$("#quote"), dict=$("#dict"), facts=$("#facts"), poison=$("#poison"), budget=$("#budget"), gov=$("#gov"), hl=$("#hl"), mdl=$("#mdl"), race=$("#race"), idle=$("#idle"), wv=$("#wv");
+const intro=$("#intro"), quiz=$("#quiz"), result=$("#result"), bibi=$("#bibi"), arab=$("#arab"), who=$("#who"), coal=$("#coal"), core=$("#core"), cmp=$("#cmp"), led=$("#led"), votes=$("#votes"), gmenu=$("#gmenu"), lmenu=$("#lmenu"), quote=$("#quote"), dict=$("#dict"), facts=$("#facts"), poison=$("#poison"), budget=$("#budget"), gov=$("#gov"), hl=$("#hl"), mdl=$("#mdl"), race=$("#race"), idle=$("#idle"), wv=$("#wv"), hot=$("#hot");
 const zone=$("#cardzone"), slips=$("#slips"), count=$("#count"), box=$("#box");
 
 function startGame(m){
@@ -779,7 +783,7 @@ function startGame(m){
 $("#startQuick").onclick=()=>startGame("quick");
 $("#startDeep").onclick=()=>startGame("deep");
 
-function show(sc){[intro,quiz,result,bibi,arab,who,coal,core,cmp,led,votes,gmenu,lmenu,quote,dict,facts,poison,budget,gov,hl,mdl,race,idle,wv].forEach(x=>x.classList.remove("on"));sc.classList.add("on");sc.scrollTop=0;
+function show(sc){[intro,quiz,result,bibi,arab,who,coal,core,cmp,led,votes,gmenu,lmenu,quote,dict,facts,poison,budget,gov,hl,mdl,race,idle,wv,hot].forEach(x=>x.classList.remove("on"));sc.classList.add("on");sc.scrollTop=0;
   if(sc!==arab){const m=$("#arabMore"),b=$("#proArab");if(m){m.classList.remove("on");}if(b){b.style.display="";}}}
 $("#toCore").onclick=()=>{renderCore();show(core);};
 $("#toCmp").onclick=()=>{renderCompass();show(cmp);};
@@ -1638,6 +1642,7 @@ $("#gRace").onclick=()=>{lastTab="games";startRace();};
 $("#gIdle").onclick=()=>{lastTab="games";startIdle();};
 $("#gWv").onclick=()=>{lastTab="games";startWv();};
 /* learn menu */
+$("#lHot").onclick=()=>{lastTab="learn";renderHot();show(hot);};
 $("#lFacts").onclick=()=>{lastTab="learn";renderFacts();show(facts);};
 $("#lBudget").onclick=()=>{lastTab="learn";renderBudget();show(budget);};
 $("#lPoison").onclick=()=>{lastTab="learn";renderPoison();show(poison);};
@@ -1857,7 +1862,7 @@ const FACTS=[
   url:"https://www.haaretz.co.il/magazine/2026-09-08/ty-article-magazine/.highlight/000001a0-7a8a-d825-afb5-fefe2a9d0000",
   claim:"תגובת לשכת ראש הממשלה הבוקר: ״שקר מוחלט! ראש הממשלה נתניהו לא שוחח עם נשיא איחוד האמירויות בתקופה המדוברת ולא קיבל ממנו כל אזהרה.״",
   said:"ומה חשף תחקיר ״הארץ״ (מתוך הספר ״חטופים: 843 ימים של הפקרה״ מאת שלומי אלדר ורות יובל): בסוף ספטמבר 2023, שבוע וחצי לפני הטבח, קיים נשיא איחוד האמירויות מוחמד בן זאיד שיחת טלפון חריגה בת 45 דקות עם נתניהו. הוא התריע במפורש: יחיא סינוואר מתכנן מבצע חריג. הוא הזהיר משפיכות דמים כבדה, מזעזוע אזורי ומפגיעה בהסכמי אברהם — והמליץ לישראל להיערך. נתניהו הרגיע אותו: המיקוד של חמאס בכלל ביהודה ושומרון, ישראל ערוכה לכל תרחיש. ומה עשה עם ההתרעה? <b>לא העביר אותה לצה״ל ולא לשב״כ.</b> הרמטכ״ל דאז הרצי הלוי וראש השב״כ דאז רונן בר אישרו: מעולם לא עודכנו.",
-  twist:"וזו לא ההתרעה הראשונה שנחשפת: כבר פורסם בעבר על אזהרות שהגיעו מהמודיעין המצרי ערב הטבח — וגם אותן נתניהו הכחיש, באותה נוסחה בדיוק. שימו לב מה חסר בתגובה ״שקר מוחלט״: תביעת דיבה — אין. דרישה לחקירה שתנקה אותו — אין. להפך: את המנגנון היחיד שיכול לזמן עדים, לשלוף יומני שיחות ולקבוע אמת — ועדת חקירה ממלכתית — הוא חוסם בציפורניים כבר שלוש שנים. עכשיו אתם יודעים למה. בנט, אגב, הגיב במילים: ״הפרסום אמת״. וכמו שנכתב ב-N12: ״הגיע הזמן להפסיק להתווכח מי העיר את נתניהו בבוקר הטבח — ולהתחיל לחקור מי ניסה להעיר אותו לפניו.״",
+  twist:"וזו לא ההתרעה הראשונה שנחשפת: כבר פורסם בעבר על אזהרות שהגיעו מהמודיעין המצרי ערב הטבח — וגם אותן נתניהו הכחיש, באותה נוסחה בדיוק. שימו לב מה חסר בתגובה ״שקר מוחלט״: תביעת דיבה — אין. דרישה לחקירה שתנקה אותו — אין. להפך: את המנגנון היחיד שיכול לזמן עדים, לשלוף יומני שיחות ולקבוע אמת — ועדת חקירה ממלכתית — הוא חוסם בציפורניים כבר שלוש שנים. עכשיו אתם יודעים למה. בנט הגיב: ״הפרסום אמת... רשלנות פושעת״. ואיחוד האמירויות? נמנעה מלהכחיש — ״אינה מגיבה לדיווחים על שיחות בין מנהיגים״ — מהמדינה שידעה להכחיש בגורף ביקור שלם של נתניהו בשטחה. וכמו שנכתב ב-N12: ״הגיע הזמן להפסיק להתווכח מי העיר את נתניהו בבוקר הטבח — ולהתחיל לחקור מי ניסה להעיר אותו לפניו.״",
   bottom:"מי שבטוח שהכול שקר היה רץ בעצמו לוועדת חקירה ממלכתית שתטהר את שמו. מי שחוסם אותה בכל מחיר — עונה לכם על השאלה בלי מילים. זו המשמעות של הפתק ב־27.10: מדינה שחוקרת את 7.10, או מדינה שקוברת אותו. <button class='dlchip gold' data-pg='core' data-k='ועדת חקירה'>🧠 ההעמקה: ממלכתית מול ״ממשלתית״</button>",
   srch:"הארץ בן זאיד אזהרה נתניהו 45 דקות סינוואר הלוי רונן בר לא עודכנו",
   race:{h:"🚨 ההתרעה שנקברה", parts:[
@@ -2981,6 +2986,44 @@ function wvSettle(choice,r){
     </div>`;
   const vp=$("#wvVotes"); if(vp) vp.onclick=(e)=>{e.preventDefault();lastTab="learn";renderVotes();show(votes);};
   wvBusy=false;
+}
+
+/* ================= HOT TAKES ================= */
+/* {who,handle,dt,text,note,url?,srch,kind:"ציוץ"|"תגובה"|"הצהרה"} — note = ההערה שלנו (מסומנת כדעה) */
+const HOT=[
+ {who:"נפתלי בנט", handle:"@naftalibennett", dt:"8.9.2026", kind:"תגובה",
+  text:"הפרסום הבוקר לפיו נתניהו הוזהר עשרה ימים לפני טבח השבעה באוקטובר על כוונותיו של סינוואר — אמת. נתניהו נושא באחריות אישית וישירה למחדל שהביא למותם של אלפי ישראלים במשמרת שלו. ההתעלמות שלו מהאזהרות היא רשלנות פושעת ולכן הוא עושה הכול כדי למנוע הקמת ועדת חקירה ממלכתית שתחשוף את האמת.",
+  note:"ראש ממשלה לשעבר, עם גישה למידע, אומר ״אמת״ על תחקיר שלשכת רה״מ מכנה ״שקר מוחלט״. אחד מהשניים משקר — ורק ועדת חקירה ממלכתית יכולה לקבוע מי.",
+  srch:"בנט הפרסום אמת נתניהו הוזהר עשרה ימים סינוואר רשלנות פושעת"},
+ {who:"איחוד האמירויות (הודעה רשמית)", handle:"", dt:"8.9.2026", kind:"הצהרה",
+  text:"איחוד האמירויות הערביות אינה מגיבה לדיווחים בתקשורת או לספקולציות בנוגע לשיחות בין מנהיגי ממשלה.",
+  note:"שימו לב מה לא נאמר כאן: ״לא הייתה שיחה״. מדינה שמסוגלת להכחיש ביקור שלם של נתניהו בשטחה (כפי שעשתה השנה) בחרה הפעם ב״לא מגיבים״. בדיפלומטיה, זו לא הכחשה — זו רמיזה.",
+  srch:"איחוד האמירויות אינה מגיבה לדיווחים שיחות מנהיגים נתניהו בן זאיד"},
+ {who:"מועצת אוקטובר", handle:"", dt:"8.9.2026", kind:"תגובה",
+  text:"מי שמתווכח אם העירו את נתניהו בליל 7 באוקטובר מתעלם מהשאלה הגדולה באמת — כמה פעמים ניסו להעיר את ישראל לפני הטבח?",
+  note:"המשפחות השכולות ניסחו במשפט אחד את כל הוויכוח: הספין עוסק בשעת ההשכמה, האמת עוסקת בחודש שלפני.",
+  srch:"מועצת אוקטובר כמה פעמים ניסו להעיר את ישראל לפני הטבח"},
+ {who:"גדי איזנקוט", handle:"@GadiEisenkot", dt:"8.9.2026", kind:"ציוץ",
+  text:"עוד ועוד סימנים מעידים: נתניהו הוביל את ישראל בעיוורון למחדל 7 באוקטובר.",
+  note:"רמטכ״ל לשעבר וחבר קבינט המלחמה. כשהוא כותב ״סימנים מעידים״ — הוא יודע בדיוק אילו סימנים.",
+  srch:"איזנקוט נתניהו הוביל את ישראל בעיוורון למחדל 7 באוקטובר"}
+];
+function renderHot(){
+  hot.innerHTML=`
+    <h2>ציוצים ותגובות חמות<br><span class="hl">מה אומרים — ומה אנחנו חושבים על זה 🔥</span></h2>
+    <p style="text-align:center;color:var(--muted);font-size:12px">ציטוטים מדויקים עם קרדיט וקישור לאימות. ״ההערה שלנו״ — דעה, ומסומנת ככזו.</p>
+    ${HOT.map(h=>`
+      <div class="rescard" style="margin-bottom:10px;text-align:right">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
+          <b style="font-size:14px">${h.who}${h.handle?` <span style="color:var(--muted);font-weight:500;font-size:12px">${h.handle}</span>`:""}</b>
+          <span style="font-size:10.5px;color:var(--muted)">${h.kind} · 🗓️ ${h.dt}</span>
+        </div>
+        <p style="font-size:14px;line-height:1.55;margin:8px 0;border-right:3px solid var(--coral);padding-right:10px">״${h.text}״</p>
+        <div class="xsec xbg" style="margin:6px 0 8px;font-size:12.5px"><b>💬 ההערה שלנו (דעה)</b>${h.note}</div>
+        ${h.url?`<a class="srch" target="_blank" rel="noopener" href="${h.url}" style="background:rgba(61,123,255,.12);border-color:rgba(61,123,255,.5);color:#7FA8FF">🔗 למקור</a> `:""}<a class="srch" target="_blank" rel="noopener" href="https://www.google.com/search?q=${encodeURIComponent(h.srch)}">🔎 אמתו בעצמכם</a>
+      </div>`).join("")}
+    <button class="btn backbtn" data-back>⬅ חזרה</button>`;
+  hot.querySelector("[data-back]").onclick=()=>goBack();
 }
 </script>
 </body>
