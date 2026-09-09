@@ -277,6 +277,14 @@
   .wvseats{text-align:center;font-family:'Secular One';font-size:15px;min-height:20px}
   .wvdot{position:fixed;width:11px;height:11px;border-radius:50%;z-index:60;pointer-events:none;transition:transform .85s cubic-bezier(.4,.1,.4,1),opacity .2s}
   .wvcup.burnt{opacity:.25;filter:grayscale(1)}
+  /* X hot-takes fab on the countdown row */
+  .countrow{position:relative;width:100%;flex:0 0 auto;min-height:38px;display:flex;align-items:center;justify-content:center}
+  .countrow .countpill{margin:0}
+  .xfab{position:absolute;right:2px;top:50%;transform:translateY(-50%) rotate(8deg);width:38px;height:38px;border-radius:11px;border:1.5px solid rgba(139,147,184,.45);background:rgba(255,255,255,.06);color:var(--paper);font-family:'Secular One';font-size:19px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(0,0,0,.35);transition:transform .15s}
+  .xfab:active{transform:translateY(-50%) rotate(8deg) scale(.92)}
+  .xbadge{position:absolute;top:-7px;left:-7px;width:18px;height:18px;border-radius:50%;background:var(--coral);color:#fff;font-size:12px;font-weight:900;display:none;align-items:center;justify-content:center;border:2px solid var(--ink);animation:xpulse 1.6s ease-in-out infinite}
+  .xbadge.on{display:flex}
+  @keyframes xpulse{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
   /* breaking news strip */
   .breaking{display:flex;align-items:center;flex:0 0 auto;min-height:35px;width:100%;box-sizing:border-box;align-self:stretch;margin:0 auto 12px;max-width:520px;border-radius:10px;overflow:hidden;cursor:pointer;border:1.5px solid rgba(255,89,100,.65);background:rgba(255,89,100,.12)}
   .breaking .blabel{flex:0 0 auto;background:var(--coral);color:#fff;font-family:'Secular One';font-size:12.5px;padding:0 10px;line-height:32px}
@@ -393,7 +401,7 @@
 
   <!-- INTRO -->
   <section class="screen on" id="intro">
-    <div class="countpill" id="countdown"></div>
+    <div class="countrow"><div class="countpill" id="countdown"></div><button class="xfab" id="xfab" title="ציוצים חמים — בחירת העורך">𝕏<span class="xbadge" id="xbadge">!</span></button></div>
     <div class="breaking" id="breaking"><span class="blabel">⚡ מבזק</span><span class="btrack"><span class="btext" id="btext"></span></span></div>
     <div class="kicker">בחירות 2026 · הכנסת ה־26</div>
     <h1>פתק<br><span class="hl">בקלפי</span></h1>
@@ -593,7 +601,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="2.4.1";
+const APP_VERSION="2.5";
 const APP_UPDATED="9.9.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
@@ -2807,6 +2815,15 @@ $("#coreCount").textContent = CORE_ISSUES.length+" נושאים · לכל אחד
   else if(days===1) el.textContent="🗳️ מחר יום הבחירות! לכו לישון מוקדם";
   else if(days===0) el.textContent="🗳️ היום! לכו להצביע — עכשיו!";
   else el.textContent="🗳️ הבחירות מאחורינו — תודה שהצבעתם";
+  /* X fab: badge if the newest hot take is from the last 3 days; click → newest tweet */
+  (function(){
+    const parse=d=>{ const m=/(\d{1,2})\.(\d{1,2})\.(\d{4})/.exec(d||""); return m?new Date(+m[3],+m[2]-1,+m[1]):null; };
+    const dates=HOT.map(h=>parse(h.dt)).filter(Boolean).sort((a,b)=>b-a);
+    const fresh=dates.length && (Date.now()-dates[0].getTime())<=3*864e5;
+    if(fresh) $("#xbadge").classList.add("on");
+    $("#xfab").onclick=()=>{ lastTab="main"; renderHot(); show(hot);
+      setTimeout(()=>{ const c=hot.querySelector(".rescard"); if(c){ try{ c.scrollIntoView({behavior:"smooth",block:"start"}); }catch(_){ } } },80); };
+  })();
   $("#btext").textContent=BREAKING.txt;
   $("#breaking").onclick=()=>deepOpen("facts",BREAKING.key);
   /* גלילה ב-JS עם מדידה אמיתית — חסין לכל מוזרות CSS/RTL */
@@ -2997,7 +3014,7 @@ function renderHot(){
   hot.innerHTML=`
     <h2>ציוצים חמים<br><span class="hl">בחירת העורך 🔥</span></h2>
     <p style="text-align:center;color:var(--muted);font-size:12px">הנקודות החכמות, השנונות והחשובות שעלו ברשת — ציוצים במקור, עם קרדיט מלא.<br><span style="font-size:10.5px">🔒 ציוצים מוטמעים נטענים דרך הסקריפט הרשמי של X, רק במסך הזה ועם דגל ״אל תעקוב״. בלי רשת/עם חוסם — יוצג הטקסט והקישור.</span></p>
-    ${HOT.map(h=>`
+    ${HOT.slice().sort((a,b)=>{const p=d=>{const m=/(\d{1,2})\.(\d{1,2})\.(\d{4})/.exec(d||"");return m?new Date(+m[3],+m[2]-1,+m[1]).getTime():0;};return p(b.dt)-p(a.dt);}).map(h=>`
       <div class="rescard" style="margin-bottom:10px;text-align:right">
         <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
           <b style="font-size:14px">${h.who}${h.handle?` <span style="color:var(--muted);font-weight:500;font-size:12px">${h.handle}</span>`:""}</b>
