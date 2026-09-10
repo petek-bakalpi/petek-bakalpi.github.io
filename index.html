@@ -622,7 +622,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="2.7";
+const APP_VERSION="2.7.1";
 const APP_UPDATED="10.9.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
@@ -2998,14 +2998,14 @@ function wvSettle(choice,r){
 /* ================= HOT TAKES ================= */
 /* {who,handle,dt,text,note,url?,srch,kind:"ציוץ"|"תגובה"|"הצהרה"} — note = ההערה שלנו (מסומנת כדעה) */
 const HOT=[
- {who:"amsterdamski2", handle:"@amsterdamski2", dt:"8.9.2026", kind:"ציוץ",
+ {who:"שאול אמסטרדמסקי", handle:"@amsterdamski2", dt:"8.9.2026", kind:"ציוץ",
   tweet:"https://twitter.com/amsterdamski2/status/2097234629002494396",
-  text:"פוסט על חשיפת ההתרעה מאיחוד האמירויות — הציוץ המקורי מוצג כאן במלואו.",
+  text:"",
   note:"",
   srch:"amsterdamski2 נתניהו התרעה איחוד האמירויות"},
  {who:"הסולידית", handle:"@hasolidit", dt:"8.9.2026", kind:"ציוץ",
   tweet:"https://twitter.com/hasolidit/status/2097261661526605840",
-  text:"פוסט על חשיפת ההתרעה מאיחוד האמירויות — הציוץ המקורי מוצג כאן במלואו.",
+  text:"",
   note:"",
   srch:"הסולידית hasolidit נתניהו התרעה איחוד האמירויות"}
 ];
@@ -3020,13 +3020,14 @@ function renderHot(){
           <span style="font-size:10.5px;color:var(--muted)">${h.kind} · 🗓️ ${h.dt}</span>
         </div>
         ${h.tweet
-          ? `<blockquote class="twitter-tweet" data-theme="dark" data-lang="he" data-dnt="true" data-align="center"><p dir="rtl">${h.text}</p><a href="${h.tweet}" target="_blank" rel="noopener">הציוץ המקורי ב-X ↗</a></blockquote>`
+          ? `<blockquote class="twitter-tweet twload" data-theme="dark" data-lang="he" data-dnt="true" data-align="center"><p dir="rtl" style="color:var(--muted);font-size:12px">⏳ טוען את הציוץ מ-X…</p><a href="${h.tweet}" target="_blank" rel="noopener" style="color:#7FA8FF;font-size:12px">${h.who} ${h.handle} ↗</a></blockquote>`
           : `<p style="font-size:14px;line-height:1.55;margin:8px 0;border-right:3px solid var(--coral);padding-right:10px">״${h.text}״</p>`}
         ${h.note?`<div class="xsec xbg" style="margin:6px 0 8px;font-size:12.5px"><b>💬 ההערה שלנו (דעה)</b>${h.note}</div>`:""}
         ${h.url?`<a class="srch" target="_blank" rel="noopener" href="${h.url}" style="background:rgba(61,123,255,.12);border-color:rgba(61,123,255,.5);color:#7FA8FF">🔗 למקור</a> `:""}<a class="srch" target="_blank" rel="noopener" href="https://www.google.com/search?q=${encodeURIComponent(h.srch)}">🔎 אמתו בעצמכם</a>
       </div>`).join("")}
     <button class="btn backbtn" data-back>⬅ חזרה</button>`;
   hot.querySelector("[data-back]").onclick=()=>goBack();
+  setTimeout(()=>{ hot.querySelectorAll("blockquote.twload p").forEach(pp=>{ pp.textContent="לא הצלחנו לטעון את ההטמעה — פתחו את הציוץ ב-X:"; }); },6000);
   /* טעינה עצלה של סקריפט ההטמעה הרשמי — רק אם יש ציוץ מוטמע */
   if(HOT.some(h=>h.tweet)){
     if(window.twttr && window.twttr.widgets){ try{ window.twttr.widgets.load(hot); }catch(_){ } }
