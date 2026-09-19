@@ -277,6 +277,22 @@
   .wvseats{text-align:center;font-family:'Secular One';font-size:15px;min-height:20px}
   .wvdot{position:fixed;width:11px;height:11px;border-radius:50%;z-index:60;pointer-events:none;transition:transform .85s cubic-bezier(.4,.1,.4,1),opacity .2s}
   .wvcup.burnt{opacity:.25;filter:grayscale(1)}
+  /* search engine (tachles) */
+  .srchbox{position:relative;margin:6px 0 12px}
+  .srchbox input{width:100%;box-sizing:border-box;padding:12px 40px 12px 14px;border-radius:14px;border:1.5px solid rgba(139,147,184,.4);background:rgba(255,255,255,.06);color:var(--paper);font-size:15px;font-family:inherit;outline:none}
+  .srchbox input:focus{border-color:var(--blue)}
+  .srchbox .sico{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:17px;pointer-events:none;opacity:.7}
+  .srchres{position:absolute;left:0;right:0;top:calc(100% + 4px);background:#161C3A;border:1.5px solid rgba(139,147,184,.4);border-radius:14px;overflow:hidden;z-index:40;box-shadow:0 10px 30px rgba(0,0,0,.5);display:none;max-height:60vh;overflow-y:auto}
+  .srchres.on{display:block}
+  .srchres .sr{display:flex;gap:10px;align-items:center;padding:10px 12px;border-bottom:1px solid rgba(139,147,184,.15);cursor:pointer;text-align:right}
+  .srchres .sr:last-child{border-bottom:none}
+  .srchres .sr:hover,.srchres .sr.sel{background:rgba(61,123,255,.14)}
+  .srchres .sre{font-size:20px;flex:0 0 28px;text-align:center}
+  .srchres .srt{font-weight:800;font-size:13.5px;line-height:1.25}
+  .srchres .srs{font-size:11px;color:var(--muted);margin-top:2px}
+  .srchres .srn{padding:12px;color:var(--muted);font-size:12.5px;text-align:center}
+  @keyframes hlflash{0%{box-shadow:0 0 0 0 rgba(245,184,65,.9)}70%{box-shadow:0 0 0 10px rgba(245,184,65,0)}100%{box-shadow:none}}
+  .hl-target{animation:hlflash 1.6s ease 2;border-radius:10px}
   /* X hot-takes fab on the countdown row */
   .countrow{position:relative;width:100%;flex:0 0 auto;min-height:38px;display:flex;align-items:center;justify-content:center}
   .countrow .countpill{margin:0}
@@ -592,6 +608,7 @@
   <section class="screen infopage" id="lmenu">
     <h2>תכל'ס<br><span class="hl">מהשורה התחתונה ועד העומק 🧠</span></h2>
     <p style="text-align:center;color:var(--muted);font-size:12.5px" id="lCount">אקטואליה, מפלגות, פנקס ושיטה — כל טענה עם כפתור 🔎 לבדיקה עצמית</p>
+    <div class="srchbox"><input id="tsq" type="search" placeholder="חפשו כל דבר: שם, נושא, מספר…" autocomplete="off" inputmode="search"><span class="sico">🔎</span><div class="srchres" id="tsr"></div></div>
     <div class="ledsec">🚨 חם עכשיו</div>
     <button class="menucard" id="lFacts"><span class="me">🔍</span><span><div class="mt">מחלקת אקטואליה — בדיקת מציאות</div><div class="md">האשמות, ספינים וציטוטים מסולפים — מול מה שנאמר באמת</div></span></button>
     <button class="menucard" id="lHot"><span class="me">🔥</span><span><div class="mt">ציוצים ותגובות חמות</div><div class="md">בחירת העורך: הנקודות החכמות, השנונות והחשובות מהרשת</div></span><span class="mtime">2 דק'</span></button>
@@ -622,7 +639,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="2.13.2";
+const APP_VERSION="3.0";
 const APP_UPDATED="19.9.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
@@ -2919,10 +2936,26 @@ $("#coreCount").textContent = CORE_ISSUES.length+" נושאים · לכל אחד
 /* ================= DEEP LINKS: jump into a specific card ================= */
 function deepOpen(pg,key){
   lastTab="learn";
+  const flash=el=>{ if(!el) return; el.classList.remove("hl-target"); void el.offsetWidth; el.classList.add("hl-target"); setTimeout(()=>{ try{ el.scrollIntoView({behavior:"smooth",block:"center"}); }catch(_){ } },120); };
   if(pg==="led"){ renderLedger(); show(led); }
   else if(pg==="facts"){ renderFacts(); show(facts); }
   else if(pg==="core"){ renderCore(); show(core); }
-  else if(pg==="hot"){ renderHot(); show(hot); return; }
+  else if(pg==="hot"){ renderHot(); show(hot); if(key){ const c=[...hot.querySelectorAll(".rescard")].find(x=>x.textContent.includes(key)); flash(c); } return; }
+  else if(pg==="budget"){ renderBudget(); show(budget); if(key){ const c=[...budget.querySelectorAll(".hlcard")].find(x=>x.textContent.includes(key)); flash(c); } return; }
+  else if(pg==="poison"){ renderPoison(); show(poison); return; }
+  else if(pg==="votes"){ renderVotes(); show(votes); return; }
+  else if(pg==="cmp"){ renderCompass(); show(cmp); return; }
+  else if(pg==="dict"||pg==="bibi"){
+    const host= pg==="dict"?dict:bibi;
+    if(pg==="dict") renderDict();
+    show(host);
+    const [party,name]=(key||"").split("|");
+    const acc=[...host.querySelectorAll(".acc")].find(a=>{const t=a.querySelector(".at"); return t && (party? t.textContent.includes(party) : true) && (pg==="bibi"? t.textContent.includes("רשימת הליכוד"):true);});
+    if(acc){ acc.classList.add("open");
+      const b=[...acc.querySelectorAll("b")].find(x=>name && x.textContent.includes(name));
+      flash(b||acc); }
+    return;
+  }
   const host = pg==="led"?led : pg==="facts"?facts : core;
   const target=[...host.querySelectorAll(".acc")].find(a=>{
     const t=a.querySelector(".at"); return t && t.textContent.includes(key);
@@ -2930,7 +2963,7 @@ function deepOpen(pg,key){
   if(target){
     host.querySelectorAll(".acc.open").forEach(a=>{ if(a!==target) a.classList.remove("open"); });
     target.classList.add("open");
-    setTimeout(()=>{ try{ target.scrollIntoView({behavior:"smooth",block:"start"}); }catch(_){ } },120);
+    flash(target);
   }
 }
 
@@ -3137,6 +3170,68 @@ function renderHot(){
     $("#xfab").onclick=()=>{ lastTab="main"; renderHot(); show(hot);
       setTimeout(()=>{ const c=hot.querySelector(".rescard"); if(c){ try{ c.scrollIntoView({behavior:"smooth",block:"start"}); }catch(_){ } } },80); };
   })();
+
+/* ================= TACHLES SEARCH ================= */
+const tsNorm=t=>(t||"").toString().replace(/<[^>]*>/g," ").replace(/[״"'׳’‘`\-–־—·•,.:;!?()\[\]{}]/g," ").replace(/\s+/g," ").trim().toLowerCase();
+const tsPageName={facts:"מחלקת אקטואליה",led:"פנקס הכישלונות",core:"על מה רבים — נושאי ליבה",dict:"מילון המפלגות",bibi:"גוש נתניהו — רשימת הליכוד",hot:"ציוצים חמים",budget:"המספרים של התקציב",poison:"מכונת הרעל",votes:"הקול השרוף ובאדר–עופר",cmp:"המצפן"};
+let TS_INDEX=null;
+function tsBuild(){
+  const ix=[];
+  FACTS.forEach(f=>ix.push({e:f.e,pg:"facts",key:f.t.slice(0,28),label:f.t,text:[f.t,f.claim,f.said,f.twist,f.bottom].join(" ")}));
+  LEDGER.forEach(c=>{ if(c.t) ix.push({e:c.e,pg:"led",key:c.t.slice(0,28),label:c.t,text:c.t+" "+c.body}); });
+  CORE_ISSUES.forEach(c=>ix.push({e:c.e,pg:"core",key:c.t.slice(0,28),label:c.t,text:[c.t,c.body,c.why,c.deep].join(" ")}));
+  HOT.forEach(h=>ix.push({e:"🔥",pg:"hot",key:h.who,label:h.who+(h.handle?" "+h.handle:""),text:h.who+" "+h.handle+" "+h.text+" "+h.note}));
+  HL_ITEMS.forEach(h=>ix.push({e:"💸",pg:"budget",key:h.t.slice(0,24),label:h.t,text:h.t+" "+h.sub+" "+h.d}));
+  DICT_DEM.forEach(d=>{
+    ix.push({e:d.e,pg:"dict",key:d.n.split(" — ")[0]+"|",label:d.n,text:[d.n,d.idc,d.leader,d.record,(d.pro||[]).join(" "),(d.con||[]).join(" ")].join(" ")});
+    const re=/<b>(\d+) · ([^<]+)<\/b>[^—]*— ([^<]*)/g; let m;
+    while((m=re.exec(d.kn))){ ix.push({e:d.e,pg:"dict",key:d.n.split(" — ")[0]+"|"+m[2].trim(),label:m[2].trim()+" · מקום "+m[1],sub:d.n.split(" — ")[0],text:m[2]+" "+m[3]}); }
+  });
+  try{
+    const re=/<b>(\d+) (?:🔒 )?· ([^<]+)<\/b> — ([^<]*)/g; let m; const html=bibi.innerHTML;
+    while((m=re.exec(html))){ ix.push({e:"🔴",pg:"bibi",key:"|"+m[2].trim(),label:m[2].trim()+" · הליכוד, מקום "+m[1],sub:"רשימת הליכוד",text:m[2]+" "+m[3]}); }
+  }catch(_){}
+  [["🤖","poison","מכונת הרעל — מעגל הכביסה, שופרות, בוטים, הסתה, תדרוכים"],["🗑️","votes","הקול השרוף, אחוז החסימה, באדר עופר, הגוש שבין הגושים, גנץ, הנדל, זליכה, מנדטים"],["🧭","cmp","המצפן הישראלי — מיקום המפלגות על הצירים"]].forEach(([e,pg,t])=>ix.push({e,pg,key:"",label:tsPageName[pg],text:t}));
+  ix.forEach(x=>{ x.n=tsNorm(x.text); x.nl=tsNorm(x.label); x.sub=x.sub||tsPageName[x.pg]; });
+  return ix;
+}
+function tsSearch(q){
+  if(!TS_INDEX) TS_INDEX=tsBuild();
+  const words=tsNorm(q).split(" ").filter(w=>w.length>=2);
+  if(!words.length) return [];
+  const out=[];
+  TS_INDEX.forEach(x=>{
+    let score=0;
+    for(const w of words){ if(x.nl.includes(w)) score+=3; else if(x.n.includes(w)) score+=1; else return; }
+    if(x.pg==="dict"||x.pg==="bibi") score+=0.5;
+    out.push([score,x]);
+  });
+  out.sort((a,b)=>b[0]-a[0]);
+  return out.slice(0,10).map(x=>x[1]);
+}
+(function(){
+  const inp=$("#tsq"), box=$("#tsr"); if(!inp) return;
+  let sel=-1, cur=[];
+  function render(list){
+    cur=list; sel=-1;
+    if(!list.length){ box.innerHTML=inp.value.trim().length>=2?`<div class="srn">לא נמצא — נסו מילה אחרת (שם משפחה, נושא, מספר)</div>`:""; box.classList.toggle("on",inp.value.trim().length>=2); return; }
+    box.innerHTML=list.map((x,i)=>`<div class="sr" data-i="${i}"><span class="sre">${x.e}</span><span><div class="srt">${x.label}</div><div class="srs">${x.sub}</div></span></div>`).join("");
+    box.classList.add("on");
+    box.querySelectorAll(".sr").forEach(r=>r.onclick=()=>go(list[+r.dataset.i]));
+  }
+  function go(x){ if(!x) return; box.classList.remove("on"); inp.blur(); deepOpen(x.pg,x.key); }
+  inp.addEventListener("input",()=>render(tsSearch(inp.value)));
+  inp.addEventListener("focus",()=>{ if(inp.value.trim().length>=2) render(tsSearch(inp.value)); });
+  inp.addEventListener("keydown",e=>{
+    if(e.key==="ArrowDown"){ sel=Math.min(cur.length-1,sel+1); }
+    else if(e.key==="ArrowUp"){ sel=Math.max(0,sel-1); }
+    else if(e.key==="Enter"){ e.preventDefault(); go(cur[sel>=0?sel:0]); return; }
+    else if(e.key==="Escape"){ box.classList.remove("on"); return; }
+    else return;
+    e.preventDefault(); box.querySelectorAll(".sr").forEach((r,i)=>r.classList.toggle("sel",i===sel));
+  });
+  document.addEventListener("pointerdown",e=>{ if(!e.target.closest(".srchbox")) box.classList.remove("on"); });
+})();
 </script>
 </body>
 </html>
