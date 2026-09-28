@@ -278,7 +278,7 @@
   .wvdot{position:fixed;width:11px;height:11px;border-radius:50%;z-index:60;pointer-events:none;transition:transform .85s cubic-bezier(.4,.1,.4,1),opacity .2s}
   .wvcup.burnt{opacity:.25;filter:grayscale(1)}
   /* the feed */
-  #feed{padding:0!important}
+  #feed{padding:0!important;position:relative}
   .fdtop{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;font-family:'Secular One';font-size:15px}
   .fdwrap{height:calc(100dvh - 200px);min-height:420px;overflow-y:auto;scroll-snap-type:y mandatory;-webkit-overflow-scrolling:touch;border-radius:16px;position:relative}
   .fdwrap::-webkit-scrollbar{display:none}
@@ -311,9 +311,11 @@
   .fdgo{display:inline-flex;align-items:center;gap:8px;background:#fff;color:#0F1530;font-family:'Secular One';font-size:16px;padding:12px 22px;border-radius:99px;border:0;box-shadow:0 6px 18px rgba(0,0,0,.35);cursor:pointer;margin:16px auto 0;position:relative;z-index:5;transition:transform .12s}
   .fdgo:active{transform:scale(.97)}
   .fdgo b{font-family:'Heebo';font-weight:900;font-size:14px}
+  .fdheartpop{position:absolute;left:50%;top:45%;transform:translate(-50%,-50%) scale(.5);font-size:90px;opacity:0;pointer-events:none;z-index:8;animation:hpop .7s ease forwards;filter:drop-shadow(0 6px 16px rgba(0,0,0,.5))}
+  @keyframes hpop{20%{opacity:1;transform:translate(-50%,-50%) scale(1.15)}60%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-60%) scale(1)}}
   .rb.liked i{background:rgba(255,89,100,.55);border-color:#FF5964;animation:xpulse .5s ease}
   .rb.liked svg{fill:#fff;stroke:#fff}
-  .fdhelp{position:absolute;inset:0;background:rgba(15,21,48,.96);z-index:20;display:none;flex-direction:column;justify-content:center;padding:26px;color:var(--paper);text-align:right}
+  .fdhelp{position:absolute;inset:0;border-radius:16px;background:rgba(15,21,48,.96);z-index:20;display:none;flex-direction:column;justify-content:center;padding:26px;color:var(--paper);text-align:right}
   .fdhelp.on{display:flex}
   .fdhelp h3{font-family:'Secular One';font-size:22px;margin:0 0 10px}
   .fdhelp p{font-size:14px;line-height:1.6;margin:6px 0}
@@ -760,7 +762,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="3.11";
+const APP_VERSION="3.11.1";
 const APP_UPDATED="28.9.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
@@ -3602,11 +3604,16 @@ let fdQ={}, fdLast=[], fdAll=[];
 let fdLikeT={}, fdLikeTopic={}, fdLikeN=0;
 const fdTopic=c=>(c.src||c.party||c.who||c.n||c.a||"").toString().slice(0,20);
 function fdLike(card,c,btn){
-  if(btn.classList.contains("liked")) return;
-  btn.classList.add("liked"); fdLikeN++;
-  fdLikeT[c.k]=(fdLikeT[c.k]||0)+1; const t=fdTopic(c); if(t) fdLikeTopic[t]=(fdLikeTopic[t]||0)+1;
-  const lc=$("#fdLikes"); if(lc) lc.textContent="❤️ "+fdLikeN;
-  try{ confetti(); }catch(_){ }
+  const on=!btn.classList.contains("liked"); const d=on?1:-1;
+  btn.classList.toggle("liked",on); btn.querySelector("small").textContent=on?"אהבתם":"אהבתי";
+  fdLikeN=Math.max(0,fdLikeN+d);
+  fdLikeT[c.k]=Math.max(0,(fdLikeT[c.k]||0)+d); const t=fdTopic(c); if(t) fdLikeTopic[t]=Math.max(0,(fdLikeTopic[t]||0)+d);
+  if(on){ const pop=document.createElement("div"); pop.className="fdheartpop"; pop.textContent="❤️"; card.appendChild(pop); setTimeout(()=>pop.remove(),700); }
+}
+function fdDblTap(card){
+  let last=0;
+  const hit=()=>{ const now=Date.now(); if(now-last<320){ last=0; const hb=card.querySelector(".rail .rb.heart"); const c=card._c; if(hb&&c) fdLike(card,c,hb); } else last=now; };
+  card.addEventListener("pointerup",e=>{ if(e.target.closest(".rail,.ans,.fdgo,a,button")) return; hit(); });
 }
 function fdTypeW(t){ const n=fdLikeT[t]||0; return FD_W[t]*Math.min(3,1+0.6*n*Math.pow(0.85,Math.max(0,fdLikeN-1))); }
 function fdTopicBoost(c){ const t=fdTopic(c); const n=t?(fdLikeTopic[t]||0):0; return n?Math.min(3,1+1.0*n*Math.pow(0.85,Math.max(0,fdLikeN-1))):1; }
@@ -3803,7 +3810,7 @@ function fdAppend(n){
     fdRail(el);
     const cdata=(!el.classList.contains("cta")||el.dataset.k==="game"||el.dataset.k==="egg")?fdStash.shift():null;
     const rail=el.querySelector(".rail");
-    if(rail&&cdata&&!el.classList.contains("cta")){ const hb=document.createElement("button"); hb.className="rb"; hb.innerHTML=`<i>${FD_ICO.heart}</i><small>אהבתי</small>`; hb.onclick=()=>fdLike(el,cdata,hb); rail.insertBefore(hb,rail.firstChild); }
+    if(rail&&cdata&&!el.classList.contains("cta")){ el._c=cdata; const hb=document.createElement("button"); hb.className="rb heart"; hb.innerHTML=`<i>${FD_ICO.heart}</i><small>אהבתי</small>`; hb.onclick=()=>fdLike(el,cdata,hb); rail.insertBefore(hb,rail.firstChild); fdDblTap(el); }
     if(!el.classList.contains("cta")) el.insertAdjacentHTML("beforeend",'<div class="fdnudge"><span>⬆ גללו לכרטיס הבא</span></div>');
     el.querySelectorAll("[data-game]").forEach(b=>b.onclick=()=>{ const t=$("#"+b.dataset.game); if(t) t.click(); });
     el.querySelectorAll(".ans").forEach(b=>b.onclick=()=>fdAnswer(el,b));
@@ -3854,15 +3861,14 @@ function fdShare(txt){
 }
 function startFeed(){
   fdAll=fdBuildPool(); fdQ={}; fdLast=[]; fdCount=0; fdShown=0; fdDealt=0; fdEggShown=0; fdStash=[]; fdLikeT={}; fdLikeTopic={}; fdLikeN=0;
-  feed.innerHTML=`<div class="fdtop"><span>🌀 הפיד</span><button class="fdtog" id="fdHelpBtn" title="איך הפיד עובד">❔</button><button class="fdtog" id="fdAuto" title="גלילה אוטומטית">▶ אוטו</button><span id="fdLikes" style="font-size:11px;color:#FF8A92;font-family:inherit;font-weight:900"></span><span id="fdCounter" style="font-size:11px;color:var(--muted);font-family:inherit">כרטיס 1 · עוד ${Math.max(0,Math.ceil((ELECTION_DATE-new Date())/864e5))} ימים</span><button class="linkbtn" data-back style="margin:0;padding:4px 8px">✕</button></div>
-    <div class="fdwrap" id="fdWrap"><div id="fdSent" style="height:2px"></div>
+  feed.innerHTML=`<div class="fdtop"><span>🌀 הפיד</span><button class="fdtog" id="fdHelpBtn" title="איך הפיד עובד">❔</button><button class="fdtog" id="fdAuto" title="גלילה אוטומטית">▶ אוטו</button><span id="fdCounter" style="font-size:11px;color:var(--muted);font-family:inherit">כרטיס 1 · עוד ${Math.max(0,Math.ceil((ELECTION_DATE-new Date())/864e5))} ימים</span><button class="linkbtn" data-back style="margin:0;padding:4px 8px">✕</button></div>
+    <div class="fdwrap" id="fdWrap"><div id="fdSent" style="height:2px"></div></div>
       <div class="fdhelp" id="fdHelp"><h3>❔ איך הפיד עובד</h3>
         <p><b>❤️ לייק = ״עוד מזה״.</b> כל כרטיס שייך לסוג (פנקס, נושא ליבה, מועמד, ציטוט…) ולנושא (האדם או הפריט שמאחוריו). לייק מעלה את הסיכוי לכרטיסים מאותו סוג ועל אותו נושא בהמשך הגלילה — בעדינות, כדי שהפיד לא ייסגר עליכם.</p>
         <p><b>🔒 שום דבר לא נשמר.</b> הלייקים חיים בזיכרון של המסך הזה בלבד, ונמחקים כשסוגרים את האפליקציה. לא נשלח, לא נשמר בטלפון, לא נראה על ידינו.</p>
         <p><b>🎲 בלי לייקים:</b> הסדר אקראי־ממושקל, עם שני כללים בלבד — לא אותו סוג פעמיים ברצף, ומועמד לכל היותר אחת לארבעה כרטיסים. כל 9 כרטיסים — הצעה לפעולה. וכשעוברים על כל המאגר — ההפתעה.</p>
         <p><b>🗓️ תאריך</b> מופיע על כל כרטיס שמקורו במחלקת האקטואליה, כמו במחלקה עצמה.</p>
         <button class="fdgo" id="fdHelpClose" style="align-self:center">הבנתי, ממשיכים 🌀</button></div>
-    </div>
     <div class="fdhint">⬆ גללו</div>`;
   feed.querySelector("[data-back]").onclick=()=>showTab("home");
   $("#fdHelpBtn").onclick=()=>$("#fdHelp").classList.add("on"); $("#fdHelpClose").onclick=()=>$("#fdHelp").classList.remove("on");
