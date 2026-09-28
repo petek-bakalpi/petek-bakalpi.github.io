@@ -698,15 +698,15 @@
 
   <nav class="tabbar">
     <button class="tab on" data-tab="home"><span class="te">🗳️</span>ראשי</button>
+    <button class="tab" data-tab="feed"><span class="te">🌀</span>הפיד</button>
     <button class="tab" data-tab="games"><span class="te">🎮</span>משחקים</button>
     <button class="tab" data-tab="learn"><span class="te">🧠</span>תכל'ס</button>
-    <button class="tab" data-tab="feed"><span class="te">🌀</span>הפיד</button>
   </nav>
 </div>
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="3.6";
+const APP_VERSION="3.6.1";
 const APP_UPDATED="28.9.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
@@ -3516,6 +3516,10 @@ function fdBuildPool(){
   HL_ITEMS.forEach(h=>pool.push({k:"num",v:h.v,t:h.t,s:h.sub||h.d||"",key:h.t.slice(0,24)}));
   QUOTES.forEach(q=>pool.push({k:"quote",t:q.q,a:q.a,s:q.ctx||""}));
   HOT.forEach(h=>{ if(h.tweet) pool.push({k:"tweet",url:h.tweet,who:h.who,handle:h.handle||"",dt:h.dt||"",note:h.note||""}); });
+  const firstSent=(t,max)=>{ t=(t||"").replace(/<[^>]*>/g," ").replace(/\s+/g," ").trim(); const m=t.match(/^(.+?[.!?״])(\s|$)/); let x=m?m[1]:t; if(x.length>max){ x=x.slice(0,max).replace(/\s\S*$/,"")+"…"; } return x; };
+  FACTS.forEach(f=>{ if(!(f.race&&f.race.parts)&&f.claim) pool.push({k:"txt",t:firstSent(f.claim,200),src:f.t,key:f.t.slice(0,28),e:f.e}); });
+  LEDGER.forEach(c=>{ if(c.t&&c.body) pool.push({k:"led",t:firstSent(c.body,190),src:c.t,key:c.t.slice(0,28),e:c.e||"📓"}); });
+  CORE_ISSUES.forEach(c=>{ if(c.why) pool.push({k:"core",t:firstSent(c.why,200),src:c.t,key:c.t.slice(0,28),e:c.e||"🧠"}); });
   return pool.sort(()=>Math.random()-.5);
 }
 const fdMoney=v=>v>=1000?(v/1000).toFixed(v%1000?1:0)+" מיליארד ₪":Math.round(v)+" מיליון ₪";
@@ -3537,6 +3541,12 @@ function fdCard(c,i){
   }
   if(c.k==="tweet"){
     return `<div class="fdc" style="background:${g}"><div class="wm">🐦</div><div class="lbl src"><span>🔥 ציוצים חמים · ${c.who}</span><a href="${c.url}" target="_blank" rel="noopener">למקור ↗</a></div><div class="tw"><blockquote class="twitter-tweet" data-theme="dark" data-lang="he" data-dnt="true"><p dir="rtl" style="color:#fff;opacity:.7">⏳ טוען את הציוץ…</p><a href="${c.url}" style="color:#fff">${c.who} ${c.handle}</a></blockquote></div><div class="bar"><button data-go="hot" data-key="${c.who}">🔥 עוד ציוצים</button><button data-share="${encodeURIComponent(c.url)}">📤 שתפו</button></div></div>`;
+  }
+  if(c.k==="led"||c.k==="core"){
+    const lbl=c.k==="led"?"📓 פנקס הכישלונות":"🧠 נושאי הליבה";
+    const q=c.k==="led"?(LEDGER.find(x=>x.t===c.src)||{}).q:"";
+    const link=q?`<a href="https://www.google.com/search?q=${encodeURIComponent(q)}" target="_blank" rel="noopener">🔎 בדקו</a>`:"";
+    return `<div class="fdc" style="background:${g}"><div class="wm">${c.e}</div><div class="lbl src"><span>${lbl} · ${c.src}</span>${link}</div><div class="big">${fdLines(c.t)}</div><div class="bar"><button data-go="${c.k}" data-key="${c.key}">📖 הכרטיס המלא</button><button data-share="${encodeURIComponent(c.src+": "+c.t)}">📤 שתפו</button></div></div>`;
   }
   const f=FACTS.find(x=>x.t===c.src);
   const srcLink=f&&f.url?`<a href="${f.url}" target="_blank" rel="noopener">למקור ↗</a>`:`<a href="https://www.google.com/search?q=${encodeURIComponent(f?f.srch:c.src)}" target="_blank" rel="noopener">🔎 בדקו</a>`;
