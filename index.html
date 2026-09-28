@@ -277,6 +277,20 @@
   .wvseats{text-align:center;font-family:'Secular One';font-size:15px;min-height:20px}
   .wvdot{position:fixed;width:11px;height:11px;border-radius:50%;z-index:60;pointer-events:none;transition:transform .85s cubic-bezier(.4,.1,.4,1),opacity .2s}
   .wvcup.burnt{opacity:.25;filter:grayscale(1)}
+  /* uncle chat */
+  .chat{display:flex;flex-direction:column;gap:8px;padding:6px 2px;min-height:120px}
+  .bub{max-width:88%;padding:10px 13px;border-radius:16px;font-size:14px;line-height:1.5;position:relative}
+  .bub.u{align-self:flex-start;background:rgba(255,255,255,.09);border:1px solid rgba(139,147,184,.35);border-bottom-right-radius:4px}
+  .bub.m{align-self:flex-end;background:rgba(61,123,255,.28);border:1px solid rgba(61,123,255,.5);border-bottom-left-radius:4px}
+  .bub.sys{align-self:center;background:transparent;color:var(--muted);font-size:11.5px;padding:2px}
+  .bub .who{font-size:10.5px;color:var(--muted);margin-bottom:3px;font-weight:800}
+  .typing span{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--muted);margin:0 2px;animation:tp 1s infinite}
+  .typing span:nth-child(2){animation-delay:.2s}.typing span:nth-child(3){animation-delay:.4s}
+  @keyframes tp{0%,100%{opacity:.25;transform:translateY(0)}50%{opacity:1;transform:translateY(-3px)}}
+  .opt{display:block;width:100%;text-align:right;padding:11px 13px;margin:6px 0;border-radius:14px;border:1.5px solid rgba(139,147,184,.4);background:rgba(255,255,255,.05);color:var(--paper);font-size:13.5px;line-height:1.45;cursor:pointer;font-family:inherit}
+  .opt:active{transform:scale(.99)}
+  .pmeter{height:10px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden;margin:6px 0 2px}
+  .pmeter i{display:block;height:100%;background:linear-gradient(90deg,var(--coral),var(--gold),var(--mint));transition:width .6s}
   /* search engine (tachles) */
   .srchbox{position:relative;margin:6px 0 12px}
   .srchbox input{width:100%;box-sizing:border-box;padding:12px 40px 12px 14px;border-radius:14px;border:1.5px solid rgba(139,147,184,.4);background:rgba(255,255,255,.06);color:var(--paper);font-size:15px;font-family:inherit;outline:none}
@@ -566,6 +580,9 @@
   <!-- HOT TAKES / TWEETS -->
   <section class="screen infopage" id="hot"></section>
 
+  <!-- UNCLE -->
+  <section class="screen infopage" id="uncle"></section>
+
   <!-- WASTED VOTE LAB -->
   <section class="screen infopage" id="wv"></section>
 
@@ -597,6 +614,7 @@
     <button class="menucard" id="gMdl"><span class="me">🟩</span><span><div class="mt">מנדטל</div><div class="md">וורדל פוליטי — נחשו את המועמד/ת בשש ניחושים. חידה יומית!</div></span><span class="mtime">3 דק'</span></button>
     <button class="menucard" id="gRace"><span class="me">🏃</span><span><div class="mt">המרוץ לקלפי</div><div class="md">קפצו מעל מכונת הרעל ורוצו 2,026 מטר להצבעה — עם עצירות עדכון אמיתיות</div></span><span class="mtime">2 דק'</span></button>
     <div class="ledsec">🎯 הקלאסיקות</div>
+    <button class="menucard" id="gUncle"><span class="me">🧔</span><span><div class="mt">שכנעו את הדוד</div><div class="md">סימולטור שיחת שישי: הדוד זורק ספין, אתם בוחרים תשובה</div></span><span class="mtime">3 דק'</span></button>
     <button class="menucard" id="gWv"><span class="me">🗑️</span><span><div class="mt">מעבדת הקול השרוף</div><div class="md">ניסוי באדר–עופר: לאן באמת הולך קול למפלגה שלא עוברת?</div></span><span class="mtime">2 דק'</span></button>
     <button class="menucard" id="gIdle"><span class="me">📣</span><span><div class="mt">מטה הבחירות</div><div class="md">קליקר התמכרותי: משיחה אחת על קפה ועד 4 מנדטים</div></span><span class="mtime">~8 דק'</span></button>
     <button class="menucard" id="gMatch"><span class="me">🗳️</span><span><div class="mt">פתק בקלפי — השידוך הפוליטי</div><div class="md">איזו מפלגה במחנה מתאימה לכם? גרסה מהירה או מעמיקה</div></span><span class="mtime">60 שנ' / 3 דק'</span></button>
@@ -639,7 +657,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="3.2";
+const APP_VERSION="3.3";
 const APP_UPDATED="28.9.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
@@ -815,7 +833,7 @@ function calcMax(){ MAX={}; for(const k in PARTIES){ MAX[k]=0; }
 /* ---------------- state ---------------- */
 let idx=0, scores={lib:0,yachad:0,yashar:0,dem:0}, busy=false, mode="quick", hist=[];
 const $=s=>document.querySelector(s);
-const intro=$("#intro"), quiz=$("#quiz"), result=$("#result"), bibi=$("#bibi"), arab=$("#arab"), who=$("#who"), coal=$("#coal"), core=$("#core"), cmp=$("#cmp"), led=$("#led"), votes=$("#votes"), gmenu=$("#gmenu"), lmenu=$("#lmenu"), quote=$("#quote"), dict=$("#dict"), facts=$("#facts"), poison=$("#poison"), budget=$("#budget"), gov=$("#gov"), hl=$("#hl"), mdl=$("#mdl"), race=$("#race"), idle=$("#idle"), wv=$("#wv"), hot=$("#hot");
+const intro=$("#intro"), quiz=$("#quiz"), result=$("#result"), bibi=$("#bibi"), arab=$("#arab"), who=$("#who"), coal=$("#coal"), core=$("#core"), cmp=$("#cmp"), led=$("#led"), votes=$("#votes"), gmenu=$("#gmenu"), lmenu=$("#lmenu"), quote=$("#quote"), dict=$("#dict"), facts=$("#facts"), poison=$("#poison"), budget=$("#budget"), gov=$("#gov"), hl=$("#hl"), mdl=$("#mdl"), race=$("#race"), idle=$("#idle"), wv=$("#wv"), hot=$("#hot"), uncle=$("#uncle");
 const zone=$("#cardzone"), slips=$("#slips"), count=$("#count"), box=$("#box");
 
 function startGame(m){
@@ -829,7 +847,7 @@ function startGame(m){
 $("#startQuick").onclick=()=>startGame("quick");
 $("#startDeep").onclick=()=>startGame("deep");
 
-function show(sc){[intro,quiz,result,bibi,arab,who,coal,core,cmp,led,votes,gmenu,lmenu,quote,dict,facts,poison,budget,gov,hl,mdl,race,idle,wv,hot].forEach(x=>x.classList.remove("on"));sc.classList.add("on");sc.scrollTop=0;
+function show(sc){[intro,quiz,result,bibi,arab,who,coal,core,cmp,led,votes,gmenu,lmenu,quote,dict,facts,poison,budget,gov,hl,mdl,race,idle,wv,hot,uncle].forEach(x=>x.classList.remove("on"));sc.classList.add("on");sc.scrollTop=0;
   if(sc!==arab){const m=$("#arabMore"),b=$("#proArab");if(m){m.classList.remove("on");}if(b){b.style.display="";}}}
 $("#toCore").onclick=()=>{renderCore();show(core);};
 $("#toCmp").onclick=()=>{renderCompass();show(cmp);};
@@ -1693,6 +1711,7 @@ $("#gMdl").onclick=()=>{lastTab="games";startMdl(false);};
 $("#gRace").onclick=()=>{lastTab="games";startRace();};
 $("#gIdle").onclick=()=>{lastTab="games";startIdle();};
 $("#gWv").onclick=()=>{lastTab="games";startWv();};
+$("#gUncle").onclick=()=>{lastTab="games";startUncle();};
 /* learn menu */
 $("#lHot").onclick=()=>{lastTab="learn";renderHot();show(hot);};
 $("#lFacts").onclick=()=>{lastTab="learn";renderFacts();show(facts);};
@@ -3253,6 +3272,80 @@ function tsSearch(q){
   });
   document.addEventListener("pointerdown",e=>{ if(!e.target.closest(".srchbox")) box.classList.remove("on"); });
 })();
+
+/* ================= CONVINCE THE UNCLE ================= */
+const UN_AGGR=["אתה ביביסט חסר תקנה, אין טעם לדבר איתך.","כל מי שמצביע להם הוא או מושחת או טיפש.","די, אתה חוזר על התעמולה של ערוץ 14 כמו תוכי.","אני לא מוכן לשבת בשולחן אחד עם מי שחושב ככה.","זה בדיוק בגלל אנשים כמוך המדינה במצב הזה."];
+const UN_DEF=["עזוב, מה זה משנה, כולם אותו דבר.","אין מה לעשות, זה גמור, הם ינצחו בכל מקרה.","אני כבר לא עוקב, הכול פוליטיקה מלוכלכת.","בסדר, אולי אתה צודק, לא יודע.","אני לא נכנס לזה, בוא נאכל."];
+const UN_REACT_OK=["הממ… את זה לא ידעתי.","רגע, תשלח לי איפה זה כתוב.","טוב, נשמע שבדקת. תמשיך.","לא שמעתי את זה בחדשות שלי…","אוקיי, זה באמת מוזר. נו, ומה עוד?"];
+const UN_REACT_AGGR=["יאללה, אתה כבר לא מוזמן לשישי.","ככה מדברים לדוד? ביי.","זה בדיוק למה אני לא סובל אתכם."];
+const UN_REACT_DEF=["נו, אז למה בכלל ללכת להצביע?","הנה, גם אתה יודע שאין הבדל.","אמרתי לך. כולם אותו דבר."];
+let unS=null;
+const unClean=t=>(t||"").replace(/<[^>]*>/g,"").replace(/\s+/g," ").trim();
+function unShort(t,max){ t=unClean(t); if(t.length<=max) return t; const cut=t.slice(0,max); const k=Math.max(cut.lastIndexOf(". "),cut.lastIndexOf("! "),cut.lastIndexOf("? ")); return (k>60?cut.slice(0,k+1):cut.trim()+"…"); }
+function startUncle(){
+  const pool=FACTS.filter(f=>f.claim&&f.bottom);
+  const items=[...pool].sort(()=>Math.random()-.5).slice(0,6);
+  unS={items,i:0,score:0,log:[]};
+  renderUncle();
+}
+function renderUncle(){
+  const st=unS;
+  uncle.innerHTML=`
+    <h2>שכנעו את הדוד<br><span class="hl">שיחת שישי, סימולציה 🧔</span></h2>
+    <div style="display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted)"><span>סבב ${Math.min(st.i+1,6)}/6</span><span>מד שכנוע: <b style="color:var(--mint)">${st.score}</b></span></div>
+    <div class="pmeter"><i style="width:${st.score/6*100}%"></i></div>
+    <div class="chat" id="unChat"></div>
+    <div id="unOpts"></div>
+    <button class="linkbtn" data-back>יציאה</button>`;
+  uncle.querySelector("[data-back]").onclick=()=>goBack();
+  if(st.i>=6){ unEnd(); return; }
+  const chat=$("#unChat");
+  chat.innerHTML=`<div class="bub sys">${st.i===0?"שישי בערב. הסלט על השולחן. הדוד מתחיל.":"…"}</div><div class="bub u"><div class="who">🧔 הדוד</div><div class="typing"><span></span><span></span><span></span></div></div>`;
+  setTimeout(()=>{
+    const f=st.items[st.i];
+    chat.lastElementChild.innerHTML=`<div class="who">🧔 הדוד</div>${unShort(f.claim,260)}`;
+    const good={t:unShort(f.bottom,190),k:"ok"};
+    const a={t:UN_AGGR[Math.floor(Math.random()*UN_AGGR.length)],k:"aggr"};
+    const d={t:UN_DEF[Math.floor(Math.random()*UN_DEF.length)],k:"def"};
+    const opts=[good,a,d].sort(()=>Math.random()-.5);
+    $("#unOpts").innerHTML=`<div style="font-size:11.5px;color:var(--muted);margin:6px 0 2px">מה אתם עונים?</div>`+opts.map((o,i)=>`<button class="opt" data-k="${o.k}">${o.t}</button>`).join("");
+    $("#unOpts").querySelectorAll(".opt").forEach(b=>b.onclick=()=>unAnswer(b.dataset.k,b.textContent,f));
+  },700);
+}
+function unAnswer(k,text,f){
+  const st=unS; const chat=$("#unChat");
+  chat.insertAdjacentHTML("beforeend",`<div class="bub m"><div class="who">אתם</div>${text}</div>`);
+  const pick=arr=>arr[Math.floor(Math.random()*arr.length)];
+  let react, note;
+  if(k==="ok"){ st.score++; react=pick(UN_REACT_OK); note="✅ עובדות, בלי להעליב, בלי להתייאש. ככה מזיזים דוד."; }
+  else if(k==="aggr"){ react=pick(UN_REACT_AGGR); note="❌ העלבה סוגרת את השיחה — ואת הדוד. הטיעון היה קיים, לא השתמשתם בו."; }
+  else { react=pick(UN_REACT_DEF); note="❌ ייאוש הוא הספין הכי מוצלח שלהם. יש תשובה, והיא בפריט."; }
+  st.log.push({t:f.t,k});
+  $("#unOpts").innerHTML="";
+  chat.insertAdjacentHTML("beforeend",`<div class="bub u"><div class="who">🧔 הדוד</div><div class="typing"><span></span><span></span><span></span></div></div>`);
+  setTimeout(()=>{
+    chat.lastElementChild.innerHTML=`<div class="who">🧔 הדוד</div>${react}`;
+    $("#unOpts").innerHTML=`<div class="bub sys" style="text-align:right;align-self:stretch;color:var(--paper);font-size:12.5px">${note}</div>
+      <div class="row2" style="gap:7px;margin-top:6px"><button class="btn backbtn" id="unRead" style="flex:1;font-size:12.5px">📖 הסיפור המלא</button><button class="btn btn-again" id="unNext" style="flex:1">${st.i<5?"הבא ➡":"לסיכום 🏁"}</button></div>`;
+    $("#unRead").onclick=()=>deepOpen("facts",f.t.slice(0,28));
+    $("#unNext").onclick=()=>{ st.i++; renderUncle(); };
+    uncle.querySelector(".pmeter i").style.width=(st.score/6*100)+"%";
+    uncle.querySelector(".pmeter").previousElementSibling.lastElementChild.innerHTML=`מד שכנוע: <b style="color:var(--mint)">${st.score}</b>`;
+  },650);
+}
+function unEnd(){
+  const st=unS;
+  const v= st.score>=6?"הדוד עבר צד. תזמינו אותו לקלפי.":st.score>=4?"הדוד מהורהר. עוד שישי אחד וזה קורה.":st.score>=2?"הדוד עוד מתווכח — אבל הוא הקשיב.":"הדוד ניצח הפעם. תקראו את הפריטים ותחזרו.";
+  const missed=st.log.filter(x=>x.k!=="ok").map(x=>`<li>${x.t}</li>`).join("");
+  $("#unChat").innerHTML=`<div class="rescard" style="text-align:center"><div style="font-size:44px">${st.score>=4?"🥂":"🍲"}</div>
+    <h3 style="font-family:'Secular One';font-size:22px;margin:6px 0">שכנעתם את הדוד ב־${st.score} מתוך 6</h3><p>${v}</p>
+    ${missed?`<div style="text-align:right;font-size:12.5px;color:var(--muted)">הספינים שנשארו פתוחים:<ul style="margin:4px 0 0;padding-right:18px">${missed}</ul></div>`:""}
+    <div class="row2" style="gap:7px;margin-top:10px"><button class="btn btn-copy" id="unShare" style="flex:1">📋 שלחו לדוד האמיתי</button><button class="btn btn-again" id="unAgain" style="flex:1">עוד שישי 🔁</button></div>
+    <p style="font-size:11px;color:var(--muted);margin-top:8px">כל ספין במשחק הוא פריט במחלקת האקטואליה — עם מקורות. הפריטים החדשים נכנסים למשחק אוטומטית.</p></div>`;
+  $("#unOpts").innerHTML="";
+  $("#unAgain").onclick=()=>startUncle();
+  $("#unShare").onclick=()=>{ const txt=`שכנעתי את הדוד ב־${st.score}/6 בסימולטור שיחת השישי 🧔 — תנסו גם: https://petek-bakalpi.github.io/`; try{ navigator.clipboard.writeText(txt); $("#unShare").textContent="הועתק ✓"; }catch(_){ $("#unShare").textContent=txt; } };
+}
 </script>
 </body>
 </html>
