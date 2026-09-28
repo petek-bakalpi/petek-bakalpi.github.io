@@ -309,13 +309,19 @@
   .fdc .tw blockquote{margin:0}
   .fdc .lbl{display:flex;justify-content:space-between;gap:8px;align-items:center;position:relative;z-index:2}
   /* feed — action rail + nudge */
-  .fdc:not(.cta){padding-left:74px}
+  .fdc:not(.cta){padding-left:66px;padding-top:64px;justify-content:center}
+  .fdc:not(.cta) .lbl{position:absolute;top:18px;right:20px;left:66px}
+  .fdprog{position:absolute;top:0;left:0;right:0;height:4px;background:rgba(255,255,255,.18);z-index:6;display:none}
+  .fdprog i{display:block;height:100%;width:0;background:#fff;box-shadow:0 0 8px rgba(255,255,255,.8)}
+  .fdauto .fdprog{display:block}
+  .fdtog{border:1.5px solid rgba(139,147,184,.5);background:rgba(255,255,255,.06);color:var(--muted);border-radius:99px;padding:3px 10px;font-size:11.5px;font-weight:900;font-family:inherit;cursor:pointer}
+  .fdtog.on{background:rgba(51,214,159,.18);border-color:#33D69F;color:#7FEBC4}
   .rail{position:absolute;left:12px;bottom:26px;display:flex;flex-direction:column;gap:14px;z-index:5}
-  .rb{width:46px;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:0;color:#fff;font-family:inherit;cursor:pointer;padding:0;text-decoration:none}
-  .rb i{width:46px;height:46px;border-radius:50%;background:rgba(0,0,0,.38);border:1.5px solid rgba(255,255,255,.55);display:flex;align-items:center;justify-content:center;transition:transform .12s,background .12s}
+  .rb{width:40px;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:0;color:#fff;font-family:inherit;cursor:pointer;padding:0;text-decoration:none}
+  .rb i{width:38px;height:38px;border-radius:50%;background:rgba(0,0,0,.38);border:1.5px solid rgba(255,255,255,.55);display:flex;align-items:center;justify-content:center;transition:transform .12s,background .12s}
   .rb:active i{transform:scale(.9)}
   .rb.done i{background:rgba(51,214,159,.5);border-color:#33D69F}
-  .rb svg{width:22px;height:22px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .rb svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
   .rb small{font-size:9.5px;font-weight:800;text-shadow:0 1px 4px rgba(0,0,0,.6)}
   .fdnudge{position:absolute;bottom:14px;right:0;left:74px;text-align:center;font-size:12.5px;font-weight:900;z-index:4;pointer-events:none;opacity:0;transition:opacity .4s}
   .fdnudge.on{opacity:1}
@@ -744,7 +750,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="3.9";
+const APP_VERSION="3.9.1";
 const APP_UPDATED="28.9.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
@@ -1782,7 +1788,7 @@ let lastTab="home";
 const TABSCREEN={home:()=>intro, games:()=>gmenu, learn:()=>lmenu, feed:()=>{ if(!feed.querySelector(".fdwrap")) startFeed(); return feed; }};
 function goBack(){ show(TABSCREEN[lastTab]()); }
 function showTab(t){
-  lastTab=t;
+  lastTab=t; if(t!=="feed"&&typeof fdAutoStop==="function"){ fdAutoStop(); }
   document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("on",b.dataset.tab===t));
   show(TABSCREEN[t]());
 }
@@ -3775,7 +3781,18 @@ function fdRail(el){
   rail.querySelector("[data-rshare]").onclick=()=>fdShare(decodeURIComponent(rail.querySelector("[data-rshare]").dataset.rshare));
   rail.querySelector("[data-rcopy]").onclick=(e)=>{ const b=e.currentTarget; const full=decodeURIComponent(b.dataset.rcopy)+"\n— פתק בקלפי 🗳️ https://petek-bakalpi.github.io/"; try{ navigator.clipboard.writeText(full); }catch(_){ } b.classList.add("done"); b.querySelector("small").textContent="הועתק ✓"; setTimeout(()=>{ b.classList.remove("done"); b.querySelector("small").textContent="העתקו"; },1800); };
 }
-let fdNudgeT=null;
+let fdNudgeT=null, fdAuto=false, fdAutoT=null, fdAutoCard=null, fdAutoLeft=0, fdAutoStart=0;
+function fdAutoDur(card){ const n=(card.textContent||"").length; return Math.max(5000,Math.min(12000,4000+n*30)); }
+function fdAutoRun(card,ms){
+  clearTimeout(fdAutoT); fdAutoCard=card; fdAutoLeft=ms; fdAutoStart=performance.now();
+  let bar=card.querySelector(".fdprog"); if(!bar){ bar=document.createElement("div"); bar.className="fdprog"; bar.innerHTML="<i></i>"; card.appendChild(bar); }
+  const i=bar.querySelector("i"); const total=fdAutoDur(card); const from=(1-ms/total)*100;
+  i.style.transition="none"; i.style.width=from+"%"; void i.offsetWidth; i.style.transition="width "+ms+"ms linear"; i.style.width="100%";
+  fdAutoT=setTimeout(()=>{ const w=$("#fdWrap"); if(w) w.scrollBy({top:w.clientHeight,behavior:"smooth"}); },ms);
+}
+function fdAutoPause(){ if(!fdAuto||!fdAutoCard) return; clearTimeout(fdAutoT); fdAutoLeft=Math.max(0,fdAutoLeft-(performance.now()-fdAutoStart)); const i=fdAutoCard.querySelector(".fdprog i"); if(i){ const cur=getComputedStyle(i).width; i.style.transition="none"; i.style.width=cur; } }
+function fdAutoResume(){ if(!fdAuto||!fdAutoCard) return; fdAutoRun(fdAutoCard,fdAutoLeft); }
+function fdAutoStop(){ clearTimeout(fdAutoT); if(fdAutoCard){ const i=fdAutoCard.querySelector(".fdprog i"); if(i){ i.style.transition="none"; i.style.width="0"; } } fdAutoCard=null; }
 function fdShare(txt){
   const full=txt+"\n— פתק בקלפי 🗳️ https://petek-bakalpi.github.io/";
   if(navigator.share){ navigator.share({text:full}).catch(()=>{}); }
@@ -3783,14 +3800,20 @@ function fdShare(txt){
 }
 function startFeed(){
   fdAll=fdBuildPool(); fdQ={}; fdLast=[]; fdCount=0; fdShown=0; fdDealt=0; fdEggShown=0;
-  feed.innerHTML=`<div class="fdtop"><span>🌀 הפיד</span><span id="fdCounter" style="font-size:11px;color:var(--muted);font-family:inherit">כרטיס 1 · עוד ${Math.max(0,Math.ceil((ELECTION_DATE-new Date())/864e5))} ימים</span><button class="linkbtn" data-back style="margin:0;padding:4px 8px">✕</button></div>
+  feed.innerHTML=`<div class="fdtop"><span>🌀 הפיד</span><button class="fdtog" id="fdAuto" title="גלילה אוטומטית">▶ אוטו</button><span id="fdCounter" style="font-size:11px;color:var(--muted);font-family:inherit">כרטיס 1 · עוד ${Math.max(0,Math.ceil((ELECTION_DATE-new Date())/864e5))} ימים</span><button class="linkbtn" data-back style="margin:0;padding:4px 8px">✕</button></div>
     <div class="fdwrap" id="fdWrap"><div id="fdSent" style="height:2px"></div></div>
     <div class="fdhint">⬆ גללו</div>`;
   feed.querySelector("[data-back]").onclick=()=>showTab("home");
+  const tog=$("#fdAuto");
+  tog.onclick=()=>{ fdAuto=!fdAuto; tog.classList.toggle("on",fdAuto); feed.classList.toggle("fdauto",fdAuto); tog.textContent=fdAuto?"⏸ אוטו":"▶ אוטו";
+    if(fdAuto){ const w=$("#fdWrap"); const mid=w.getBoundingClientRect().top+w.clientHeight/2; const cur=[...w.querySelectorAll(".fdc")].find(c=>{const r=c.getBoundingClientRect();return r.top<=mid&&r.bottom>=mid;}); if(cur) fdAutoRun(cur,fdAutoDur(cur)); }
+    else fdAutoStop(); };
+  $("#fdWrap").addEventListener("pointerdown",fdAutoPause); $("#fdWrap").addEventListener("pointerup",fdAutoResume); $("#fdWrap").addEventListener("pointercancel",fdAutoResume);
   if(fdInIO) fdInIO.disconnect();
   try{
     fdInIO=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("in");
         clearTimeout(fdNudgeT); feed.querySelectorAll(".fdnudge.on").forEach(n=>n.classList.remove("on"));
+        if(fdAuto){ fdAutoStop(); fdAutoRun(e.target,fdAutoDur(e.target)); }
         fdNudgeT=setTimeout(()=>{ const n=e.target.querySelector(".fdnudge"); if(n) n.classList.add("on"); },6000); const c=$("#fdCounter"); if(c&&e.target.dataset.i) c.textContent="כרטיס "+e.target.dataset.i+" · עוד "+Math.max(0,Math.ceil((ELECTION_DATE-new Date())/864e5))+" ימים"; e.target.querySelectorAll(".cnt:not([data-done])").forEach(c=>{ c.dataset.done="1"; fdCountUp(c); }); } }),{root:$("#fdWrap"),threshold:.5});
   }catch(_){ fdInIO=null; }
   fdAppend(10);
