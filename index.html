@@ -294,6 +294,7 @@
   .fdhint{position:absolute;bottom:8px;left:0;right:0;text-align:center;font-size:11px;opacity:.7;pointer-events:none;animation:fdb 1.6s ease-in-out infinite}
   @keyframes fdb{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
   .ffab{position:absolute;left:2px;top:50%;transform:translateY(-50%) rotate(-8deg);width:38px;height:38px;border-radius:11px;border:1.5px solid rgba(139,147,184,.45);background:rgba(255,255,255,.06);font-size:20px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(0,0,0,.35)}
+  .newtag{position:absolute;top:-6px;right:50%;transform:translateX(50%);background:var(--coral);color:#fff;font-size:9px;font-weight:900;padding:1px 6px;border-radius:99px;letter-spacing:.3px;box-shadow:0 2px 6px rgba(0,0,0,.4);animation:xpulse 1.8s ease-in-out infinite}
   /* feed — visual life */
   .fdc{background-size:200% 200%!important;animation:fdgrad 14s ease-in-out infinite}
   @keyframes fdgrad{0%,100%{background-position:0% 0%}50%{background-position:100% 100%}}
@@ -699,7 +700,7 @@
 
   <nav class="tabbar">
     <button class="tab on" data-tab="home"><span class="te">🗳️</span>ראשי</button>
-    <button class="tab" data-tab="feed"><span class="te">🌀</span>הפיד</button>
+    <button class="tab" data-tab="feed" style="position:relative"><span class="newtag">חדש</span><span class="te">🌀</span>הפיד</button>
     <button class="tab" data-tab="games"><span class="te">🎮</span>משחקים</button>
     <button class="tab" data-tab="learn"><span class="te">🧠</span>תכל'ס</button>
   </nav>
@@ -707,7 +708,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="3.6.2";
+const APP_VERSION="3.6.3";
 const APP_UPDATED="28.9.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
