@@ -277,6 +277,17 @@
   .wvseats{text-align:center;font-family:'Secular One';font-size:15px;min-height:20px}
   .wvdot{position:fixed;width:11px;height:11px;border-radius:50%;z-index:60;pointer-events:none;transition:transform .85s cubic-bezier(.4,.1,.4,1),opacity .2s}
   .wvcup.burnt{opacity:.25;filter:grayscale(1)}
+  /* memo cards */
+  .memo{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
+  .mc{perspective:600px;height:92px;cursor:pointer}
+  .mc .in{position:relative;width:100%;height:100%;transition:transform .45s;transform-style:preserve-3d}
+  .mc.flip .in{transform:rotateY(180deg)}
+  .mc .f,.mc .b{position:absolute;inset:0;border-radius:12px;display:flex;align-items:center;justify-content:center;text-align:center;padding:6px;backface-visibility:hidden;font-size:12px;line-height:1.3;font-weight:800}
+  .mc .f{background:linear-gradient(135deg,rgba(61,123,255,.35),rgba(180,140,242,.35));border:1.5px solid rgba(139,147,184,.35);font-size:26px}
+  .mc .b{background:rgba(255,255,255,.08);border:1.5px solid rgba(139,147,184,.45);transform:rotateY(180deg);color:var(--paper)}
+  .mc.who .b{border-color:rgba(255,89,100,.6)}
+  .mc.done .b{background:rgba(51,214,159,.16);border-color:rgba(51,214,159,.7)}
+  .mc.done{pointer-events:none}
   /* uncle chat */
   .chat{display:flex;flex-direction:column;gap:8px;padding:6px 2px;min-height:120px}
   .bub{max-width:88%;padding:10px 13px;border-radius:16px;font-size:14px;line-height:1.5;position:relative}
@@ -580,6 +591,9 @@
   <!-- HOT TAKES / TWEETS -->
   <section class="screen infopage" id="hot"></section>
 
+  <!-- MEMO -->
+  <section class="screen infopage" id="memo"></section>
+
   <!-- UNCLE -->
   <section class="screen infopage" id="uncle"></section>
 
@@ -614,6 +628,7 @@
     <button class="menucard" id="gMdl"><span class="me">🟩</span><span><div class="mt">מנדטל</div><div class="md">וורדל פוליטי — נחשו את המועמד/ת בשש ניחושים. חידה יומית!</div></span><span class="mtime">3 דק'</span></button>
     <button class="menucard" id="gRace"><span class="me">🏃</span><span><div class="mt">המרוץ לקלפי</div><div class="md">קפצו מעל מכונת הרעל ורוצו 2,026 מטר להצבעה — עם עצירות עדכון אמיתיות</div></span><span class="mtime">2 דק'</span></button>
     <div class="ledsec">🎯 הקלאסיקות</div>
+    <button class="menucard" id="gMemo"><span class="me">🃏</span><span><div class="mt">ממו הפנקס</div><div class="md">משחק זיכרון: הפכו קלפים, חברו שר לכישלון שלו</div></span><span class="mtime">2 דק'</span></button>
     <button class="menucard" id="gUncle"><span class="me">🧔</span><span><div class="mt">שכנעו את הדוד</div><div class="md">סימולטור שיחת שישי: הדוד זורק ספין, אתם בוחרים תשובה</div></span><span class="mtime">3 דק'</span></button>
     <button class="menucard" id="gWv"><span class="me">🗑️</span><span><div class="mt">מעבדת הקול השרוף</div><div class="md">ניסוי באדר–עופר: לאן באמת הולך קול למפלגה שלא עוברת?</div></span><span class="mtime">2 דק'</span></button>
     <button class="menucard" id="gIdle"><span class="me">📣</span><span><div class="mt">מטה הבחירות</div><div class="md">קליקר התמכרותי: משיחה אחת על קפה ועד 4 מנדטים</div></span><span class="mtime">~8 דק'</span></button>
@@ -657,7 +672,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="3.3.2";
+const APP_VERSION="3.4";
 const APP_UPDATED="28.9.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
@@ -833,7 +848,7 @@ function calcMax(){ MAX={}; for(const k in PARTIES){ MAX[k]=0; }
 /* ---------------- state ---------------- */
 let idx=0, scores={lib:0,yachad:0,yashar:0,dem:0}, busy=false, mode="quick", hist=[];
 const $=s=>document.querySelector(s);
-const intro=$("#intro"), quiz=$("#quiz"), result=$("#result"), bibi=$("#bibi"), arab=$("#arab"), who=$("#who"), coal=$("#coal"), core=$("#core"), cmp=$("#cmp"), led=$("#led"), votes=$("#votes"), gmenu=$("#gmenu"), lmenu=$("#lmenu"), quote=$("#quote"), dict=$("#dict"), facts=$("#facts"), poison=$("#poison"), budget=$("#budget"), gov=$("#gov"), hl=$("#hl"), mdl=$("#mdl"), race=$("#race"), idle=$("#idle"), wv=$("#wv"), hot=$("#hot"), uncle=$("#uncle");
+const intro=$("#intro"), quiz=$("#quiz"), result=$("#result"), bibi=$("#bibi"), arab=$("#arab"), who=$("#who"), coal=$("#coal"), core=$("#core"), cmp=$("#cmp"), led=$("#led"), votes=$("#votes"), gmenu=$("#gmenu"), lmenu=$("#lmenu"), quote=$("#quote"), dict=$("#dict"), facts=$("#facts"), poison=$("#poison"), budget=$("#budget"), gov=$("#gov"), hl=$("#hl"), mdl=$("#mdl"), race=$("#race"), idle=$("#idle"), wv=$("#wv"), hot=$("#hot"), uncle=$("#uncle"), memo=$("#memo");
 const zone=$("#cardzone"), slips=$("#slips"), count=$("#count"), box=$("#box");
 
 function startGame(m){
@@ -847,7 +862,7 @@ function startGame(m){
 $("#startQuick").onclick=()=>startGame("quick");
 $("#startDeep").onclick=()=>startGame("deep");
 
-function show(sc){[intro,quiz,result,bibi,arab,who,coal,core,cmp,led,votes,gmenu,lmenu,quote,dict,facts,poison,budget,gov,hl,mdl,race,idle,wv,hot,uncle].forEach(x=>x.classList.remove("on"));sc.classList.add("on");sc.scrollTop=0;
+function show(sc){[intro,quiz,result,bibi,arab,who,coal,core,cmp,led,votes,gmenu,lmenu,quote,dict,facts,poison,budget,gov,hl,mdl,race,idle,wv,hot,uncle,memo].forEach(x=>x.classList.remove("on"));sc.classList.add("on");sc.scrollTop=0;
   if(sc!==arab){const m=$("#arabMore"),b=$("#proArab");if(m){m.classList.remove("on");}if(b){b.style.display="";}}}
 $("#toCore").onclick=()=>{renderCore();show(core);};
 $("#toCmp").onclick=()=>{renderCompass();show(cmp);};
@@ -1712,6 +1727,7 @@ $("#gRace").onclick=()=>{lastTab="games";startRace();};
 $("#gIdle").onclick=()=>{lastTab="games";startIdle();};
 $("#gWv").onclick=()=>{lastTab="games";startWv();};
 $("#gUncle").onclick=()=>{lastTab="games";startUncle();};
+$("#gMemo").onclick=()=>{lastTab="games";startMemo();};
 /* learn menu */
 $("#lHot").onclick=()=>{lastTab="learn";renderHot();show(hot);};
 $("#lFacts").onclick=()=>{lastTab="learn";renderFacts();show(facts);};
@@ -3350,6 +3366,72 @@ function unEnd(){
   $("#unOpts").innerHTML="";
   $("#unAgain").onclick=()=>startUncle();
   $("#unShare").onclick=()=>{ const txt=`שכנעתי את הדוד ב־${st.score}/6 בסימולטור שיחת השישי 🧔 — תנסו גם: https://petek-bakalpi.github.io/`; try{ navigator.clipboard.writeText(txt); $("#unShare").textContent="הועתק ✓"; }catch(_){ $("#unShare").textContent=txt; } };
+}
+
+/* ================= MEMO (ledger memory) ================= */
+const MEMO_PAIRS=[
+ {who:"יואב קיש",what:"גנז את תוצאות המיצ״ב",key:"יואב קיש"},
+ {who:"מירי רגב",what:"חסמה את אובר, ביטלה את מס הגודש",key:"מירי רגב"},
+ {who:"ישראל כ״ץ",what:"״הדיח״ אלוף בשידור חי — והכחיש",key:"מגלנט"},
+ {who:"שלמה קרעי",what:"פעל לסגירת תאגיד ״כאן״",key:"שלמה קרעי"},
+ {who:"איתמר בן גביר",what:"330 אלף רישיונות נשק",key:"בן גביר"},
+ {who:"בצלאל סמוטריץ׳",what:"ארבע הורדות דירוג, ״אדמה חרוכה״",key:"סמוטריץ"},
+ {who:"ניר ברקת",what:"תוכנית הפוטש הפנימי",key:"ניר ברקת"},
+ {who:"יריב לוין",what:"מחרים את נשיא בית המשפט העליון",key:"לוין"},
+ {who:"אמיר אוחנה",what:"״הכנסת אמרה את דברה״ — נגד בג״ץ",key:"אוחנה"},
+ {who:"בועז ביסמוט",what:"״בוטים איראניים״ נגד ועדת הבחירות",key:"ביסמוט"},
+ {who:"טלי גוטליב",what:"״ראש השב״כ חילץ את עובדיו ב־03:30״",key:"גוטליב"},
+ {who:"מאי גולן",what:"מסתמן כתב אישום; חקירה אחרי הבחירות",key:"מאי גולן"},
+ {who:"גילה גמליאל",what:"נדחקה למקום 25 — ולפנקס",key:"גילה גמליאל"},
+ {who:"מיקי זוהר",what:"התערבויות בפרסים ובתקצוב תרבות",key:"מיקי זוהר"},
+];
+let mmS=null;
+function startMemo(){
+  const pairs=[...MEMO_PAIRS].sort(()=>Math.random()-.5).slice(0,6);
+  const cards=[];
+  pairs.forEach((pr,i)=>{ cards.push({id:i,side:"who",t:pr.who}); cards.push({id:i,side:"what",t:pr.what}); });
+  cards.sort(()=>Math.random()-.5);
+  mmS={pairs,cards,open:[],found:0,moves:0,lock:false};
+  renderMemo(); show(memo);
+}
+function renderMemo(){
+  const st=mmS;
+  memo.innerHTML=`
+    <h2>ממו הפנקס<br><span class="hl">חברו שר לכישלון שלו 🃏</span></h2>
+    <div style="display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted)"><span>זוגות: <b id="mmFound">0</b>/6</span><span>מהלכים: <b id="mmMoves">0</b></span></div>
+    <div class="memo" id="mmGrid">${st.cards.map((c,i)=>`<div class="mc ${c.side}" data-i="${i}"><div class="in"><div class="f">${c.side==="who"?"👤":"📓"}</div><div class="b">${c.t}</div></div></div>`).join("")}</div>
+    <div id="mmOut"></div>
+    <button class="linkbtn" data-back>יציאה</button>`;
+  memo.querySelector("[data-back]").onclick=()=>goBack();
+  memo.querySelectorAll(".mc").forEach(el=>el.onclick=()=>mmFlip(+el.dataset.i));
+}
+function mmFlip(i){
+  const st=mmS; if(st.lock) return;
+  const el=memo.querySelector(`.mc[data-i="${i}"]`);
+  if(el.classList.contains("flip")||el.classList.contains("done")) return;
+  el.classList.add("flip"); st.open.push(i);
+  if(st.open.length<2) return;
+  st.moves++; $("#mmMoves").textContent=st.moves; st.lock=true;
+  const [a,b]=st.open.map(k=>st.cards[k]);
+  const ea=memo.querySelector(`.mc[data-i="${st.open[0]}"]`), eb=memo.querySelector(`.mc[data-i="${st.open[1]}"]`);
+  if(a.id===b.id && a.side!==b.side){
+    setTimeout(()=>{ ea.classList.add("done"); eb.classList.add("done"); st.found++; $("#mmFound").textContent=st.found; st.open=[]; st.lock=false;
+      const pr=st.pairs[a.id];
+      $("#mmOut").innerHTML=`<div class="voteres good" style="margin:6px 0"><b>✓ ${pr.who}</b> — ${pr.what} <button class='dlchip' data-pg='led' data-k='${pr.key}'>📓 בפנקס</button></div>`;
+      $("#mmOut").querySelector(".dlchip").onclick=()=>deepOpen("led",pr.key);
+      if(st.found===6) mmEnd(); },350);
+  } else {
+    setTimeout(()=>{ ea.classList.remove("flip"); eb.classList.remove("flip"); st.open=[]; st.lock=false; },800);
+  }
+}
+function mmEnd(){
+  const st=mmS;
+  const grade= st.moves<=8?"זיכרון של יועמ״שית 🏆":st.moves<=12?"עוקבים אחרי הפנקס, רואים 👀":"הפנקס ארוך. תקראו שוב 📓";
+  $("#mmOut").innerHTML=`<div class="rescard" style="text-align:center"><div style="font-size:40px">🃏</div><h3 style="font-family:'Secular One';font-size:21px;margin:6px 0">6 זוגות ב־${st.moves} מהלכים</h3><p>${grade}</p>
+    <div class="row2" style="gap:7px;margin-top:8px"><button class="btn backbtn" id="mmLed" style="flex:1">📓 לפנקס המלא</button><button class="btn btn-again" id="mmAgain" style="flex:1">עוד סיבוב 🔁</button></div>
+    <p style="font-size:11px;color:var(--muted);margin-top:8px">6 זוגות אקראיים מתוך ${MEMO_PAIRS.length} — כל אחד כרטיס בפנקס הכישלונות.</p></div>`;
+  $("#mmAgain").onclick=()=>startMemo();
+  $("#mmLed").onclick=()=>{ lastTab="learn"; renderLedger(); show(led); };
 }
 </script>
 </body>
