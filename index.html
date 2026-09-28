@@ -311,6 +311,12 @@
   .fdgo{display:inline-flex;align-items:center;gap:8px;background:#fff;color:#0F1530;font-family:'Secular One';font-size:16px;padding:12px 22px;border-radius:99px;border:0;box-shadow:0 6px 18px rgba(0,0,0,.35);cursor:pointer;margin:16px auto 0;position:relative;z-index:5;transition:transform .12s}
   .fdgo:active{transform:scale(.97)}
   .fdgo b{font-family:'Heebo';font-weight:900;font-size:14px}
+  .rb.liked i{background:rgba(255,89,100,.55);border-color:#FF5964;animation:xpulse .5s ease}
+  .rb.liked svg{fill:#fff;stroke:#fff}
+  .fdhelp{position:absolute;inset:0;background:rgba(15,21,48,.96);z-index:20;display:none;flex-direction:column;justify-content:center;padding:26px;color:var(--paper);text-align:right}
+  .fdhelp.on{display:flex}
+  .fdhelp h3{font-family:'Secular One';font-size:22px;margin:0 0 10px}
+  .fdhelp p{font-size:14px;line-height:1.6;margin:6px 0}
   /* feed — action rail + nudge */
   .fdc:not(.cta){padding-left:66px;padding-top:64px;justify-content:center}
   .fdc:not(.cta) .lbl{position:absolute;top:18px;right:20px;left:66px}
@@ -754,7 +760,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="3.10";
+const APP_VERSION="3.11";
 const APP_UPDATED="28.9.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
@@ -3590,15 +3596,29 @@ const FD_CTA=[
 let fdPool=[], fdCount=0, fdIO=null, fdInIO=null, fdShown=0;
 /* דילר: תור לכל סוג + משקלים; לא אותו סוג פעמיים ברצף; מועמד לכל היותר אחת ל-4 */
 const FD_W={txt:5,spin:3,led:2,core:2,cand:2,whoq:2,party:2,expl:1.5,num:1.5,quote:1.5,vs:1.5,game:1.5,hilo:1,tweet:1};
-let fdDealt=0, fdEggShown=0;
+let fdDealt=0, fdEggShown=0, fdStash=[];
 let fdQ={}, fdLast=[], fdAll=[];
+/* לייקים — זיכרון סשן בלבד: משקל לפי סוג ולפי נושא */
+let fdLikeT={}, fdLikeTopic={}, fdLikeN=0;
+const fdTopic=c=>(c.src||c.party||c.who||c.n||c.a||"").toString().slice(0,20);
+function fdLike(card,c,btn){
+  if(btn.classList.contains("liked")) return;
+  btn.classList.add("liked"); fdLikeN++;
+  fdLikeT[c.k]=(fdLikeT[c.k]||0)+1; const t=fdTopic(c); if(t) fdLikeTopic[t]=(fdLikeTopic[t]||0)+1;
+  const lc=$("#fdLikes"); if(lc) lc.textContent="❤️ "+fdLikeN;
+  try{ confetti(); }catch(_){ }
+}
+function fdTypeW(t){ const n=fdLikeT[t]||0; return FD_W[t]*Math.min(3,1+0.6*n*Math.pow(0.85,Math.max(0,fdLikeN-1))); }
+function fdTopicBoost(c){ const t=fdTopic(c); const n=t?(fdLikeTopic[t]||0):0; return n?Math.min(3,1+1.0*n*Math.pow(0.85,Math.max(0,fdLikeN-1))):1; }
 function fdDeal(){
   if(!fdAll.length) fdAll=fdBuildPool();
   const types=Object.keys(FD_W).filter(t=>fdAll.some(c=>c.k===t));
   const cands=types.filter(t=>t!==fdLast[fdLast.length-1] && !(t==="cand"&&fdLast.slice(-3).includes("cand")));
-  const tot=cands.reduce((a,t)=>a+FD_W[t],0); let r=Math.random()*tot, pick=cands[0];
-  for(const t of cands){ r-=FD_W[t]; if(r<=0){ pick=t; break; } }
+  const tot=cands.reduce((a,t)=>a+fdTypeW(t),0); let r=Math.random()*tot, pick=cands[0];
+  for(const t of cands){ r-=fdTypeW(t); if(r<=0){ pick=t; break; } }
   if(!fdQ[pick]||!fdQ[pick].length) fdQ[pick]=fdAll.filter(c=>c.k===pick).sort(()=>Math.random()-.5);
+  /* העדפת נושא: אם יש לייקים על נושא, מקדמים כרטיס תואם בתור (עד 8 קדימה) */
+  if(fdLikeN){ const q=fdQ[pick]; const n=q.length; for(let i=n-1;i>=Math.max(0,n-8);i--){ if(fdTopicBoost(q[i])>1 && Math.random()<0.6){ const [c]=q.splice(i,1); q.push(c); break; } } }
   fdLast.push(pick); if(fdLast.length>6) fdLast.shift();
   fdDealt++;
   if(fdDealt>=fdAll.length*(fdEggShown+1)){ fdEggShown++; try{ confetti(); }catch(_){ } return {k:"egg",n:fdAll.length}; }
@@ -3719,7 +3739,7 @@ function fdCard(c,i){
     return `<div class="fdc" data-k="quote" style="background:${g}"><div class="wm">💬</div><div class="lbl src"><a href="#" data-go="quote">💬 אמרו · מי אמר את זה? ↗</a></div><div><div class="qmark">״</div><div class="big">${fdLines(c.t)}</div><div class="sub"><span class="ln">— ${c.a}${c.s?" · "+c.s:""}</span></div></div><div class="bar"><button data-share="${encodeURIComponent("״"+c.t+"״ — "+c.a)}">📤 שתפו</button></div></div>`;
   }
   if(c.k==="tweet"){
-    return `<div class="fdc" data-k="tweet" style="background:${g}"><div class="wm">🐦</div><div class="lbl src"><a href="#" data-go="hot" data-key="${c.who}">🔥 ציוצים חמים · ${c.who} ↗</a></div><div class="tw"><blockquote class="twitter-tweet" data-theme="dark" data-lang="he" data-dnt="true"><p dir="rtl" style="color:#fff;opacity:.7">⏳ טוען את הציוץ…</p><a href="${c.url}" style="color:#fff">${c.who} ${c.handle}</a></blockquote></div><div class="bar"><a class="btnlike" href="${c.url}" target="_blank" rel="noopener">🐦 הציוץ ב-X</a><button data-share="${encodeURIComponent(c.url)}">📤 שתפו</button></div></div>`;
+    return `<div class="fdc" data-k="tweet" style="background:${g}"><div class="wm">🐦</div><div class="lbl src"><a href="#" data-go="hot" data-key="${c.who}">🔥 ציוצים חמים · ${c.who} ↗${c.dt?`<span style="display:block;font-weight:500;opacity:.85;font-size:10.5px;margin-top:2px">🗓️ ${c.dt}</span>`:""}</a></div><div class="tw"><blockquote class="twitter-tweet" data-theme="dark" data-lang="he" data-dnt="true"><p dir="rtl" style="color:#fff;opacity:.7">⏳ טוען את הציוץ…</p><a href="${c.url}" style="color:#fff">${c.who} ${c.handle}</a></blockquote></div><div class="bar"><a class="btnlike" href="${c.url}" target="_blank" rel="noopener">🐦 הציוץ ב-X</a><button data-share="${encodeURIComponent(c.url)}">📤 שתפו</button></div></div>`;
   }
   if(c.k==="game"){
     return `<div class="fdc cta" data-k="game" style="background:${g}"><div class="wm">🎮</div><div class="gbig">${c.e}</div><div class="big"><span class="ln">${c.t}</span></div><div class="sub"><span class="ln">${c.s}</span></div><div class="bar"><button class="fdgo" data-game="${c.id}">▶ <b>עבור למשחק:</b> ${(document.querySelector("#"+c.id+" .mt")||{}).textContent||""}</button><span data-share="${encodeURIComponent(c.t+" — "+c.s)}" hidden></span></div></div>`;
@@ -3749,7 +3769,8 @@ function fdCard(c,i){
     return `<div class="fdc" data-k="hilo" style="background:${g}"><div class="wm">⚖️</div><div class="lbl src"><a href="#" data-go="budget" data-key="">📈 מה גדול יותר? ↗</a></div><div>${[c.a,c.b].map(x=>`<button class="ans" data-q="hilo" data-ok="${x===big?1:0}" data-ra="${fdMoney(c.a.v)}" data-rb="${fdMoney(c.b.v)}" data-ta="${c.a.t}" data-tb="${c.b.t}">${x.t}</button>`).join("")}<div class="reveal" hidden></div></div><div class="bar"><button data-share="${encodeURIComponent("מה גדול יותר: "+c.a.t+" או "+c.b.t+"? — פתק בקלפי")}">📤 שתפו</button></div></div>`;
   }
   if(c.k==="spin"){
-    return `<div class="fdc" data-k="spin" style="background:${g}"><div class="wm">🎭</div><div class="lbl src"><a href="#" data-go="${c.spin?"facts":"led"}" data-key="${c.key}">🎭 אמת או ספין? ↗</a></div><div><div class="big" style="font-size:20px">${c.t}</div><div style="display:flex;gap:8px"><button class="ans" data-q="spin" data-ok="${c.spin?0:1}" data-src="${c.src}" data-pg="${c.spin?"facts":"led"}" data-key="${c.key}" data-spin="${c.spin?1:0}">✅ אמת</button><button class="ans" data-q="spin" data-ok="${c.spin?1:0}" data-src="${c.src}" data-pg="${c.spin?"facts":"led"}" data-key="${c.key}" data-spin="${c.spin?1:0}">🎭 ספין</button></div><div class="reveal" hidden></div></div><div class="bar"><button data-share="${encodeURIComponent("אמת או ספין? ״"+c.t+"״ — פתק בקלפי")}">📤 שתפו</button></div></div>`;
+    const sf=c.spin?FACTS.find(x=>x.t===c.src):null;
+    return `<div class="fdc" data-k="spin" style="background:${g}"><div class="wm">🎭</div><div class="lbl src"><a href="#" data-go="${c.spin?"facts":"led"}" data-key="${c.key}">🎭 אמת או ספין? ↗${sf&&sf.dt?`<span style="display:block;font-weight:500;opacity:.85;font-size:10.5px;margin-top:2px">🗓️ ${sf.dt}</span>`:""}</a></div><div><div class="big" style="font-size:20px">${c.t}</div><div style="display:flex;gap:8px"><button class="ans" data-q="spin" data-ok="${c.spin?0:1}" data-src="${c.src}" data-pg="${c.spin?"facts":"led"}" data-key="${c.key}" data-spin="${c.spin?1:0}">✅ אמת</button><button class="ans" data-q="spin" data-ok="${c.spin?1:0}" data-src="${c.src}" data-pg="${c.spin?"facts":"led"}" data-key="${c.key}" data-spin="${c.spin?1:0}">🎭 ספין</button></div><div class="reveal" hidden></div></div><div class="bar"><button data-share="${encodeURIComponent("אמת או ספין? ״"+c.t+"״ — פתק בקלפי")}">📤 שתפו</button></div></div>`;
   }
   if(c.k==="led"||c.k==="core"){
     const lbl=c.k==="led"?"📓 פנקס הכישלונות":"🧠 נושאי הליבה";
@@ -3759,7 +3780,7 @@ function fdCard(c,i){
   }
   const f=FACTS.find(x=>x.t===c.src);
   const srcLink=f&&f.url?`<a href="${f.url}" target="_blank" rel="noopener">למקור ↗</a>`:`<a href="https://www.google.com/search?q=${encodeURIComponent(f?f.srch:c.src)}" target="_blank" rel="noopener">🔎 בדקו</a>`;
-  return `<div class="fdc" data-k="txt" style="background:${g}"><div class="wm">${c.e}</div><div class="lbl src"><a href="#" data-go="facts" data-key="${c.key}">${c.e} מתוך: ${c.src} ↗</a></div><div class="big">${fdLines(c.t)}</div><div class="bar">${srcLink.replace('<a ','<a class="btnlike" ')}<button data-share="${encodeURIComponent(c.t)}">📤 שתפו</button></div></div>`;
+  return `<div class="fdc" data-k="txt" style="background:${g}"><div class="wm">${c.e}</div><div class="lbl src"><a href="#" data-go="facts" data-key="${c.key}">${c.e} מתוך: ${c.src} ↗${f&&f.dt?`<span style="display:block;font-weight:500;opacity:.85;font-size:10.5px;margin-top:2px">🗓️ ${f.dt}</span>`:""}</a></div><div class="big">${fdLines(c.t)}</div><div class="bar">${srcLink.replace('<a ','<a class="btnlike" ')}<button data-share="${encodeURIComponent(c.t)}">📤 שתפו</button></div></div>`;
 }
 function fdAppend(n){
   const wrap=$("#fdWrap"); const sent=$("#fdSent");
@@ -3773,13 +3794,16 @@ function fdAppend(n){
       {s:"מרצ נשרפה ב־4,124 קולות ב־2022. אם כל אחד שהגיע עד לכאן מביא עוד אחד — זה יותר מזה.",b:"wv"}];
       const m=M[Math.floor(fdCount/25-1)%M.length]; html+=fdCard({k:"cta",t:fdCount+" כרטיסים.",s:m.s,b:m.b},fdCount); }
     else if(fdCount>0 && fdCount%9===0){ html+=fdCard({k:"cta",...FD_CTA[Math.floor(fdCount/9-1)%FD_CTA.length]},fdCount); }
-    else { html+=fdCard(fdDeal(),fdCount); }
+    else { const c=fdDeal(); fdStash.push(c); html+=fdCard(c,fdCount); }
     fdCount++;
   }
   sent.insertAdjacentHTML("beforebegin",html);
   wrap.querySelectorAll(".fdc:not([data-w])").forEach(el=>{
     el.dataset.w="1"; el.dataset.i=++fdShown;
     fdRail(el);
+    const cdata=(!el.classList.contains("cta")||el.dataset.k==="game"||el.dataset.k==="egg")?fdStash.shift():null;
+    const rail=el.querySelector(".rail");
+    if(rail&&cdata&&!el.classList.contains("cta")){ const hb=document.createElement("button"); hb.className="rb"; hb.innerHTML=`<i>${FD_ICO.heart}</i><small>אהבתי</small>`; hb.onclick=()=>fdLike(el,cdata,hb); rail.insertBefore(hb,rail.firstChild); }
     if(!el.classList.contains("cta")) el.insertAdjacentHTML("beforeend",'<div class="fdnudge"><span>⬆ גללו לכרטיס הבא</span></div>');
     el.querySelectorAll("[data-game]").forEach(b=>b.onclick=()=>{ const t=$("#"+b.dataset.game); if(t) t.click(); });
     el.querySelectorAll(".ans").forEach(b=>b.onclick=()=>fdAnswer(el,b));
@@ -3794,6 +3818,7 @@ const FD_ICO={
   share:'<svg viewBox="0 0 24 24"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>',
   copy:'<svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>',
   ext:'<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.6" y2="16.6"/></svg>',
+  heart:'<svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>',
   bird:'<svg viewBox="0 0 24 24"><path d="M4 4l16 16M20 4L4 20"/></svg>'
 };
 function fdRail(el){
@@ -3828,11 +3853,19 @@ function fdShare(txt){
   else { try{ navigator.clipboard.writeText(full); }catch(_){ } }
 }
 function startFeed(){
-  fdAll=fdBuildPool(); fdQ={}; fdLast=[]; fdCount=0; fdShown=0; fdDealt=0; fdEggShown=0;
-  feed.innerHTML=`<div class="fdtop"><span>🌀 הפיד</span><button class="fdtog" id="fdAuto" title="גלילה אוטומטית">▶ אוטו</button><span id="fdCounter" style="font-size:11px;color:var(--muted);font-family:inherit">כרטיס 1 · עוד ${Math.max(0,Math.ceil((ELECTION_DATE-new Date())/864e5))} ימים</span><button class="linkbtn" data-back style="margin:0;padding:4px 8px">✕</button></div>
-    <div class="fdwrap" id="fdWrap"><div id="fdSent" style="height:2px"></div></div>
+  fdAll=fdBuildPool(); fdQ={}; fdLast=[]; fdCount=0; fdShown=0; fdDealt=0; fdEggShown=0; fdStash=[]; fdLikeT={}; fdLikeTopic={}; fdLikeN=0;
+  feed.innerHTML=`<div class="fdtop"><span>🌀 הפיד</span><button class="fdtog" id="fdHelpBtn" title="איך הפיד עובד">❔</button><button class="fdtog" id="fdAuto" title="גלילה אוטומטית">▶ אוטו</button><span id="fdLikes" style="font-size:11px;color:#FF8A92;font-family:inherit;font-weight:900"></span><span id="fdCounter" style="font-size:11px;color:var(--muted);font-family:inherit">כרטיס 1 · עוד ${Math.max(0,Math.ceil((ELECTION_DATE-new Date())/864e5))} ימים</span><button class="linkbtn" data-back style="margin:0;padding:4px 8px">✕</button></div>
+    <div class="fdwrap" id="fdWrap"><div id="fdSent" style="height:2px"></div>
+      <div class="fdhelp" id="fdHelp"><h3>❔ איך הפיד עובד</h3>
+        <p><b>❤️ לייק = ״עוד מזה״.</b> כל כרטיס שייך לסוג (פנקס, נושא ליבה, מועמד, ציטוט…) ולנושא (האדם או הפריט שמאחוריו). לייק מעלה את הסיכוי לכרטיסים מאותו סוג ועל אותו נושא בהמשך הגלילה — בעדינות, כדי שהפיד לא ייסגר עליכם.</p>
+        <p><b>🔒 שום דבר לא נשמר.</b> הלייקים חיים בזיכרון של המסך הזה בלבד, ונמחקים כשסוגרים את האפליקציה. לא נשלח, לא נשמר בטלפון, לא נראה על ידינו.</p>
+        <p><b>🎲 בלי לייקים:</b> הסדר אקראי־ממושקל, עם שני כללים בלבד — לא אותו סוג פעמיים ברצף, ומועמד לכל היותר אחת לארבעה כרטיסים. כל 9 כרטיסים — הצעה לפעולה. וכשעוברים על כל המאגר — ההפתעה.</p>
+        <p><b>🗓️ תאריך</b> מופיע על כל כרטיס שמקורו במחלקת האקטואליה, כמו במחלקה עצמה.</p>
+        <button class="fdgo" id="fdHelpClose" style="align-self:center">הבנתי, ממשיכים 🌀</button></div>
+    </div>
     <div class="fdhint">⬆ גללו</div>`;
   feed.querySelector("[data-back]").onclick=()=>showTab("home");
+  $("#fdHelpBtn").onclick=()=>$("#fdHelp").classList.add("on"); $("#fdHelpClose").onclick=()=>$("#fdHelp").classList.remove("on");
   const tog=$("#fdAuto");
   tog.onclick=()=>{ fdAuto=!fdAuto; tog.classList.toggle("on",fdAuto); feed.classList.toggle("fdauto",fdAuto); tog.textContent=fdAuto?"⏸ אוטו":"▶ אוטו";
     feed.querySelectorAll(".fdnudge.on").forEach(n=>n.classList.remove("on")); clearTimeout(fdNudgeT);
