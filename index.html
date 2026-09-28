@@ -762,7 +762,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="3.11.1";
+const APP_VERSION="3.11.2";
 const APP_UPDATED="28.9.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
@@ -3605,7 +3605,7 @@ let fdLikeT={}, fdLikeTopic={}, fdLikeN=0;
 const fdTopic=c=>(c.src||c.party||c.who||c.n||c.a||"").toString().slice(0,20);
 function fdLike(card,c,btn){
   const on=!btn.classList.contains("liked"); const d=on?1:-1;
-  btn.classList.toggle("liked",on); btn.querySelector("small").textContent=on?"אהבתם":"אהבתי";
+  btn.classList.toggle("liked",on); btn.querySelector("small").textContent=on?"סומן ✓":"מעניין";
   fdLikeN=Math.max(0,fdLikeN+d);
   fdLikeT[c.k]=Math.max(0,(fdLikeT[c.k]||0)+d); const t=fdTopic(c); if(t) fdLikeTopic[t]=Math.max(0,(fdLikeTopic[t]||0)+d);
   if(on){ const pop=document.createElement("div"); pop.className="fdheartpop"; pop.textContent="❤️"; card.appendChild(pop); setTimeout(()=>pop.remove(),700); }
@@ -3810,7 +3810,7 @@ function fdAppend(n){
     fdRail(el);
     const cdata=(!el.classList.contains("cta")||el.dataset.k==="game"||el.dataset.k==="egg")?fdStash.shift():null;
     const rail=el.querySelector(".rail");
-    if(rail&&cdata&&!el.classList.contains("cta")){ el._c=cdata; const hb=document.createElement("button"); hb.className="rb heart"; hb.innerHTML=`<i>${FD_ICO.heart}</i><small>אהבתי</small>`; hb.onclick=()=>fdLike(el,cdata,hb); rail.insertBefore(hb,rail.firstChild); fdDblTap(el); }
+    if(rail&&cdata&&!el.classList.contains("cta")){ el._c=cdata; const hb=document.createElement("button"); hb.className="rb heart"; hb.innerHTML=`<i>${FD_ICO.heart}</i><small>מעניין</small>`; hb.onclick=()=>fdLike(el,cdata,hb); rail.insertBefore(hb,rail.firstChild); fdDblTap(el); }
     if(!el.classList.contains("cta")) el.insertAdjacentHTML("beforeend",'<div class="fdnudge"><span>⬆ גללו לכרטיס הבא</span></div>');
     el.querySelectorAll("[data-game]").forEach(b=>b.onclick=()=>{ const t=$("#"+b.dataset.game); if(t) t.click(); });
     el.querySelectorAll(".ans").forEach(b=>b.onclick=()=>fdAnswer(el,b));
@@ -3864,9 +3864,9 @@ function startFeed(){
   feed.innerHTML=`<div class="fdtop"><span>🌀 הפיד</span><button class="fdtog" id="fdHelpBtn" title="איך הפיד עובד">❔</button><button class="fdtog" id="fdAuto" title="גלילה אוטומטית">▶ אוטו</button><span id="fdCounter" style="font-size:11px;color:var(--muted);font-family:inherit">כרטיס 1 · עוד ${Math.max(0,Math.ceil((ELECTION_DATE-new Date())/864e5))} ימים</span><button class="linkbtn" data-back style="margin:0;padding:4px 8px">✕</button></div>
     <div class="fdwrap" id="fdWrap"><div id="fdSent" style="height:2px"></div></div>
       <div class="fdhelp" id="fdHelp"><h3>❔ איך הפיד עובד</h3>
-        <p><b>❤️ לייק = ״עוד מזה״.</b> כל כרטיס שייך לסוג (פנקס, נושא ליבה, מועמד, ציטוט…) ולנושא (האדם או הפריט שמאחוריו). לייק מעלה את הסיכוי לכרטיסים מאותו סוג ועל אותו נושא בהמשך הגלילה — בעדינות, כדי שהפיד לא ייסגר עליכם.</p>
-        <p><b>🔒 שום דבר לא נשמר.</b> הלייקים חיים בזיכרון של המסך הזה בלבד, ונמחקים כשסוגרים את האפליקציה. לא נשלח, לא נשמר בטלפון, לא נראה על ידינו.</p>
-        <p><b>🎲 בלי לייקים:</b> הסדר אקראי־ממושקל, עם שני כללים בלבד — לא אותו סוג פעמיים ברצף, ומועמד לכל היותר אחת לארבעה כרטיסים. כל 9 כרטיסים — הצעה לפעולה. וכשעוברים על כל המאגר — ההפתעה.</p>
+        <p><b>❤️ ״מעניין״ = ״עוד מזה״.</b> כל כרטיס שייך לסוג (פנקס, נושא ליבה, מועמד, ציטוט…) ולנושא (האדם או הפריט שמאחוריו). סימון ״מעניין״ מעלה את הסיכוי לכרטיסים מאותו סוג ועל אותו נושא בהמשך הגלילה — בעדינות, כדי שהפיד לא ייסגר עליכם.</p>
+        <p><b>🔒 שום דבר לא נשמר.</b> הסימונים חיים בזיכרון של המסך הזה בלבד, ונמחקים כשסוגרים את האפליקציה. לא נשלח, לא נשמר בטלפון, לא נראה על ידינו.</p>
+        <p><b>🎲 בלי סימונים:</b> הסדר אקראי־ממושקל, עם שני כללים בלבד — לא אותו סוג פעמיים ברצף, ומועמד לכל היותר אחת לארבעה כרטיסים. כל 9 כרטיסים — הצעה לפעולה. וכשעוברים על כל המאגר — ההפתעה.</p>
         <p><b>🗓️ תאריך</b> מופיע על כל כרטיס שמקורו במחלקת האקטואליה, כמו במחלקה עצמה.</p>
         <button class="fdgo" id="fdHelpClose" style="align-self:center">הבנתי, ממשיכים 🌀</button></div>
     <div class="fdhint">⬆ גללו</div>`;
