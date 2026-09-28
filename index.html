@@ -732,7 +732,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="3.7.2";
+const APP_VERSION="3.8";
 const APP_UPDATED="28.9.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
@@ -3532,7 +3532,8 @@ const FD_CTA=[
 ];
 let fdPool=[], fdCount=0, fdIO=null, fdInIO=null, fdShown=0;
 /* דילר: תור לכל סוג + משקלים; לא אותו סוג פעמיים ברצף; מועמד לכל היותר אחת ל-4 */
-const FD_W={txt:5,spin:3,led:2,core:2,cand:2,whoq:2,num:1.5,quote:1.5,vs:1.5,game:1.5,hilo:1,tweet:1};
+const FD_W={txt:5,spin:3,led:2,core:2,cand:2,whoq:2,party:2,expl:1.5,num:1.5,quote:1.5,vs:1.5,game:1.5,hilo:1,tweet:1};
+let fdDealt=0, fdEggShown=0;
 let fdQ={}, fdLast=[], fdAll=[];
 function fdDeal(){
   if(!fdAll.length) fdAll=fdBuildPool();
@@ -3542,6 +3543,8 @@ function fdDeal(){
   for(const t of cands){ r-=FD_W[t]; if(r<=0){ pick=t; break; } }
   if(!fdQ[pick]||!fdQ[pick].length) fdQ[pick]=fdAll.filter(c=>c.k===pick).sort(()=>Math.random()-.5);
   fdLast.push(pick); if(fdLast.length>6) fdLast.shift();
+  fdDealt++;
+  if(fdDealt>=fdAll.length*(fdEggShown+1)){ fdEggShown++; try{ confetti(); }catch(_){ } return {k:"egg",n:fdAll.length}; }
   return fdQ[pick].pop();
 }
 function fdAnswer(card,b){
@@ -3582,6 +3585,20 @@ function fdBuildPool(){
   // candidates: Likud (parsed from the Netanyahu-bloc page)
   try{ const re=/<b>(\d+) (?:🔒 )?· ([^<]+)<\/b> — ([^<]*)/g; let m; const html=bibi.innerHTML;
     while((m=re.exec(html))){ if(+m[1]<=25) pool.push({k:"cand",likud:true,n:m[2].trim(),b:m[3].replace(/\s+/g," ").trim().slice(0,220),pos:+m[1],party:"הליכוד",e:"🔴",key:"|"+m[2].trim(),pg:"bibi"}); } }catch(_){}
+  // dictionary: party ID / record / pros / cons / platform
+  DICT_DEM.forEach(d=>{
+    const party=d.n.split(" — ")[0];
+    if(d.idc) pool.push({k:"party",sub:"🪪 תעודת זהות",party,e:d.e,t:firstSent(d.idc,240),key:party+"|"});
+    if(d.record) pool.push({k:"party",sub:"📜 הרקורד",party,e:d.e,t:firstSent(d.record,240),key:party+"|"});
+    (d.pro||[]).forEach(x=>pool.push({k:"party",sub:"🟢 למה כן",party,e:d.e,t:x,key:party+"|"}));
+    (d.con||[]).forEach(x=>pool.push({k:"party",sub:"🔴 למה לא (בגילוי נאות)",party,e:d.e,t:x.replace(/<[^>]*>/g,""),key:party+"|"}));
+    if(d.mz){ const t=(d.mz||"").replace(/<a[\s\S]*$/,"").replace(/<[^>]*>/g,"").replace(/^עיקרי המצע \(תקציר שלנו\):\s*/,"").trim(); if(t) pool.push({k:"party",sub:"📋 מה הם מבטיחים",party,e:d.e,t:firstSent(t,240),key:party+"|"}); }
+  });
+  // Likud: no platform + baseline (from the bloc page)
+  pool.push({k:"party",sub:"📄 מה הם מבטיחים?",party:"הליכוד",e:"🔴",t:"אין מסמך. כמו ב־2019, 2021 ו־2022 — גם הפעם מפלגת השלטון לא פרסמה מצע כתוב. ההבטחה היחידה על הפתק היא האיש שבראשו.",key:"|",pg:"bibi"});
+  pool.push({k:"party",sub:"⚖️ שורת הבסיס",party:"הליכוד",e:"🔴",t:"גם מי שרקורדו האישי נקי לחלוטין — כל הסיעה הצביעה נגד ועדת חקירה ממלכתית, בעד חוקי ההפיכה המשטרית, ובעד הכספים הקואליציוניים בשיא המלחמה.",key:"|",pg:"bibi"});
+  // explainers: poison machine signs / wasted vote / compass
+  FD_EXPL.forEach(x=>pool.push({k:"expl",...x}));
   // number vs number
   FD_VS.forEach(v=>pool.push({k:"vs",...v}));
   // interactive: who said?
@@ -3606,6 +3623,15 @@ const FD_GAMES=[
  {id:"gHL",e:"📈",t:"יותר או פחות?",s:"14 מספרים מהתקציב. נחשו מה גדול."},
  {id:"gIdle",e:"✊",t:"מטה הבחירות — קליקר",s:"שיחות שכנוע, דוכנים, עצרות. אל תפסיקו להקיש."},
  {id:"gMatch",e:"🗳️",t:"עשיתם כבר את השאלון?",s:"11 שאלות, פחות מדקה, אף אחד לא שומר כלום."},
+];
+const FD_EXPL=[
+ {e:"🤖",sub:"מכונת הרעל · סימן 1",t:"אותו מסר, באותו רגע, נגד אותה מטרה — מעשרות חשבונות שלא מכירים זה את זה. זה לא ״טוקבקיסטים עצבניים״. זו תשתית.",pg:"poison"},
+ {e:"🤖",sub:"מכונת הרעל · סימן 2",t:"״עיתונאי״ שמקבל מהלשכה מסרים מנוסחים לשידור — ובטעות מפרסם גם את ההוראות. ראינו את זה קורה.",pg:"facts",key:"בוראים מציאות"},
+ {e:"🤖",sub:"מכונת הרעל · סימן 3",t:"מפרסמים בחו״ל, מצטטים בארץ: ״תראו מה חושבים עלינו בעולם״. מעגל כביסה — עם אותו בעלים בשני הצדדים.",pg:"facts",key:"אימאלה"},
+ {e:"🗑️",sub:"הקול השרוף · הכלל",t:"קול למפלגה שלא עוברת את 3.25% לא ״נשרף״ סתם — הוא מוקטן מהמכנה, וכל מפלגה שעברה קונה מנדטים בזול. הגדולה בחדר מרוויחה הכי הרבה.",pg:"votes"},
+ {e:"🗑️",sub:"הקול השרוף · 2022",t:"מרצ חסרו 4,124 קולות. בל״ד לא עברה. כ־290 אלף קולות של הגוש נמחקו — ופער של 30 אלף בקול הפופולרי הפך ל־64 מול 56.",pg:"votes"},
+ {e:"🧭",sub:"המצפן",t:"ביטחון, כלכלה, דת ומדינה, ליברלי־סמכותני: ארבעה צירים, כל המפלגות במקומן — ואתם, אחרי השאלון, מעליהן.",pg:"cmp"},
+ {e:"🟣",sub:"הגוש שבין הגושים",t:"מפלגה שלא מתחייבת לאף צד היא הימור כפול: מתחת לחסימה הקול נשרף; מעליה — הקול הוא צ׳ק פתוח למי שיציע יותר.",pg:"votes"},
 ];
 const FD_VS=[
  {a:"עודף",an:"התקציב ב־2022",b:"6.8%",bn:"גירעון ב־2024",pg:"led",key:"סמוטריץ"},
@@ -3643,6 +3669,16 @@ function fdCard(c,i){
   }
   if(c.k==="cand"){
     return `<div class="fdc" data-k="cand" style="background:${g}"><div class="wm">${c.e}</div><div class="lbl src"><a href="#" data-go="${c.pg}" data-key="${c.key}">${c.e} ${c.likud?"מי ברשימת הליכוד":"מי ברשימה"} · ${c.party} ↗</a></div><div class="vcard"><div class="pos">${c.pos}</div><div class="nm">${c.n}</div><div class="bio">${c.b}</div></div><div class="bar"><button data-share="${encodeURIComponent(c.party+" מקום "+c.pos+": "+c.n+" — "+c.b)}">📤 שתפו</button></div></div>`;
+  }
+  if(c.k==="party"){
+    const pg=c.pg||"dict";
+    return `<div class="fdc" data-k="party" style="background:${g}"><div class="wm">${c.e}</div><div class="lbl src"><a href="#" data-go="${pg}" data-key="${c.key}">${c.e} ${c.party} · ${c.sub} ↗</a></div><div class="big" style="font-size:clamp(19px,5vw,25px)">${fdLines(c.t)}</div><div class="bar"><button data-share="${encodeURIComponent(c.party+" — "+c.sub+": "+c.t)}">📤 שתפו</button></div></div>`;
+  }
+  if(c.k==="expl"){
+    return `<div class="fdc" data-k="expl" style="background:${g}"><div class="wm">${c.e}</div><div class="lbl src"><a href="#" data-go="${c.pg}" data-key="${c.key||""}">${c.e} ${c.sub} ↗</a></div><div class="big">${fdLines(c.t)}</div><div class="bar"><button data-share="${encodeURIComponent(c.sub+": "+c.t)}">📤 שתפו</button></div></div>`;
+  }
+  if(c.k==="egg"){
+    return `<div class="fdc cta" data-k="egg" style="background:linear-gradient(160deg,#F5B841,#B48CF2,#33D69F);background-size:300% 300%"><div class="gbig">🏁</div><div class="big"><span class="ln">הגעתם לסוף הפיד האינסופי.</span></div><div class="sub"><span class="ln">זה לא היה אמור לקרות. ${c.n} כרטיסים, כולם עם מקור — ואתם עברתם על כולם. יש מי שקורא יותר מהח״כים.</span><br><span class="ln" style="margin-top:8px;display:block">🏆 תעודת גלילה: ״קראתי את כל תכל׳ס לפני 27.10.״</span></div><div class="bar" style="justify-content:center"><button data-share="${encodeURIComponent("🏁 הגעתי לסוף הפיד האינסופי של פתק בקלפי — "+c.n+" כרטיסים עם מקור. יש מי שקורא יותר מהח״כים.")}">🏆 שתפו את התעודה</button></div><div class="sub" style="opacity:.75;font-size:12px">…והנה סיבוב שני, מעורבב מחדש 👇</div></div>`;
   }
   if(c.k==="vs"){
     const top=c.pg&&c.key!==undefined?`<a href="#" data-go="${c.pg}" data-key="${c.key}">🆚 מספר מול מספר ↗</a>`:`<span>🆚 מספר מול מספר</span>`;
@@ -3695,7 +3731,7 @@ function fdShare(txt){
   else { try{ navigator.clipboard.writeText(full); }catch(_){ } }
 }
 function startFeed(){
-  fdAll=fdBuildPool(); fdQ={}; fdLast=[]; fdCount=0; fdShown=0;
+  fdAll=fdBuildPool(); fdQ={}; fdLast=[]; fdCount=0; fdShown=0; fdDealt=0; fdEggShown=0;
   feed.innerHTML=`<div class="fdtop"><span>🌀 הפיד</span><span id="fdCounter" style="font-size:11px;color:var(--muted);font-family:inherit">כרטיס 1 · עוד ${Math.max(0,Math.ceil((ELECTION_DATE-new Date())/864e5))} ימים</span><button class="linkbtn" data-back style="margin:0;padding:4px 8px">✕</button></div>
     <div class="fdwrap" id="fdWrap"><div id="fdSent" style="height:2px"></div></div>
     <div class="fdhint">⬆ גללו</div>`;
