@@ -732,7 +732,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="3.8";
+const APP_VERSION="3.8.1";
 const APP_UPDATED="28.9.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
@@ -3708,7 +3708,13 @@ function fdAppend(n){
   const wrap=$("#fdWrap"); const sent=$("#fdSent");
   let html="";
   for(let j=0;j<n;j++){
-    if(fdCount>0 && fdCount%25===0){ html+=fdCard({k:"cta",t:"גללתם "+fdCount+" כרטיסים.",s:["זה כבר יותר ממה שרוב הח״כים קראו על 7.10 😉","עוד לא נגמר. גם לנו לא.","אם הגעתם עד לפה — שלחו לחבר אחד. רק אחד."][Math.floor(fdCount/25-1)%3],b:"share"},fdCount); }
+    if(fdCount>0 && fdCount%25===0){ const M=[
+      {s:"כל אחד מהם עם מקור — כפתור 🔎 או קישור לכתבה. ההבדל בין עובדה לספין הוא קישור.",b:"share"},
+      {s:"ועדת חקירה ממלכתית הייתה מסכמת את כולם בדוח אחד. אין כזאת. יש בחירות.",b:"tik"},
+      {s:"בתיק 7.10 של המשפחות יש 64 הערות שוליים. אתם כבר עברתם על יותר. שלחו לחבר.",b:"tik"},
+      {s:"הדוד עדיין לא קרא אף אחד מהם. יש לכם עכשיו תשובה לכל ספין. התאמנו.",b:"uncle"},
+      {s:"מרצ נשרפה ב־4,124 קולות ב־2022. אם כל אחד שהגיע עד לכאן מביא עוד אחד — זה יותר מזה.",b:"wv"}];
+      const m=M[Math.floor(fdCount/25-1)%M.length]; html+=fdCard({k:"cta",t:fdCount+" כרטיסים.",s:m.s,b:m.b},fdCount); }
     else if(fdCount>0 && fdCount%9===0){ html+=fdCard({k:"cta",...FD_CTA[Math.floor(fdCount/9-1)%FD_CTA.length]},fdCount); }
     else { html+=fdCard(fdDeal(),fdCount); }
     fdCount++;
