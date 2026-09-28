@@ -308,6 +308,18 @@
   .fdc .tw{background:rgba(0,0,0,.25);border-radius:14px;padding:6px;max-height:62%;overflow:auto}
   .fdc .tw blockquote{margin:0}
   .fdc .lbl{display:flex;justify-content:space-between;gap:8px;align-items:center;position:relative;z-index:2}
+  /* feed — action rail + nudge */
+  .fdc:not(.cta){padding-left:74px}
+  .rail{position:absolute;left:12px;bottom:26px;display:flex;flex-direction:column;gap:14px;z-index:5}
+  .rb{width:46px;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:0;color:#fff;font-family:inherit;cursor:pointer;padding:0;text-decoration:none}
+  .rb i{width:46px;height:46px;border-radius:50%;background:rgba(0,0,0,.38);border:1.5px solid rgba(255,255,255,.55);display:flex;align-items:center;justify-content:center;transition:transform .12s,background .12s}
+  .rb:active i{transform:scale(.9)}
+  .rb.done i{background:rgba(51,214,159,.5);border-color:#33D69F}
+  .rb svg{width:22px;height:22px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .rb small{font-size:9.5px;font-weight:800;text-shadow:0 1px 4px rgba(0,0,0,.6)}
+  .fdnudge{position:absolute;bottom:14px;right:0;left:74px;text-align:center;font-size:12.5px;font-weight:900;z-index:4;pointer-events:none;opacity:0;transition:opacity .4s}
+  .fdnudge.on{opacity:1}
+  .fdnudge span{display:inline-block;background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.4);border-radius:99px;padding:6px 14px;animation:fdb 1.2s ease-in-out infinite}
   /* feed — new card types */
   @keyframes fddrop{0%{transform:translateY(-40px);opacity:0}60%{transform:translateY(6px);opacity:1}100%{transform:none}}
   @keyframes fdpop{0%{transform:scale(.6);opacity:0}70%{transform:scale(1.06);opacity:1}100%{transform:scale(1)}}
@@ -732,7 +744,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="3.8.2";
+const APP_VERSION="3.9";
 const APP_UPDATED="28.9.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
@@ -3733,6 +3745,8 @@ function fdAppend(n){
   sent.insertAdjacentHTML("beforebegin",html);
   wrap.querySelectorAll(".fdc:not([data-w])").forEach(el=>{
     el.dataset.w="1"; el.dataset.i=++fdShown;
+    fdRail(el);
+    if(!el.classList.contains("cta")) el.insertAdjacentHTML("beforeend",'<div class="fdnudge"><span>⬆ גללו לכרטיס הבא</span></div>');
     el.querySelectorAll("[data-game]").forEach(b=>b.onclick=()=>{ const t=$("#"+b.dataset.game); if(t) t.click(); });
     el.querySelectorAll(".ans").forEach(b=>b.onclick=()=>fdAnswer(el,b));
     if(fdInIO) fdInIO.observe(el); else el.classList.add("in");
@@ -3742,6 +3756,26 @@ function fdAppend(n){
     el.querySelectorAll("[data-cta]").forEach(b=>b.onclick=()=>{ const c=b.dataset.cta; if(c==="share") fdShare("דום־סקרולינג בחירות 🌀"); else if(c==="quiz"){ lastTab="main"; show(intro); } else if(c==="wv"){ lastTab="games"; startWv(); } else if(c==="uncle"){ lastTab="games"; startUncle(); } else if(c==="tik") window.open("https://petek-bakalpi.github.io/tik-710.pdf","_blank"); });
   });
 }
+const FD_ICO={
+  share:'<svg viewBox="0 0 24 24"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>',
+  copy:'<svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>',
+  ext:'<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.6" y2="16.6"/></svg>',
+  bird:'<svg viewBox="0 0 24 24"><path d="M4 4l16 16M20 4L4 20"/></svg>'
+};
+function fdRail(el){
+  const bar=el.querySelector(".bar"); if(!bar) return;
+  if(bar.querySelector("[data-cta],[data-game]")) return; /* כרטיסי פעולה שומרים כפתור מרכזי */
+  const shareBtn=bar.querySelector("[data-share]"); const ext=bar.querySelector("a.btnlike");
+  const txt=shareBtn?decodeURIComponent(shareBtn.dataset.share):"";
+  const rail=document.createElement("div"); rail.className="rail";
+  rail.innerHTML=`<button class="rb" data-rshare="${encodeURIComponent(txt)}"><i>${FD_ICO.share}</i><small>שתפו</small></button>
+    <button class="rb" data-rcopy="${encodeURIComponent(txt)}"><i>${FD_ICO.copy}</i><small>העתקו</small></button>
+    ${ext?`<a class="rb" href="${ext.getAttribute("href")}" target="_blank" rel="noopener"><i>${/X/.test(ext.textContent)?FD_ICO.bird:FD_ICO.ext}</i><small>${/X/.test(ext.textContent)?"ב-X":"מקור"}</small></a>`:""}`;
+  bar.remove(); el.appendChild(rail);
+  rail.querySelector("[data-rshare]").onclick=()=>fdShare(decodeURIComponent(rail.querySelector("[data-rshare]").dataset.rshare));
+  rail.querySelector("[data-rcopy]").onclick=(e)=>{ const b=e.currentTarget; const full=decodeURIComponent(b.dataset.rcopy)+"\n— פתק בקלפי 🗳️ https://petek-bakalpi.github.io/"; try{ navigator.clipboard.writeText(full); }catch(_){ } b.classList.add("done"); b.querySelector("small").textContent="הועתק ✓"; setTimeout(()=>{ b.classList.remove("done"); b.querySelector("small").textContent="העתקו"; },1800); };
+}
+let fdNudgeT=null;
 function fdShare(txt){
   const full=txt+"\n— פתק בקלפי 🗳️ https://petek-bakalpi.github.io/";
   if(navigator.share){ navigator.share({text:full}).catch(()=>{}); }
@@ -3755,7 +3789,9 @@ function startFeed(){
   feed.querySelector("[data-back]").onclick=()=>showTab("home");
   if(fdInIO) fdInIO.disconnect();
   try{
-    fdInIO=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("in"); const c=$("#fdCounter"); if(c&&e.target.dataset.i) c.textContent="כרטיס "+e.target.dataset.i+" · עוד "+Math.max(0,Math.ceil((ELECTION_DATE-new Date())/864e5))+" ימים"; e.target.querySelectorAll(".cnt:not([data-done])").forEach(c=>{ c.dataset.done="1"; fdCountUp(c); }); } }),{root:$("#fdWrap"),threshold:.5});
+    fdInIO=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("in");
+        clearTimeout(fdNudgeT); feed.querySelectorAll(".fdnudge.on").forEach(n=>n.classList.remove("on"));
+        fdNudgeT=setTimeout(()=>{ const n=e.target.querySelector(".fdnudge"); if(n) n.classList.add("on"); },6000); const c=$("#fdCounter"); if(c&&e.target.dataset.i) c.textContent="כרטיס "+e.target.dataset.i+" · עוד "+Math.max(0,Math.ceil((ELECTION_DATE-new Date())/864e5))+" ימים"; e.target.querySelectorAll(".cnt:not([data-done])").forEach(c=>{ c.dataset.done="1"; fdCountUp(c); }); } }),{root:$("#fdWrap"),threshold:.5});
   }catch(_){ fdInIO=null; }
   fdAppend(10);
   if(HOT.some(h=>h.tweet)){
