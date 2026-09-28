@@ -657,7 +657,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="3.3.1";
+const APP_VERSION="3.3.2";
 const APP_UPDATED="28.9.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
@@ -3291,6 +3291,7 @@ function startUncle(){
   const items=[...pool].sort(()=>Math.random()-.5).slice(0,6);
   unS={items,i:0,score:0,log:[]};
   renderUncle();
+  show(uncle);
 }
 function renderUncle(){
   const st=unS;
