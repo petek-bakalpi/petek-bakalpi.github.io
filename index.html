@@ -293,6 +293,19 @@
   .fdhint{position:absolute;bottom:8px;left:0;right:0;text-align:center;font-size:11px;opacity:.7;pointer-events:none;animation:fdb 1.6s ease-in-out infinite}
   @keyframes fdb{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
   .ffab{position:absolute;left:2px;top:50%;transform:translateY(-50%) rotate(-8deg);width:38px;height:38px;border-radius:11px;border:1.5px solid rgba(139,147,184,.45);background:rgba(255,255,255,.06);font-size:20px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(0,0,0,.35)}
+  /* feed — visual life */
+  .fdc{background-size:200% 200%!important;animation:fdgrad 14s ease-in-out infinite}
+  @keyframes fdgrad{0%,100%{background-position:0% 0%}50%{background-position:100% 100%}}
+  .fdc .wm{position:absolute;right:-10px;bottom:40px;font-size:170px;opacity:.09;pointer-events:none;line-height:1;filter:grayscale(.2)}
+  .fdc .ln{display:block;opacity:0;transform:translateY(18px);transition:opacity .5s ease,transform .5s ease}
+  .fdc.in .ln{opacity:1;transform:none}
+  .fdc.in .ln:nth-child(2){transition-delay:.15s}.fdc.in .ln:nth-child(3){transition-delay:.3s}.fdc.in .ln:nth-child(4){transition-delay:.45s}.fdc.in .ln:nth-child(5){transition-delay:.6s}
+  .fdc .gold{color:#FFD86B;font-weight:900}
+  .fdc .qmark{font-family:'Secular One';font-size:120px;line-height:.6;opacity:.25;margin-bottom:-20px}
+  .fdc .src a{color:#fff;text-decoration:underline;text-decoration-color:rgba(255,255,255,.5)}
+  .fdc .tw{background:rgba(0,0,0,.25);border-radius:14px;padding:6px;max-height:62%;overflow:auto}
+  .fdc .tw blockquote{margin:0}
+  .fdc .lbl{display:flex;justify-content:space-between;gap:8px;align-items:center;position:relative;z-index:2}
   /* memo cards */
   .memo{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
   .mc{perspective:600px;height:92px;cursor:pointer}
@@ -692,7 +705,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="3.5";
+const APP_VERSION="3.5.1";
 const APP_UPDATED="28.9.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
@@ -3490,28 +3503,43 @@ const FD_CTA=[
  {t:"הדוד שולח ספינים?",s:"התאמנו עליו. שכנעו את הדוד — סימולטור שיחת שישי.",b:"uncle"},
  {t:"״תיק 7.10״ — כתב האישום של המשפחות.",s:"12 עמודים, 64 מקורות. קראו.",b:"tik"},
 ];
-let fdPool=[], fdCount=0, fdIO=null;
+let fdPool=[], fdCount=0, fdIO=null, fdInIO=null;
+function fdCountUp(el){
+  const t=+el.dataset.t, dec=+el.dataset.dec; const start=performance.now(), dur=900;
+  const step=ts=>{ const k=Math.min(1,(ts-start)/dur); const v=t*(1-Math.pow(1-k,3)); el.textContent=dec?v.toFixed(1):Math.round(v).toLocaleString("he-IL"); if(k<1) requestAnimationFrame(step); };
+  requestAnimationFrame(step);
+}
 function fdBuildPool(){
   const pool=[];
   FACTS.forEach(f=>{ if(f.race&&f.race.parts) f.race.parts.forEach(pt=>pool.push({k:"txt",t:pt,src:f.t,key:f.t.slice(0,28),e:f.e})); });
   HL_ITEMS.forEach(h=>pool.push({k:"num",v:h.v,t:h.t,s:h.sub||h.d||"",key:h.t.slice(0,24)}));
   QUOTES.forEach(q=>pool.push({k:"quote",t:q.q,a:q.a,s:q.ctx||""}));
+  HOT.forEach(h=>{ if(h.tweet) pool.push({k:"tweet",url:h.tweet,who:h.who,handle:h.handle||"",dt:h.dt||"",note:h.note||""}); });
   return pool.sort(()=>Math.random()-.5);
 }
 const fdMoney=v=>v>=1000?(v/1000).toFixed(v%1000?1:0)+" מיליארד ₪":Math.round(v)+" מיליון ₪";
+const fdGold=t=>(t||"").replace(/(\d[\d,.]*%?)/g,'<span class="gold">$1</span>');
+const fdLines=t=>{ const parts=(t||"").split(/(?<=[.!?״”])\s+/).filter(Boolean); return parts.map(x=>`<span class="ln">${fdGold(x)}</span>`).join(""); };
 function fdCard(c,i){
   const g=FD_GRAD[i%FD_GRAD.length];
   if(c.k==="cta"){
     const days=Math.max(0,Math.ceil((ELECTION_DATE-new Date())/864e5));
-    return `<div class="fdc cta" style="background:${g}"><div class="big">${c.t.replace("{d}",days)}</div><div class="sub">${c.s}</div><div class="bar" style="justify-content:center"><button data-cta="${c.b}">${({share:"📤 שתפו",quiz:"🗳️ לשאלון",wv:"🧪 למעבדה",uncle:"🧔 לדוד",tik:"📕 למסמך"})[c.b]}</button></div></div>`;
+    return `<div class="fdc cta" style="background:${g}"><div class="wm">🗳️</div><div class="big"><span class="ln">${c.t.replace("{d}",'<span class="gold">'+days+'</span>')}</span></div><div class="sub"><span class="ln">${c.s}</span></div><div class="bar" style="justify-content:center"><button data-cta="${c.b}">${({share:"📤 שתפו",quiz:"🗳️ לשאלון",wv:"🧪 למעבדה",uncle:"🧔 לדוד",tik:"📕 למסמך"})[c.b]}</button></div></div>`;
   }
   if(c.k==="num"){
-    return `<div class="fdc" style="background:${g}"><div class="lbl">💸 המספרים של התקציב</div><div><div class="num">${fdMoney(c.v)}</div><div class="big" style="font-size:20px;margin-top:10px">${c.t}</div><div class="sub">${c.s}</div></div><div class="bar"><button data-go="budget" data-key="${c.key}">📖 המספרים</button><button data-share="${encodeURIComponent(fdMoney(c.v)+" — "+c.t)}">📤 שתפו</button></div></div>`;
+    const target=c.v>=1000?Math.round(c.v/100)/10:Math.round(c.v);
+    const unit=c.v>=1000?" מיליארד ₪":" מיליון ₪";
+    return `<div class="fdc" style="background:${g}"><div class="wm">💸</div><div class="lbl"><span>💸 המספרים של התקציב</span></div><div><div class="num"><span class="cnt" data-t="${target}" data-dec="${c.v>=1000&&c.v%1000?1:0}">0</span><span style="font-size:.4em">${unit}</span></div><div class="big" style="font-size:20px;margin-top:10px"><span class="ln">${c.t}</span></div><div class="sub"><span class="ln">${c.s}</span></div></div><div class="bar"><button data-go="budget" data-key="${c.key}">📖 המספרים</button><button data-share="${encodeURIComponent(fdMoney(c.v)+" — "+c.t)}">📤 שתפו</button></div></div>`;
   }
   if(c.k==="quote"){
-    return `<div class="fdc" style="background:${g}"><div class="lbl">💬 אמרו</div><div><div class="big">״${c.t}״</div><div class="sub">— ${c.a}${c.s?" · "+c.s:""}</div></div><div class="bar"><button data-go="quote">🎮 מי אמר את זה?</button><button data-share="${encodeURIComponent("״"+c.t+"״ — "+c.a)}">📤 שתפו</button></div></div>`;
+    return `<div class="fdc" style="background:${g}"><div class="wm">💬</div><div class="lbl"><span>💬 אמרו</span></div><div><div class="qmark">״</div><div class="big">${fdLines(c.t)}</div><div class="sub"><span class="ln">— ${c.a}${c.s?" · "+c.s:""}</span></div></div><div class="bar"><button data-go="quote">🎮 מי אמר את זה?</button><button data-share="${encodeURIComponent("״"+c.t+"״ — "+c.a)}">📤 שתפו</button></div></div>`;
   }
-  return `<div class="fdc" style="background:${g}"><div class="lbl">${c.e} מתוך: ${c.src}</div><div class="big">${c.t}</div><div class="bar"><button data-go="facts" data-key="${c.key}">📖 הסיפור המלא</button><button data-share="${encodeURIComponent(c.t)}">📤 שתפו</button></div></div>`;
+  if(c.k==="tweet"){
+    return `<div class="fdc" style="background:${g}"><div class="wm">🐦</div><div class="lbl src"><span>🔥 ציוצים חמים · ${c.who}</span><a href="${c.url}" target="_blank" rel="noopener">למקור ↗</a></div><div class="tw"><blockquote class="twitter-tweet" data-theme="dark" data-lang="he" data-dnt="true"><p dir="rtl" style="color:#fff;opacity:.7">⏳ טוען את הציוץ…</p><a href="${c.url}" style="color:#fff">${c.who} ${c.handle}</a></blockquote></div><div class="bar"><button data-go="hot" data-key="${c.who}">🔥 עוד ציוצים</button><button data-share="${encodeURIComponent(c.url)}">📤 שתפו</button></div></div>`;
+  }
+  const f=FACTS.find(x=>x.t===c.src);
+  const srcLink=f&&f.url?`<a href="${f.url}" target="_blank" rel="noopener">למקור ↗</a>`:`<a href="https://www.google.com/search?q=${encodeURIComponent(f?f.srch:c.src)}" target="_blank" rel="noopener">🔎 בדקו</a>`;
+  return `<div class="fdc" style="background:${g}"><div class="wm">${c.e}</div><div class="lbl src"><span>${c.e} מתוך: ${c.src}</span>${srcLink}</div><div class="big">${fdLines(c.t)}</div><div class="bar"><button data-go="facts" data-key="${c.key}">📖 הסיפור המלא</button><button data-share="${encodeURIComponent(c.t)}">📤 שתפו</button></div></div>`;
 }
 function fdAppend(n){
   const wrap=$("#fdWrap"); const sent=$("#fdSent");
@@ -3524,8 +3552,10 @@ function fdAppend(n){
   sent.insertAdjacentHTML("beforebegin",html);
   wrap.querySelectorAll(".fdc:not([data-w])").forEach(el=>{
     el.dataset.w="1";
+    if(fdInIO) fdInIO.observe(el); else el.classList.add("in");
     el.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>{ const pg=b.dataset.go; if(pg==="quote"){ lastTab="games"; $("#gQuote").click(); } else deepOpen(pg,b.dataset.key||""); });
     el.querySelectorAll("[data-share]").forEach(b=>b.onclick=()=>fdShare(decodeURIComponent(b.dataset.share)));
+    if(el.querySelector(".twitter-tweet") && window.twttr && window.twttr.widgets){ try{ window.twttr.widgets.load(el); }catch(_){ } }
     el.querySelectorAll("[data-cta]").forEach(b=>b.onclick=()=>{ const c=b.dataset.cta; if(c==="share") fdShare("דום־סקרולינג בחירות 🌀"); else if(c==="quiz"){ lastTab="main"; show(intro); } else if(c==="wv"){ lastTab="games"; startWv(); } else if(c==="uncle"){ lastTab="games"; startUncle(); } else if(c==="tik") window.open("https://petek-bakalpi.github.io/tik-710.pdf","_blank"); });
   });
 }
@@ -3540,7 +3570,15 @@ function startFeed(){
     <div class="fdwrap" id="fdWrap"><div id="fdSent" style="height:2px"></div></div>
     <div class="fdhint">⬆ גללו</div>`;
   feed.querySelector("[data-back]").onclick=()=>goBack();
+  if(fdInIO) fdInIO.disconnect();
+  try{
+    fdInIO=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("in"); e.target.querySelectorAll(".cnt:not([data-done])").forEach(c=>{ c.dataset.done="1"; fdCountUp(c); }); } }),{root:$("#fdWrap"),threshold:.5});
+  }catch(_){ fdInIO=null; }
   fdAppend(10);
+  if(HOT.some(h=>h.tweet)){
+    if(window.twttr&&window.twttr.widgets){ try{ window.twttr.widgets.load(feed); }catch(_){ } }
+    else if(!document.getElementById("twwidgets")){ const sc=document.createElement("script"); sc.id="twwidgets"; sc.async=true; sc.charset="utf-8"; sc.src="https://platform.twitter.com/widgets.js"; document.body.appendChild(sc); }
+  }
   if(fdIO) fdIO.disconnect();
   try{
     fdIO=new IntersectionObserver(es=>{ if(es.some(e=>e.isIntersecting)) fdAppend(8); },{root:$("#fdWrap"),rootMargin:"600px"});
