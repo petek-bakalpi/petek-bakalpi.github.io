@@ -308,6 +308,30 @@
   .fdc .tw{background:rgba(0,0,0,.25);border-radius:14px;padding:6px;max-height:62%;overflow:auto}
   .fdc .tw blockquote{margin:0}
   .fdc .lbl{display:flex;justify-content:space-between;gap:8px;align-items:center;position:relative;z-index:2}
+  /* feed — new card types */
+  @keyframes fddrop{0%{transform:translateY(-40px);opacity:0}60%{transform:translateY(6px);opacity:1}100%{transform:none}}
+  @keyframes fdpop{0%{transform:scale(.6);opacity:0}70%{transform:scale(1.06);opacity:1}100%{transform:scale(1)}}
+  @keyframes fdslide{0%{transform:translateX(40px);opacity:0}100%{transform:none;opacity:1}}
+  .fdc.in[data-k="num"] .num{animation:fddrop .7s cubic-bezier(.3,1.3,.5,1)}
+  .fdc.in[data-k="vs"] .vsn{animation:fdpop .6s ease both}
+  .fdc.in[data-k="vs"] .vsn:nth-child(2){animation-delay:.25s}
+  .fdc.in[data-k="cand"] .vcard{animation:fdslide .5s ease both}
+  .fdc.in[data-k="game"] .gbig{animation:fdpop .5s ease both}
+  .vcard{background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.35);border-radius:16px;padding:14px;position:relative;z-index:2}
+  .vcard .pos{font-family:'Secular One';font-size:42px;line-height:1;opacity:.9}
+  .vcard .nm{font-family:'Secular One';font-size:24px;margin-top:4px}
+  .vcard .bio{font-size:14px;line-height:1.5;margin-top:8px;opacity:.95}
+  .vs{display:flex;gap:10px;align-items:stretch;position:relative;z-index:2}
+  .vsn{flex:1;background:rgba(0,0,0,.25);border-radius:14px;padding:12px 8px;text-align:center}
+  .vsn .v{font-family:'Secular One';font-size:clamp(26px,8vw,40px);line-height:1.05}
+  .vsn .l{font-size:12px;margin-top:6px;opacity:.9;line-height:1.3}
+  .vsmid{align-self:center;font-family:'Secular One';font-size:22px;opacity:.7}
+  .fdc .ans{display:block;width:100%;text-align:right;padding:11px 13px;margin:6px 0;border-radius:12px;border:1.5px solid rgba(255,255,255,.5);background:rgba(0,0,0,.22);color:#fff;font-weight:800;font-family:inherit;font-size:14px;cursor:pointer;position:relative;z-index:2}
+  .fdc .ans.ok{background:rgba(51,214,159,.35);border-color:#33D69F}
+  .fdc .ans.bad{background:rgba(255,89,100,.35);border-color:#FF5964}
+  .fdc .ans[disabled]{opacity:.85}
+  .fdc .reveal{margin-top:10px;font-size:13.5px;line-height:1.5;background:rgba(0,0,0,.25);border-radius:12px;padding:10px 12px;position:relative;z-index:2}
+  .gbig{font-size:64px;line-height:1;text-align:center}
   /* memo cards */
   .memo{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
   .mc{perspective:600px;height:92px;cursor:pointer}
@@ -708,7 +732,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="3.6.3";
+const APP_VERSION="3.7";
 const APP_UPDATED="28.9.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
@@ -3506,7 +3530,17 @@ const FD_CTA=[
  {t:"הדוד שולח ספינים?",s:"התאמנו עליו. שכנעו את הדוד — סימולטור שיחת שישי.",b:"uncle"},
  {t:"״תיק 7.10״ — כתב האישום של המשפחות.",s:"12 עמודים, 64 מקורות. קראו.",b:"tik"},
 ];
-let fdPool=[], fdCount=0, fdIO=null, fdInIO=null;
+let fdPool=[], fdCount=0, fdIO=null, fdInIO=null, fdShown=0;
+function fdAnswer(card,b){
+  if(card.dataset.done) return; card.dataset.done="1";
+  const ok=b.dataset.ok==="1"; const rv=card.querySelector(".reveal");
+  card.querySelectorAll(".ans").forEach(x=>{ x.disabled=true; if(x.dataset.ok==="1") x.classList.add("ok"); else if(x===b) x.classList.add("bad"); });
+  if(b.dataset.q==="who"){ rv.innerHTML=(ok?"✅ נכון! ":"❌ לא — ")+"<b>"+b.dataset.a+"</b>"+(b.dataset.s?" · "+b.dataset.s:""); }
+  else if(b.dataset.q==="hilo"){ rv.innerHTML=(ok?"✅ נכון. ":"❌ הפוך. ")+b.dataset.ta+": <b class='gold'>"+b.dataset.ra+"</b> · "+b.dataset.tb+": <b class='gold'>"+b.dataset.rb+"</b>"; }
+  else if(b.dataset.q==="spin"){ const isSpin=b.dataset.spin==="1"; rv.innerHTML=(ok?"✅ נכון — ":"❌ טעות — ")+(isSpin?"זה <b>ספין</b>. כך זה נשמע במחלקת האקטואליה: ״"+b.dataset.src+"״":"זה <b>אמת</b>, מתוך הפנקס: ״"+b.dataset.src+"״")+" <a href='#' data-go='"+b.dataset.pg+"' data-key='"+b.dataset.key+"' style='color:#fff;text-decoration:underline'>לפרטים ↗</a>"; rv.querySelectorAll("[data-go]").forEach(a=>a.onclick=(ev)=>{ev.preventDefault();deepOpen(a.dataset.go,a.dataset.key);}); }
+  rv.hidden=false;
+  if(ok){ try{ confetti(); }catch(_){ } }
+}
 function fdCountUp(el){
   const t=+el.dataset.t, dec=+el.dataset.dec; const start=performance.now(), dur=900;
   const step=ts=>{ const k=Math.min(1,(ts-start)/dur); const v=t*(1-Math.pow(1-k,3)); el.textContent=dec?v.toFixed(1):Math.round(v).toLocaleString("he-IL"); if(k<1) requestAnimationFrame(step); };
@@ -3522,8 +3556,50 @@ function fdBuildPool(){
   FACTS.forEach(f=>{ if(!(f.race&&f.race.parts)&&f.claim) pool.push({k:"txt",t:firstSent(f.claim,200),src:f.t,key:f.t.slice(0,28),e:f.e}); });
   LEDGER.forEach(c=>{ if(c.t&&c.body) pool.push({k:"led",t:firstSent(c.body,190),src:c.t,key:c.t.slice(0,28),e:c.e||"📓"}); });
   CORE_ISSUES.forEach(c=>{ if(c.why) pool.push({k:"core",t:firstSent(c.why,200),src:c.t,key:c.t.slice(0,28),e:c.e||"🧠"}); });
+  // game promo cards
+  FD_GAMES.forEach(g=>pool.push({k:"game",...g}));
+  // candidates: the camp
+  const PN={D:"הדמוקרטים",Y:"ישר!",B:"ביחד",L:"ישראל ביתנו"}, PE={D:"🌹",Y:"🟦",B:"🤝",L:"🛡️"};
+  GOVPOOL.forEach(c=>{ if(c.rl!==0&&c.b&&c.b.length>12&&!c.b.startsWith("מרשימת")) pool.push({k:"cand",n:c.n,b:c.b,pos:c.pos,party:PN[c.p],e:PE[c.p],key:PN[c.p].split(" ")[0]+"|"+c.n,pg:"dict"}); });
+  // candidates: Likud (parsed from the Netanyahu-bloc page)
+  try{ const re=/<b>(\d+) (?:🔒 )?· ([^<]+)<\/b> — ([^<]*)/g; let m; const html=bibi.innerHTML;
+    while((m=re.exec(html))){ if(+m[1]<=25) pool.push({k:"cand",likud:true,n:m[2].trim(),b:m[3].replace(/\s+/g," ").trim().slice(0,220),pos:+m[1],party:"הליכוד",e:"🔴",key:"|"+m[2].trim(),pg:"bibi"}); } }catch(_){}
+  // number vs number
+  FD_VS.forEach(v=>pool.push({k:"vs",...v}));
+  // interactive: who said?
+  QUOTES.forEach(q=>{ const others=QUOTES.map(x=>x.a).filter((a,i,arr)=>a!==q.a&&arr.indexOf(a)===i).sort(()=>Math.random()-.5).slice(0,2); pool.push({k:"whoq",t:q.q,a:q.a,opts:[q.a,...others].sort(()=>Math.random()-.5),s:q.ctx||""}); });
+  // interactive: which is bigger?
+  for(let i=0;i<8;i++){ const [a,b]=[...HL_ITEMS].sort(()=>Math.random()-.5).slice(0,2); if(a&&b&&a.v!==b.v) pool.push({k:"hilo",a,b}); }
+  // interactive: truth or spin?
+  FACTS.forEach(f=>{ if(f.claim) pool.push({k:"spin",t:firstSent(f.claim,170),spin:true,src:f.t,key:f.t.slice(0,28)}); });
+  LEDGER.forEach(c=>{ if(c.t&&c.body) pool.push({k:"spin",t:firstSent(c.body,170),spin:false,src:c.t,key:c.t.slice(0,28)}); });
   return pool.sort(()=>Math.random()-.5);
 }
+const FD_GAMES=[
+ {id:"gUncle",e:"🧔",t:"הדוד שולח ספינים בקבוצה?",s:"התאמנו עליו: סימולטור שיחת שישי. 6 סבבים, מד שכנוע."},
+ {id:"gWv",e:"🗑️",t:"10,000 קולות ביד שלכם. למי?",s:"מעבדת הקול השרוף — תראו בעיניים לאן זורם קול למפלגה שלא עוברת."},
+ {id:"gMemo",e:"🃏",t:"6 זוגות. כמה מהלכים?",s:"ממו הפנקס: חברו שר לכישלון שלו."},
+ {id:"gMdl",e:"🟩",t:"מנדטל — חידת המועמד היומית",s:"נחשו מי עומד על הרשימה, ווערדל בגרסה ישראלית."},
+ {id:"gRace",e:"🏃",t:"2,026 מטר עד הקלפי",s:"המרוץ לקלפי — קופצים מעל ספינים, אוספים עובדות."},
+ {id:"gCoal",e:"🧩",t:"תגיעו ל־61. אם תצליחו.",s:"משחק הקואליציות עם הקווים האדומים האמיתיים."},
+ {id:"gGov",e:"🏛️",t:"הקימו ממשלה בעצמכם",s:"בחרו שרים מהמועמדים האמיתיים. יש הפתעות."},
+ {id:"gWho",e:"🕵️",t:"נחשו מי — 16 שאלות על מועמדים",s:"ביו, מפלגה, מקום. כמה תזהו?"},
+ {id:"gQuote",e:"💬",t:"מי אמר את זה?",s:"21 ציטוטים מתועדים. חלקם יפתיעו."},
+ {id:"gHL",e:"📈",t:"יותר או פחות?",s:"14 מספרים מהתקציב. נחשו מה גדול."},
+ {id:"gIdle",e:"✊",t:"מטה הבחירות — קליקר",s:"שיחות שכנוע, דוכנים, עצרות. אל תפסיקו להקיש."},
+ {id:"gMatch",e:"🗳️",t:"עשיתם כבר את השאלון?",s:"11 שאלות, פחות מדקה, אף אחד לא שומר כלום."},
+];
+const FD_VS=[
+ {a:"עודף",an:"התקציב ב־2022",b:"6.8%",bn:"גירעון ב־2024",pg:"led",key:"סמוטריץ"},
+ {a:"15,000",an:"הרוגים — הנבואה של וינטר",b:"472",bn:"נופלים בתמרון — המציאות",pg:"facts",key:"עופר וינטר"},
+ {a:"1.5 מיליארד",an:"אושרו למאבק בפשיעה בחברה הערבית",b:"748 מיליון",bn:"מומשו בפועל",pg:"led",key:"בן גביר"},
+ {a:"4,124",an:"קולות חסרו למרצ ב־2022",b:"~290,000",bn:"קולות הגוש שנשרפו",pg:"votes",key:""},
+ {a:"3%",an:"מתלמידי ט׳ עמדו בתוכנית המדעים",b:"81%",bn:"לא היו קרובים אליה",pg:"led",key:"יואב קיש"},
+ {a:"45 דקות",an:"אזהרה מנשיא האמירויות",b:"0",bn:"מה הועבר לצה״ל, לפי הארץ",pg:"facts",key:"ההתרעות: הכרונולוגיה"},
+ {a:"330,000",an:"רישיונות נשק — פי 2",b:"שיא",bn:"רציחות בחברה הערבית 2025",pg:"led",key:"בן גביר"},
+ {a:"112,376",an:"מצביעים בפריימריז הדמוקרטים",b:"8",bn:"שריונים אישיים של נתניהו",pg:"bibi",key:"|"},
+ {a:"52",an:"מחנה איזנקוט (סקר כאן)",b:"52",bn:"מחנה נתניהו",pg:"facts",key:"52:52"},
+];
 const fdMoney=v=>v>=1000?(v/1000).toFixed(v%1000?1:0)+" מיליארד ₪":Math.round(v)+" מיליון ₪";
 const fdGold=t=>(t||"").replace(/(\d[\d,.]*%?)/g,'<span class="gold">$1</span>');
 const fdLines=t=>{ const parts=(t||"").split(/(?<=[.!?״”])\s+/).filter(Boolean); return parts.map(x=>`<span class="ln">${fdGold(x)}</span>`).join(""); };
@@ -3536,13 +3612,33 @@ function fdCard(c,i){
   if(c.k==="num"){
     const target=c.v>=1000?Math.round(c.v/100)/10:Math.round(c.v);
     const unit=c.v>=1000?" מיליארד ₪":" מיליון ₪";
-    return `<div class="fdc" style="background:${g}"><div class="wm">💸</div><div class="lbl src"><a href="#" data-go="budget" data-key="${c.key}">💸 המספרים של התקציב ↗</a></div><div><div class="num"><span class="cnt" data-t="${target}" data-dec="${c.v>=1000&&c.v%1000?1:0}">0</span><span style="font-size:.4em">${unit}</span></div><div class="big" style="font-size:20px;margin-top:10px"><span class="ln">${c.t}</span></div><div class="sub"><span class="ln">${c.s}</span></div></div><div class="bar"><button data-share="${encodeURIComponent(fdMoney(c.v)+" — "+c.t)}">📤 שתפו</button></div></div>`;
+    return `<div class="fdc" data-k="num" style="background:${g}"><div class="wm">💸</div><div class="lbl src"><a href="#" data-go="budget" data-key="${c.key}">💸 המספרים של התקציב ↗</a></div><div><div class="num"><span class="cnt" data-t="${target}" data-dec="${c.v>=1000&&c.v%1000?1:0}">0</span><span style="font-size:.4em">${unit}</span></div><div class="big" style="font-size:20px;margin-top:10px"><span class="ln">${c.t}</span></div><div class="sub"><span class="ln">${c.s}</span></div></div><div class="bar"><button data-share="${encodeURIComponent(fdMoney(c.v)+" — "+c.t)}">📤 שתפו</button></div></div>`;
   }
   if(c.k==="quote"){
     return `<div class="fdc" style="background:${g}"><div class="wm">💬</div><div class="lbl src"><a href="#" data-go="quote">💬 אמרו · מי אמר את זה? ↗</a></div><div><div class="qmark">״</div><div class="big">${fdLines(c.t)}</div><div class="sub"><span class="ln">— ${c.a}${c.s?" · "+c.s:""}</span></div></div><div class="bar"><button data-share="${encodeURIComponent("״"+c.t+"״ — "+c.a)}">📤 שתפו</button></div></div>`;
   }
   if(c.k==="tweet"){
     return `<div class="fdc" style="background:${g}"><div class="wm">🐦</div><div class="lbl src"><a href="#" data-go="hot" data-key="${c.who}">🔥 ציוצים חמים · ${c.who} ↗</a></div><div class="tw"><blockquote class="twitter-tweet" data-theme="dark" data-lang="he" data-dnt="true"><p dir="rtl" style="color:#fff;opacity:.7">⏳ טוען את הציוץ…</p><a href="${c.url}" style="color:#fff">${c.who} ${c.handle}</a></blockquote></div><div class="bar"><a class="btnlike" href="${c.url}" target="_blank" rel="noopener">🐦 הציוץ ב-X</a><button data-share="${encodeURIComponent(c.url)}">📤 שתפו</button></div></div>`;
+  }
+  if(c.k==="game"){
+    return `<div class="fdc cta" data-k="game" style="background:${g}"><div class="wm">🎮</div><div class="gbig">${c.e}</div><div class="big"><span class="ln">${c.t}</span></div><div class="sub"><span class="ln">${c.s}</span></div><div class="bar" style="justify-content:center"><button data-game="${c.id}">🎮 שחקו</button></div></div>`;
+  }
+  if(c.k==="cand"){
+    return `<div class="fdc" data-k="cand" style="background:${g}"><div class="wm">${c.e}</div><div class="lbl src"><a href="#" data-go="${c.pg}" data-key="${c.key}">${c.e} ${c.likud?"מי ברשימת הליכוד":"מי ברשימה"} · ${c.party} ↗</a></div><div class="vcard"><div class="pos">${c.pos}</div><div class="nm">${c.n}</div><div class="bio">${c.b}</div></div><div class="bar"><button data-share="${encodeURIComponent(c.party+" מקום "+c.pos+": "+c.n+" — "+c.b)}">📤 שתפו</button></div></div>`;
+  }
+  if(c.k==="vs"){
+    const top=c.pg&&c.key!==undefined?`<a href="#" data-go="${c.pg}" data-key="${c.key}">🆚 מספר מול מספר ↗</a>`:`<span>🆚 מספר מול מספר</span>`;
+    return `<div class="fdc" data-k="vs" style="background:${g}"><div class="wm">🆚</div><div class="lbl src">${top}</div><div class="vs"><div class="vsn"><div class="v">${c.a}</div><div class="l">${c.an}</div></div><div class="vsmid">מול</div><div class="vsn"><div class="v">${c.b}</div><div class="l">${c.bn}</div></div></div><div class="bar"><button data-share="${encodeURIComponent(c.a+" — "+c.an+" | מול | "+c.b+" — "+c.bn)}">📤 שתפו</button></div></div>`;
+  }
+  if(c.k==="whoq"){
+    return `<div class="fdc" data-k="whoq" style="background:${g}"><div class="wm">❓</div><div class="lbl src"><a href="#" data-go="quote">💬 מי אמר את זה? ↗</a></div><div><div class="big" style="font-size:20px">״${c.t}״</div>${c.opts.map(o=>`<button class="ans" data-q="who" data-ok="${o===c.a?1:0}" data-a="${c.a}" data-s="${(c.s||"").replace(/"/g,"״")}">${o}</button>`).join("")}<div class="reveal" hidden></div></div><div class="bar"><button data-share="${encodeURIComponent("מי אמר: ״"+c.t+"״? — בפיד של פתק בקלפי")}">📤 שתפו</button></div></div>`;
+  }
+  if(c.k==="hilo"){
+    const big=c.a.v>=c.b.v?c.a:c.b;
+    return `<div class="fdc" data-k="hilo" style="background:${g}"><div class="wm">⚖️</div><div class="lbl src"><a href="#" data-go="budget" data-key="">📈 מה גדול יותר? ↗</a></div><div>${[c.a,c.b].map(x=>`<button class="ans" data-q="hilo" data-ok="${x===big?1:0}" data-ra="${fdMoney(c.a.v)}" data-rb="${fdMoney(c.b.v)}" data-ta="${c.a.t}" data-tb="${c.b.t}">${x.t}</button>`).join("")}<div class="reveal" hidden></div></div><div class="bar"><button data-share="${encodeURIComponent("מה גדול יותר: "+c.a.t+" או "+c.b.t+"? — פתק בקלפי")}">📤 שתפו</button></div></div>`;
+  }
+  if(c.k==="spin"){
+    return `<div class="fdc" data-k="spin" style="background:${g}"><div class="wm">🎭</div><div class="lbl src"><a href="#" data-go="${c.spin?"facts":"led"}" data-key="${c.key}">🎭 אמת או ספין? ↗</a></div><div><div class="big" style="font-size:20px">${c.t}</div><div style="display:flex;gap:8px"><button class="ans" data-q="spin" data-ok="${c.spin?0:1}" data-src="${c.src}" data-pg="${c.spin?"facts":"led"}" data-key="${c.key}" data-spin="${c.spin?1:0}">✅ אמת</button><button class="ans" data-q="spin" data-ok="${c.spin?1:0}" data-src="${c.src}" data-pg="${c.spin?"facts":"led"}" data-key="${c.key}" data-spin="${c.spin?1:0}">🎭 ספין</button></div><div class="reveal" hidden></div></div><div class="bar"><button data-share="${encodeURIComponent("אמת או ספין? ״"+c.t+"״ — פתק בקלפי")}">📤 שתפו</button></div></div>`;
   }
   if(c.k==="led"||c.k==="core"){
     const lbl=c.k==="led"?"📓 פנקס הכישלונות":"🧠 נושאי הליבה";
@@ -3558,13 +3654,16 @@ function fdAppend(n){
   const wrap=$("#fdWrap"); const sent=$("#fdSent");
   let html="";
   for(let j=0;j<n;j++){
-    if(fdCount>0 && fdCount%7===0){ html+=fdCard({k:"cta",...FD_CTA[Math.floor(fdCount/7-1)%FD_CTA.length]},fdCount); }
+    if(fdCount>0 && fdCount%25===0){ html+=fdCard({k:"cta",t:"גללתם "+fdCount+" כרטיסים.",s:["זה כבר יותר ממה שרוב הח״כים קראו על 7.10 😉","עוד לא נגמר. גם לנו לא.","אם הגעתם עד לפה — שלחו לחבר אחד. רק אחד."][Math.floor(fdCount/25-1)%3],b:"share"},fdCount); }
+    else if(fdCount>0 && fdCount%7===0){ html+=fdCard({k:"cta",...FD_CTA[Math.floor(fdCount/7-1)%FD_CTA.length]},fdCount); }
     else { if(!fdPool.length) fdPool=fdBuildPool(); html+=fdCard(fdPool.pop(),fdCount); }
     fdCount++;
   }
   sent.insertAdjacentHTML("beforebegin",html);
   wrap.querySelectorAll(".fdc:not([data-w])").forEach(el=>{
-    el.dataset.w="1";
+    el.dataset.w="1"; el.dataset.i=++fdShown;
+    el.querySelectorAll("[data-game]").forEach(b=>b.onclick=()=>{ const t=$("#"+b.dataset.game); if(t) t.click(); });
+    el.querySelectorAll(".ans").forEach(b=>b.onclick=()=>fdAnswer(el,b));
     if(fdInIO) fdInIO.observe(el); else el.classList.add("in");
     el.querySelectorAll("[data-go]").forEach(b=>b.onclick=(ev)=>{ ev.preventDefault(); const pg=b.dataset.go; if(pg==="quote"){ lastTab="games"; $("#gQuote").click(); } else deepOpen(pg,b.dataset.key||""); });
     el.querySelectorAll("[data-share]").forEach(b=>b.onclick=()=>fdShare(decodeURIComponent(b.dataset.share)));
@@ -3579,13 +3678,13 @@ function fdShare(txt){
 }
 function startFeed(){
   fdPool=fdBuildPool(); fdCount=0;
-  feed.innerHTML=`<div class="fdtop"><span>🌀 הפיד</span><span style="font-size:11px;color:var(--muted);font-family:inherit">גללו למעלה · אינסופי · כל כרטיס — עובדה עם מקור</span><button class="linkbtn" data-back style="margin:0;padding:4px 8px">✕</button></div>
+  feed.innerHTML=`<div class="fdtop"><span>🌀 הפיד</span><span id="fdCounter" style="font-size:11px;color:var(--muted);font-family:inherit">כרטיס 1 · עוד ${Math.max(0,Math.ceil((ELECTION_DATE-new Date())/864e5))} ימים</span><button class="linkbtn" data-back style="margin:0;padding:4px 8px">✕</button></div>
     <div class="fdwrap" id="fdWrap"><div id="fdSent" style="height:2px"></div></div>
     <div class="fdhint">⬆ גללו</div>`;
   feed.querySelector("[data-back]").onclick=()=>showTab("home");
   if(fdInIO) fdInIO.disconnect();
   try{
-    fdInIO=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("in"); e.target.querySelectorAll(".cnt:not([data-done])").forEach(c=>{ c.dataset.done="1"; fdCountUp(c); }); } }),{root:$("#fdWrap"),threshold:.5});
+    fdInIO=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("in"); const c=$("#fdCounter"); if(c&&e.target.dataset.i) c.textContent="כרטיס "+e.target.dataset.i+" · עוד "+Math.max(0,Math.ceil((ELECTION_DATE-new Date())/864e5))+" ימים"; e.target.querySelectorAll(".cnt:not([data-done])").forEach(c=>{ c.dataset.done="1"; fdCountUp(c); }); } }),{root:$("#fdWrap"),threshold:.5});
   }catch(_){ fdInIO=null; }
   fdAppend(10);
   if(HOT.some(h=>h.tweet)){
