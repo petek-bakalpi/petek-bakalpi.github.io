@@ -296,7 +296,7 @@
   .ffab{position:absolute;left:2px;top:50%;transform:translateY(-50%) rotate(-8deg);width:38px;height:38px;border-radius:11px;border:1.5px solid rgba(139,147,184,.45);background:rgba(255,255,255,.06);font-size:20px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(0,0,0,.35)}
   .newtag{position:absolute;top:-6px;right:50%;transform:translateX(50%);background:var(--coral);color:#fff;font-size:9px;font-weight:900;padding:1px 6px;border-radius:99px;letter-spacing:.3px;box-shadow:0 2px 6px rgba(0,0,0,.4);animation:xpulse 1.8s ease-in-out infinite}
   /* feed — visual life */
-  .fdc{background-size:200% 200%!important;animation:fdgrad 14s ease-in-out infinite}
+  .fdc{touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;background-size:200% 200%!important;animation:fdgrad 14s ease-in-out infinite}
   @keyframes fdgrad{0%,100%{background-position:0% 0%}50%{background-position:100% 100%}}
   .fdc .wm{position:absolute;right:-10px;bottom:40px;font-size:170px;opacity:.09;pointer-events:none;line-height:1;filter:grayscale(.2)}
   .fdc .ln{display:block;opacity:0;transform:translateY(18px);transition:opacity .5s ease,transform .5s ease}
@@ -319,6 +319,22 @@
   .fdhelp.on{display:flex}
   .fdhelp h3{font-family:'Secular One';font-size:22px;margin:0 0 10px}
   .fdhelp p{font-size:14px;line-height:1.6;margin:6px 0}
+  /* government org chart */
+  .org{display:flex;flex-direction:column;align-items:center;gap:0;margin:8px 0 4px}
+  .orgtier{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;width:100%}
+  .orgnode{background:rgba(255,255,255,.06);border:1.5px solid rgba(139,147,184,.35);border-radius:14px;padding:8px 10px;text-align:center;min-width:92px;max-width:150px;flex:1 1 92px;position:relative}
+  .orgnode .oe{font-size:20px;line-height:1}
+  .orgnode .or{font-size:10px;color:var(--muted);font-weight:800;margin-top:2px;line-height:1.2}
+  .orgnode .on{font-family:'Secular One';font-size:13.5px;margin-top:3px;line-height:1.2}
+  .orgnode .op{font-size:9.5px;font-weight:800;margin-top:3px;display:inline-block;padding:1px 7px;border-radius:99px;background:rgba(255,255,255,.08)}
+  .orgnode.pm{min-width:200px;max-width:260px;flex:0 0 auto;border-width:2px;background:linear-gradient(135deg,rgba(245,184,65,.18),rgba(61,123,255,.14));box-shadow:0 8px 24px rgba(0,0,0,.35)}
+  .orgnode.pm .on{font-size:19px}.orgnode.pm .oe{font-size:30px}
+  .orgnode.big{flex:1 1 46%;max-width:none}
+  .orgnode.big .on{font-size:15px}
+  .orgline{width:2px;height:16px;background:rgba(245,184,65,.55)}
+  .orgbar{width:60%;height:2px;background:rgba(139,147,184,.35);margin:0 auto}
+  .orgttl{font-size:11px;color:var(--muted);font-weight:900;margin:10px 0 6px;text-align:center;letter-spacing:.3px}
+  .orgkn .orgnode{background:rgba(180,140,242,.08);border-color:rgba(180,140,242,.4)}
   /* feed — action rail + nudge */
   .fdc:not(.cta){padding-left:66px;padding-top:64px;justify-content:center}
   .fdc:not(.cta) .lbl{position:absolute;top:18px;right:20px;left:66px}
@@ -762,7 +778,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="3.11.2";
+const APP_VERSION="3.12";
 const APP_UPDATED="28.9.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
@@ -2554,7 +2570,17 @@ function govSummary(){
   const txt="👑 הרכבתי ממשלה ב״פתק בקלפי״!\\n"+all.map(([r,n])=>r+": "+n).join("\\n")+"\\nבחירות 27.10 — בואו נרכיב אחת אמיתית!";
   gov.innerHTML=`
     <h2>הממשלה שלכם 🎉</h2>
-    ${all.map(([r,n])=>{const p=by(n);return `<div class="rolerow"><span class="rn">${r}</span><span class="rw set" style="color:${GP_COLOR[p.p]}">${n}</span></div>`;}).join("")}
+    ${(()=>{
+      const ROLE_E={"ראש/ת הממשלה":"👑","שר/ת הביטחון":"🛡️","שר/ת האוצר":"💰","שר/ת החוץ":"🌍","שר/ת המשפטים":"⚖️","השר/ה לביטחון לאומי":"🚔","שר/ת החינוך":"🎓","שר/ת הבריאות":"🏥","שר/ת התחבורה והתשתיות":"🚆","שר/ת הכלכלה":"📈","שר/ת הרווחה":"🤝","שר/ת הבינוי והשיכון":"🏗️","שר/ת הפנים":"🏙️","שר/ת התקשורת והדיגיטל":"📡","שר/ת האנרגיה והסביבה":"⚡","שר/ת החקלאות":"🌾","שר/ת הקליטה והתפוצות":"✈️","שר/ת התרבות והספורט":"🎭","שר/ת המדע והחדשנות":"🔬","יו״ר הכנסת":"🏛️"};
+      const node=(r,n,cls="")=>{const p=by(n);return `<div class="orgnode ${cls}" style="border-color:${p?GP_COLOR[p.p]:"#888"}66"><div class="oe">${ROLE_E[r]||"📌"}</div><div class="or">${r.replace("/ת","").replace("/ה","")}</div><div class="on">${n}</div>${p?`<div class="op" style="color:${GP_COLOR[p.p]}">${GP_NAME[p.p]}</div>`:""}</div>`;};
+      const senior=["שר/ת הביטחון","שר/ת האוצר","שר/ת החוץ","שר/ת המשפטים"];
+      const s1=senior.filter(r=>gAssign[r]); const rest=GOV_ROLES.map(x=>x.r).filter(r=>!senior.includes(r)&&gAssign[r]); const kn=KN_ROLES.map(x=>x.r).filter(r=>gAssign[r]);
+      return `<div class="org">
+        ${node("ראש/ת הממשלה",gPM,"pm")}
+        ${s1.length?`<div class="orgline"></div><div class="orgbar"></div><div class="orgline"></div><div class="orgttl">הקבינט הבכיר</div><div class="orgtier">${s1.map(r=>node(r,gAssign[r],"big")).join("")}</div>`:""}
+        ${rest.length?`<div class="orgline"></div><div class="orgttl">שרי הממשלה</div><div class="orgtier">${rest.map(r=>node(r,gAssign[r])).join("")}</div>`:""}
+        ${kn.length?`<div class="orgline"></div><div class="orgttl">הכנסת</div><div class="orgtier orgkn">${kn.map(r=>node(r,gAssign[r])).join("")}</div>`:""}
+      </div>`;})()}
     <div class="rescard">${remarks.map(r=>`<div class="blurb">${r}</div>`).join("")}</div>
     <div class="row2">
       <button class="btn btn-again" id="gAgain">מהתחלה 🔁</button>
@@ -3611,9 +3637,12 @@ function fdLike(card,c,btn){
   if(on){ const pop=document.createElement("div"); pop.className="fdheartpop"; pop.textContent="❤️"; card.appendChild(pop); setTimeout(()=>pop.remove(),700); }
 }
 function fdDblTap(card){
-  let last=0;
-  const hit=()=>{ const now=Date.now(); if(now-last<320){ last=0; const hb=card.querySelector(".rail .rb.heart"); const c=card._c; if(hb&&c) fdLike(card,c,hb); } else last=now; };
-  card.addEventListener("pointerup",e=>{ if(e.target.closest(".rail,.ans,.fdgo,a,button")) return; hit(); });
+  let last=0, lock=0;
+  const fire=()=>{ const now=Date.now(); if(now-lock<500) return; lock=now; const hb=card.querySelector(".rail .rb.heart"); const c=card._c; if(hb&&c) fdLike(card,c,hb); };
+  const guard=e=>!!e.target.closest(".rail,.ans,.fdgo,a,button,.fdhelp");
+  card.addEventListener("dblclick",e=>{ if(guard(e)) return; e.preventDefault(); fire(); });
+  card.addEventListener("touchend",e=>{ if(guard(e)) return; const now=Date.now(); if(now-last<420){ e.preventDefault(); last=0; fire(); } else last=now; },{passive:false});
+  card.addEventListener("click",e=>{ if(guard(e)) return; const now=Date.now(); if(now-last<420&&!("ontouchstart" in window)){ last=0; fire(); } else last=now; });
 }
 function fdTypeW(t){ const n=fdLikeT[t]||0; return FD_W[t]*Math.min(3,1+0.6*n*Math.pow(0.85,Math.max(0,fdLikeN-1))); }
 function fdTopicBoost(c){ const t=fdTopic(c); const n=t?(fdLikeTopic[t]||0):0; return n?Math.min(3,1+1.0*n*Math.pow(0.85,Math.max(0,fdLikeN-1))):1; }
