@@ -450,7 +450,7 @@
   .wincard b{color:var(--paper)}
   /* tab bar + menus */
   .tabbar{display:flex;gap:6px;background:var(--ink2);border:1px solid rgba(139,147,184,.25);border-radius:18px;padding:6px;margin-top:10px;flex-shrink:0}
-  .tab{flex:1;border:0;background:none;color:var(--muted);font-family:'Heebo';font-weight:900;font-size:12px;border-radius:13px;padding:8px 4px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px}
+  .tab{flex:1;border:0;background:none;color:var(--muted);font-family:'Heebo';font-weight:900;font-size:11.5px;border-radius:13px;padding:8px 4px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px}
   .tab .te{font-size:19px}
   .tab.on{background:rgba(61,123,255,.16);color:var(--paper)}
   .menucard{display:flex;align-items:center;gap:12px;background:var(--ink2);border:1px solid rgba(139,147,184,.25);border-radius:16px;padding:13px 14px;cursor:pointer;text-align:right;width:100%;font-family:'Heebo';color:var(--paper);transition:transform .1s}
@@ -700,12 +700,13 @@
     <button class="tab on" data-tab="home"><span class="te">🗳️</span>ראשי</button>
     <button class="tab" data-tab="games"><span class="te">🎮</span>משחקים</button>
     <button class="tab" data-tab="learn"><span class="te">🧠</span>תכל'ס</button>
+    <button class="tab" data-tab="feed"><span class="te">🌀</span>הפיד</button>
   </nav>
 </div>
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="3.5.1";
+const APP_VERSION="3.6";
 const APP_UPDATED="28.9.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
@@ -1740,7 +1741,7 @@ function renderVotes(){
 }
 /* ================= TABS & MENUS ================= */
 let lastTab="home";
-const TABSCREEN={home:()=>intro, games:()=>gmenu, learn:()=>lmenu};
+const TABSCREEN={home:()=>intro, games:()=>gmenu, learn:()=>lmenu, feed:()=>{ if(!feed.querySelector(".fdwrap")) startFeed(); return feed; }};
 function goBack(){ show(TABSCREEN[lastTab]()); }
 function showTab(t){
   lastTab=t;
@@ -1761,7 +1762,7 @@ $("#gIdle").onclick=()=>{lastTab="games";startIdle();};
 $("#gWv").onclick=()=>{lastTab="games";startWv();};
 $("#gUncle").onclick=()=>{lastTab="games";startUncle();};
 $("#gMemo").onclick=()=>{lastTab="games";startMemo();};
-$("#gFeed").onclick=()=>{lastTab="games";startFeed();};
+$("#gFeed").onclick=()=>showTab("feed");
 /* learn menu */
 $("#lHot").onclick=()=>{lastTab="learn";renderHot();show(hot);};
 $("#lFacts").onclick=()=>{lastTab="learn";renderFacts();show(facts);};
@@ -3569,7 +3570,7 @@ function startFeed(){
   feed.innerHTML=`<div class="fdtop"><span>🌀 הפיד</span><span style="font-size:11px;color:var(--muted);font-family:inherit">גללו למעלה · אינסופי · כל כרטיס — עובדה עם מקור</span><button class="linkbtn" data-back style="margin:0;padding:4px 8px">✕</button></div>
     <div class="fdwrap" id="fdWrap"><div id="fdSent" style="height:2px"></div></div>
     <div class="fdhint">⬆ גללו</div>`;
-  feed.querySelector("[data-back]").onclick=()=>goBack();
+  feed.querySelector("[data-back]").onclick=()=>showTab("home");
   if(fdInIO) fdInIO.disconnect();
   try{
     fdInIO=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("in"); e.target.querySelectorAll(".cnt:not([data-done])").forEach(c=>{ c.dataset.done="1"; fdCountUp(c); }); } }),{root:$("#fdWrap"),threshold:.5});
@@ -3587,7 +3588,7 @@ function startFeed(){
   show(feed);
   setTimeout(()=>{ const h=feed.querySelector(".fdhint"); if(h) h.style.display="none"; },5000);
 }
-$("#ffab").onclick=()=>{ lastTab="main"; startFeed(); };
+$("#ffab").onclick=()=>showTab("feed");
 </script>
 </body>
 </html>
