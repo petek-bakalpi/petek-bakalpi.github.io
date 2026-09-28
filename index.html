@@ -288,6 +288,7 @@
   .fdc .num{font-family:'Secular One';font-size:clamp(46px,14vw,72px);line-height:1;text-shadow:0 3px 14px rgba(0,0,0,.4)}
   .fdc .sub{font-size:14px;opacity:.9;margin-top:8px;line-height:1.4}
   .fdc .bar{display:flex;gap:8px;margin-top:10px}
+  .fdc .bar .btnlike{flex:1;padding:10px;border-radius:12px;border:1.5px solid rgba(255,255,255,.55);background:rgba(0,0,0,.25);color:#fff;font-weight:800;font-size:13px;text-align:center;text-decoration:none;display:block}
   .fdc .bar button{flex:1;padding:10px;border-radius:12px;border:1.5px solid rgba(255,255,255,.55);background:rgba(0,0,0,.25);color:#fff;font-weight:800;font-family:inherit;font-size:13px;cursor:pointer}
   .fdc.cta{text-align:center;justify-content:center;gap:14px}
   .fdhint{position:absolute;bottom:8px;left:0;right:0;text-align:center;font-size:11px;opacity:.7;pointer-events:none;animation:fdb 1.6s ease-in-out infinite}
@@ -471,7 +472,7 @@
 
   <!-- INTRO -->
   <section class="screen on" id="intro">
-    <div class="countrow"><div class="countpill" id="countdown"></div><button class="ffab" id="ffab" title="הפיד — גלילה אינסופית">🌀</button><button class="xfab" id="xfab" title="ציוצים חמים — בחירת העורך">𝕏<span class="xbadge" id="xbadge">!</span></button></div>
+    <div class="countrow"><div class="countpill" id="countdown"></div><button class="xfab" id="xfab" title="ציוצים חמים — בחירת העורך">𝕏<span class="xbadge" id="xbadge">!</span></button></div>
     <div class="breaking" id="breaking"><span class="blabel">⚡ מבזק</span><span class="btrack"><span class="btext" id="btext"></span></span></div>
     <div class="kicker">בחירות 2026 · הכנסת ה־26</div>
     <h1>פתק<br><span class="hl">בקלפי</span></h1>
@@ -706,7 +707,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="3.6.1";
+const APP_VERSION="3.6.2";
 const APP_UPDATED="28.9.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
@@ -3534,23 +3535,23 @@ function fdCard(c,i){
   if(c.k==="num"){
     const target=c.v>=1000?Math.round(c.v/100)/10:Math.round(c.v);
     const unit=c.v>=1000?" מיליארד ₪":" מיליון ₪";
-    return `<div class="fdc" style="background:${g}"><div class="wm">💸</div><div class="lbl"><span>💸 המספרים של התקציב</span></div><div><div class="num"><span class="cnt" data-t="${target}" data-dec="${c.v>=1000&&c.v%1000?1:0}">0</span><span style="font-size:.4em">${unit}</span></div><div class="big" style="font-size:20px;margin-top:10px"><span class="ln">${c.t}</span></div><div class="sub"><span class="ln">${c.s}</span></div></div><div class="bar"><button data-go="budget" data-key="${c.key}">📖 המספרים</button><button data-share="${encodeURIComponent(fdMoney(c.v)+" — "+c.t)}">📤 שתפו</button></div></div>`;
+    return `<div class="fdc" style="background:${g}"><div class="wm">💸</div><div class="lbl src"><a href="#" data-go="budget" data-key="${c.key}">💸 המספרים של התקציב ↗</a></div><div><div class="num"><span class="cnt" data-t="${target}" data-dec="${c.v>=1000&&c.v%1000?1:0}">0</span><span style="font-size:.4em">${unit}</span></div><div class="big" style="font-size:20px;margin-top:10px"><span class="ln">${c.t}</span></div><div class="sub"><span class="ln">${c.s}</span></div></div><div class="bar"><button data-share="${encodeURIComponent(fdMoney(c.v)+" — "+c.t)}">📤 שתפו</button></div></div>`;
   }
   if(c.k==="quote"){
-    return `<div class="fdc" style="background:${g}"><div class="wm">💬</div><div class="lbl"><span>💬 אמרו</span></div><div><div class="qmark">״</div><div class="big">${fdLines(c.t)}</div><div class="sub"><span class="ln">— ${c.a}${c.s?" · "+c.s:""}</span></div></div><div class="bar"><button data-go="quote">🎮 מי אמר את זה?</button><button data-share="${encodeURIComponent("״"+c.t+"״ — "+c.a)}">📤 שתפו</button></div></div>`;
+    return `<div class="fdc" style="background:${g}"><div class="wm">💬</div><div class="lbl src"><a href="#" data-go="quote">💬 אמרו · מי אמר את זה? ↗</a></div><div><div class="qmark">״</div><div class="big">${fdLines(c.t)}</div><div class="sub"><span class="ln">— ${c.a}${c.s?" · "+c.s:""}</span></div></div><div class="bar"><button data-share="${encodeURIComponent("״"+c.t+"״ — "+c.a)}">📤 שתפו</button></div></div>`;
   }
   if(c.k==="tweet"){
-    return `<div class="fdc" style="background:${g}"><div class="wm">🐦</div><div class="lbl src"><span>🔥 ציוצים חמים · ${c.who}</span><a href="${c.url}" target="_blank" rel="noopener">למקור ↗</a></div><div class="tw"><blockquote class="twitter-tweet" data-theme="dark" data-lang="he" data-dnt="true"><p dir="rtl" style="color:#fff;opacity:.7">⏳ טוען את הציוץ…</p><a href="${c.url}" style="color:#fff">${c.who} ${c.handle}</a></blockquote></div><div class="bar"><button data-go="hot" data-key="${c.who}">🔥 עוד ציוצים</button><button data-share="${encodeURIComponent(c.url)}">📤 שתפו</button></div></div>`;
+    return `<div class="fdc" style="background:${g}"><div class="wm">🐦</div><div class="lbl src"><a href="#" data-go="hot" data-key="${c.who}">🔥 ציוצים חמים · ${c.who} ↗</a></div><div class="tw"><blockquote class="twitter-tweet" data-theme="dark" data-lang="he" data-dnt="true"><p dir="rtl" style="color:#fff;opacity:.7">⏳ טוען את הציוץ…</p><a href="${c.url}" style="color:#fff">${c.who} ${c.handle}</a></blockquote></div><div class="bar"><a class="btnlike" href="${c.url}" target="_blank" rel="noopener">🐦 הציוץ ב-X</a><button data-share="${encodeURIComponent(c.url)}">📤 שתפו</button></div></div>`;
   }
   if(c.k==="led"||c.k==="core"){
     const lbl=c.k==="led"?"📓 פנקס הכישלונות":"🧠 נושאי הליבה";
     const q=c.k==="led"?(LEDGER.find(x=>x.t===c.src)||{}).q:"";
     const link=q?`<a href="https://www.google.com/search?q=${encodeURIComponent(q)}" target="_blank" rel="noopener">🔎 בדקו</a>`:"";
-    return `<div class="fdc" style="background:${g}"><div class="wm">${c.e}</div><div class="lbl src"><span>${lbl} · ${c.src}</span>${link}</div><div class="big">${fdLines(c.t)}</div><div class="bar"><button data-go="${c.k}" data-key="${c.key}">📖 הכרטיס המלא</button><button data-share="${encodeURIComponent(c.src+": "+c.t)}">📤 שתפו</button></div></div>`;
+    return `<div class="fdc" style="background:${g}"><div class="wm">${c.e}</div><div class="lbl src"><a href="#" data-go="${c.k}" data-key="${c.key}">${lbl} · ${c.src} ↗</a></div><div class="big">${fdLines(c.t)}</div><div class="bar">${link.replace('<a ','<a class="btnlike" ')}<button data-share="${encodeURIComponent(c.src+": "+c.t)}">📤 שתפו</button></div></div>`;
   }
   const f=FACTS.find(x=>x.t===c.src);
   const srcLink=f&&f.url?`<a href="${f.url}" target="_blank" rel="noopener">למקור ↗</a>`:`<a href="https://www.google.com/search?q=${encodeURIComponent(f?f.srch:c.src)}" target="_blank" rel="noopener">🔎 בדקו</a>`;
-  return `<div class="fdc" style="background:${g}"><div class="wm">${c.e}</div><div class="lbl src"><span>${c.e} מתוך: ${c.src}</span>${srcLink}</div><div class="big">${fdLines(c.t)}</div><div class="bar"><button data-go="facts" data-key="${c.key}">📖 הסיפור המלא</button><button data-share="${encodeURIComponent(c.t)}">📤 שתפו</button></div></div>`;
+  return `<div class="fdc" style="background:${g}"><div class="wm">${c.e}</div><div class="lbl src"><a href="#" data-go="facts" data-key="${c.key}">${c.e} מתוך: ${c.src} ↗</a></div><div class="big">${fdLines(c.t)}</div><div class="bar">${srcLink.replace('<a ','<a class="btnlike" ')}<button data-share="${encodeURIComponent(c.t)}">📤 שתפו</button></div></div>`;
 }
 function fdAppend(n){
   const wrap=$("#fdWrap"); const sent=$("#fdSent");
@@ -3564,7 +3565,7 @@ function fdAppend(n){
   wrap.querySelectorAll(".fdc:not([data-w])").forEach(el=>{
     el.dataset.w="1";
     if(fdInIO) fdInIO.observe(el); else el.classList.add("in");
-    el.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>{ const pg=b.dataset.go; if(pg==="quote"){ lastTab="games"; $("#gQuote").click(); } else deepOpen(pg,b.dataset.key||""); });
+    el.querySelectorAll("[data-go]").forEach(b=>b.onclick=(ev)=>{ ev.preventDefault(); const pg=b.dataset.go; if(pg==="quote"){ lastTab="games"; $("#gQuote").click(); } else deepOpen(pg,b.dataset.key||""); });
     el.querySelectorAll("[data-share]").forEach(b=>b.onclick=()=>fdShare(decodeURIComponent(b.dataset.share)));
     if(el.querySelector(".twitter-tweet") && window.twttr && window.twttr.widgets){ try{ window.twttr.widgets.load(el); }catch(_){ } }
     el.querySelectorAll("[data-cta]").forEach(b=>b.onclick=()=>{ const c=b.dataset.cta; if(c==="share") fdShare("דום־סקרולינג בחירות 🌀"); else if(c==="quiz"){ lastTab="main"; show(intro); } else if(c==="wv"){ lastTab="games"; startWv(); } else if(c==="uncle"){ lastTab="games"; startUncle(); } else if(c==="tik") window.open("https://petek-bakalpi.github.io/tik-710.pdf","_blank"); });
@@ -3598,7 +3599,7 @@ function startFeed(){
   show(feed);
   setTimeout(()=>{ const h=feed.querySelector(".fdhint"); if(h) h.style.display="none"; },5000);
 }
-$("#ffab").onclick=()=>showTab("feed");
+
 </script>
 </body>
 </html>
