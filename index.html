@@ -750,7 +750,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="3.9.1";
+const APP_VERSION="3.9.2";
 const APP_UPDATED="28.9.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
@@ -3770,9 +3770,10 @@ const FD_ICO={
 };
 function fdRail(el){
   const bar=el.querySelector(".bar"); if(!bar) return;
-  if(bar.querySelector("[data-cta],[data-game]")) return; /* כרטיסי פעולה שומרים כפתור מרכזי */
+  const ctaShare=bar.querySelector('[data-cta="share"]');
+  if(bar.querySelector("[data-game],[data-cta]") && !ctaShare) return; /* כרטיסי פעולה אמיתית שומרים כפתור מרכזי */
   const shareBtn=bar.querySelector("[data-share]"); const ext=bar.querySelector("a.btnlike");
-  const txt=shareBtn?decodeURIComponent(shareBtn.dataset.share):"";
+  const txt=shareBtn?decodeURIComponent(shareBtn.dataset.share):(ctaShare?(el.querySelector(".big")?.textContent.trim()+" "+(el.querySelector(".sub")?.textContent.trim()||"")):"");
   const rail=document.createElement("div"); rail.className="rail";
   rail.innerHTML=`<button class="rb" data-rshare="${encodeURIComponent(txt)}"><i>${FD_ICO.share}</i><small>שתפו</small></button>
     <button class="rb" data-rcopy="${encodeURIComponent(txt)}"><i>${FD_ICO.copy}</i><small>העתקו</small></button>
