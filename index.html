@@ -308,6 +308,9 @@
   .fdc .tw{background:rgba(0,0,0,.25);border-radius:14px;padding:6px;max-height:62%;overflow:auto}
   .fdc .tw blockquote{margin:0}
   .fdc .lbl{display:flex;justify-content:space-between;gap:8px;align-items:center;position:relative;z-index:2}
+  .fdgo{display:inline-flex;align-items:center;gap:8px;background:#fff;color:#0F1530;font-family:'Secular One';font-size:16px;padding:12px 22px;border-radius:99px;border:0;box-shadow:0 6px 18px rgba(0,0,0,.35);cursor:pointer;margin:16px auto 0;position:relative;z-index:5;transition:transform .12s}
+  .fdgo:active{transform:scale(.97)}
+  .fdgo b{font-family:'Heebo';font-weight:900;font-size:14px}
   /* feed — action rail + nudge */
   .fdc:not(.cta){padding-left:66px;padding-top:64px;justify-content:center}
   .fdc:not(.cta) .lbl{position:absolute;top:18px;right:20px;left:66px}
@@ -751,7 +754,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="3.9.3";
+const APP_VERSION="3.9.4";
 const APP_UPDATED="28.9.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
@@ -3681,7 +3684,7 @@ function fdCard(c,i){
   const g=FD_GRAD[i%FD_GRAD.length];
   if(c.k==="cta"){
     const days=Math.max(0,Math.ceil((ELECTION_DATE-new Date())/864e5));
-    return `<div class="fdc cta" style="background:${g}"><div class="wm">🗳️</div><div class="big"><span class="ln">${c.t.replace("{d}",'<span class="gold">'+days+'</span>')}</span></div><div class="sub"><span class="ln">${c.s}</span></div><div class="bar" style="justify-content:center"><button data-cta="${c.b}">${({share:"📤 שתפו",quiz:"🗳️ לשאלון",wv:"🧪 למעבדה",uncle:"🧔 לדוד",tik:"📕 למסמך"})[c.b]}</button></div></div>`;
+    return `<div class="fdc cta" style="background:${g}"><div class="wm">🗳️</div><div class="big"><span class="ln">${c.t.replace("{d}",'<span class="gold">'+days+'</span>')}</span></div><div class="sub"><span class="ln">${c.s}</span></div><div class="bar">${c.b==="share"?"":`<button class="fdgo" data-cta="${c.b}">${({quiz:"▶ <b>עבור לשאלון</b>",wv:"▶ <b>עבור למעבדת הקול השרוף</b>",uncle:"▶ <b>עבור למשחק:</b> שכנעו את הדוד",tik:"📕 <b>פתח את תיק 7.10</b> (PDF)"})[c.b]}</button>`}<span data-share="${encodeURIComponent(c.t.replace("{d}",days)+" "+c.s)}" hidden></span></div></div>`;
   }
   if(c.k==="num"){
     const target=c.v>=1000?Math.round(c.v/100)/10:Math.round(c.v);
@@ -3695,7 +3698,7 @@ function fdCard(c,i){
     return `<div class="fdc" data-k="tweet" style="background:${g}"><div class="wm">🐦</div><div class="lbl src"><a href="#" data-go="hot" data-key="${c.who}">🔥 ציוצים חמים · ${c.who} ↗</a></div><div class="tw"><blockquote class="twitter-tweet" data-theme="dark" data-lang="he" data-dnt="true"><p dir="rtl" style="color:#fff;opacity:.7">⏳ טוען את הציוץ…</p><a href="${c.url}" style="color:#fff">${c.who} ${c.handle}</a></blockquote></div><div class="bar"><a class="btnlike" href="${c.url}" target="_blank" rel="noopener">🐦 הציוץ ב-X</a><button data-share="${encodeURIComponent(c.url)}">📤 שתפו</button></div></div>`;
   }
   if(c.k==="game"){
-    return `<div class="fdc cta" data-k="game" style="background:${g}"><div class="wm">🎮</div><div class="gbig">${c.e}</div><div class="big"><span class="ln">${c.t}</span></div><div class="sub"><span class="ln">${c.s}</span></div><div class="bar" style="justify-content:center"><button data-game="${c.id}">🎮 שחקו</button></div></div>`;
+    return `<div class="fdc cta" data-k="game" style="background:${g}"><div class="wm">🎮</div><div class="gbig">${c.e}</div><div class="big"><span class="ln">${c.t}</span></div><div class="sub"><span class="ln">${c.s}</span></div><div class="bar"><button class="fdgo" data-game="${c.id}">▶ <b>עבור למשחק:</b> ${(document.querySelector("#"+c.id+" .mt")||{}).textContent||""}</button><span data-share="${encodeURIComponent(c.t+" — "+c.s)}" hidden></span></div></div>`;
   }
   if(c.k==="cand"){
     return `<div class="fdc" data-k="cand" style="background:${g}"><div class="wm">${c.e}</div><div class="lbl src"><a href="#" data-go="${c.pg}" data-key="${c.key}">${c.e} ${c.likud?"מי ברשימת הליכוד":"מי ברשימה"} · ${c.party} ↗</a></div><div class="vcard"><div class="pos">${c.pos}</div><div class="nm">${c.n}</div><div class="bio">${c.b}</div></div><div class="bar"><button data-share="${encodeURIComponent(c.party+" מקום "+c.pos+": "+c.n+" — "+c.b)}">📤 שתפו</button></div></div>`;
@@ -3708,7 +3711,7 @@ function fdCard(c,i){
     return `<div class="fdc" data-k="expl" style="background:${g}"><div class="wm">${c.e}</div><div class="lbl src"><a href="#" data-go="${c.pg}" data-key="${c.key||""}">${c.e} ${c.sub} ↗</a></div><div class="big">${fdLines(c.t)}</div><div class="bar"><button data-share="${encodeURIComponent(c.sub+": "+c.t)}">📤 שתפו</button></div></div>`;
   }
   if(c.k==="egg"){
-    return `<div class="fdc cta" data-k="egg" style="background:linear-gradient(160deg,#F5B841,#B48CF2,#33D69F);background-size:300% 300%"><div class="gbig">🏁</div><div class="big"><span class="ln">הגעתם לסוף הפיד האינסופי.</span></div><div class="sub"><span class="ln">זה לא היה אמור לקרות. ${c.n} כרטיסים, כולם עם מקור — ואתם עברתם על כולם. יש מי שקורא יותר מהח״כים.</span><br><span class="ln" style="margin-top:8px;display:block">🏆 תעודת גלילה: ״קראתי את כל תכל׳ס לפני 27.10.״</span></div><div class="bar" style="justify-content:center"><button data-share="${encodeURIComponent("🏁 הגעתי לסוף הפיד האינסופי של פתק בקלפי — "+c.n+" כרטיסים עם מקור. יש מי שקורא יותר מהח״כים.")}">🏆 שתפו את התעודה</button></div><div class="sub" style="opacity:.75;font-size:12px">…והנה סיבוב שני, מעורבב מחדש 👇</div></div>`;
+    return `<div class="fdc cta" data-k="egg" style="background:linear-gradient(160deg,#F5B841,#B48CF2,#33D69F);background-size:300% 300%"><div class="gbig">🏁</div><div class="big"><span class="ln">הגעתם לסוף הפיד האינסופי.</span></div><div class="sub"><span class="ln">זה לא היה אמור לקרות. ${c.n} כרטיסים, כולם עם מקור — ואתם עברתם על כולם. יש מי שקורא יותר מהח״כים.</span><br><span class="ln" style="margin-top:8px;display:block">🏆 תעודת גלילה: ״קראתי את כל תכל׳ס לפני 27.10.״</span></div><div class="bar"><span data-share="${encodeURIComponent("🏁 הגעתי לסוף הפיד האינסופי של פתק בקלפי — "+c.n+" כרטיסים עם מקור. יש מי שקורא יותר מהח״כים.")}" hidden></span></div><div class="sub" style="opacity:.75;font-size:12px">…והנה סיבוב שני, מעורבב מחדש 👇</div></div>`;
   }
   if(c.k==="vs"){
     const top=c.pg&&c.key!==undefined?`<a href="#" data-go="${c.pg}" data-key="${c.key}">🆚 מספר מול מספר ↗</a>`:`<span>🆚 מספר מול מספר</span>`;
@@ -3771,10 +3774,10 @@ const FD_ICO={
 };
 function fdRail(el){
   const bar=el.querySelector(".bar"); if(!bar) return;
-  const ctaShare=bar.querySelector('[data-cta="share"]');
-  if(bar.querySelector("[data-game],[data-cta]") && !ctaShare) return; /* כרטיסי פעולה אמיתית שומרים כפתור מרכזי */
+  const go=bar.querySelector(".fdgo");
   const shareBtn=bar.querySelector("[data-share]"); const ext=bar.querySelector("a.btnlike");
-  const txt=shareBtn?decodeURIComponent(shareBtn.dataset.share):(ctaShare?(el.querySelector(".big")?.textContent.trim()+" "+(el.querySelector(".sub")?.textContent.trim()||"")):"");
+  const txt=shareBtn?decodeURIComponent(shareBtn.dataset.share):((el.querySelector(".big")?.textContent.trim()||"")+" "+(el.querySelector(".sub")?.textContent.trim()||"")).trim();
+  if(go){ bar.parentNode.insertBefore(go,bar); }
   const rail=document.createElement("div"); rail.className="rail";
   rail.innerHTML=`<button class="rb" data-rshare="${encodeURIComponent(txt)}"><i>${FD_ICO.share}</i><small>שתפו</small></button>
     <button class="rb" data-rcopy="${encodeURIComponent(txt)}"><i>${FD_ICO.copy}</i><small>העתקו</small></button>
