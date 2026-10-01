@@ -319,6 +319,16 @@
   .fdhelp.on{display:flex}
   .fdhelp h3{font-family:'Secular One';font-size:22px;margin:0 0 10px}
   .fdhelp p{font-size:14px;line-height:1.6;margin:6px 0}
+  /* guided tour (spotlight) */
+  .tourfab{position:absolute;left:2px;top:50%;transform:translateY(-50%);width:38px;height:38px;border-radius:11px;border:1.5px solid rgba(139,147,184,.45);background:rgba(255,255,255,.06);color:var(--paper);font-size:19px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(0,0,0,.35)}
+  .tourhole{position:fixed;z-index:90;border-radius:14px;box-shadow:0 0 0 9999px rgba(5,8,20,.82);pointer-events:none;transition:all .35s ease;border:2px solid rgba(245,184,65,.9)}
+  .tourbox{position:fixed;z-index:91;left:12px;right:12px;background:#161C3A;border:1.5px solid rgba(245,184,65,.6);border-radius:16px;padding:14px 16px;box-shadow:0 12px 40px rgba(0,0,0,.6);transition:top .35s ease,bottom .35s ease}
+  .tourbox h4{font-family:'Secular One';font-size:18px;margin:0 0 6px}
+  .tourbox p{font-size:14px;line-height:1.55;margin:0;color:var(--paper)}
+  .tourbox .tb{display:flex;justify-content:space-between;align-items:center;margin-top:12px;gap:8px}
+  .tourbox .tstep{font-size:11px;color:var(--muted);font-weight:800}
+  .tourbox .tnext{background:var(--gold);color:#0F1530;border:0;border-radius:99px;padding:9px 18px;font-family:'Secular One';font-size:15px;cursor:pointer}
+  .tourbox .tskip{background:none;border:0;color:var(--muted);font-weight:800;font-size:12.5px;cursor:pointer;font-family:inherit}
   /* government org chart */
   .org{display:flex;flex-direction:column;align-items:center;gap:0;margin:8px 0 4px}
   .orgtier{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;width:100%}
@@ -543,7 +553,7 @@
 
   <!-- INTRO -->
   <section class="screen on" id="intro">
-    <div class="countrow"><div class="countpill" id="countdown"></div><button class="xfab" id="xfab" title="ציוצים חמים — בחירת העורך">𝕏<span class="xbadge" id="xbadge">!</span></button></div>
+    <div class="countrow"><div class="countpill" id="countdown"></div><button class="tourfab" id="tourfab" title="סיור מודרך — מה יש כאן?">❔</button><button class="xfab" id="xfab" title="ציוצים חמים — בחירת העורך">𝕏<span class="xbadge" id="xbadge">!</span></button></div>
     <div class="breaking" id="breaking"><span class="blabel">⚡ מבזק</span><span class="btrack"><span class="btext" id="btext"></span></span></div>
     <div class="kicker">בחירות 2026 · הכנסת ה־26</div>
     <h1>פתק<br><span class="hl">בקלפי</span></h1>
@@ -778,8 +788,8 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="3.12";
-const APP_UPDATED="28.9.2026";
+const APP_VERSION="3.13";
+const APP_UPDATED="1.10.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
 const BREAKING={txt:"NYT, WSJ, האטלנטיק והארץ בעשרה ימים: נתניהו הוזהר אישית לפחות חמש פעמים — מצרים, האמירויות, הרשות — עד 48 שעות לפני 7.10, ולא שיתף את ראשי הביטחון · הכרונולוגיה המלאה ⚡", key:"ההתרעות: הכרונולוגיה"};
@@ -3928,6 +3938,37 @@ function startFeed(){
   setTimeout(()=>{ const h=feed.querySelector(".fdhint"); if(h) h.style.display="none"; },5000);
 }
 
+
+/* ================= GUIDED TOUR ================= */
+const TOUR=[
+ {sel:"#countdown",t:"הספירה לאחור",x:"27 באוקטובר. כל מה שיש כאן בנוי כדי שתגיעו לקלפי מוכנים — ושתביאו עוד מישהו."},
+ {sel:"#breaking",t:"המבזק",x:"הסיפור החשוב ביותר כרגע, לפי העורך. הוא רץ בלולאה; הקישו עליו וקפצו ישירות לפריט המלא, עם המקורות."},
+ {sel:"#xfab",t:"ציוצים חמים",x:"בחירת העורך מהרשת — ציוצים מוטמעים במקור. סימן קריאה אדום = יש משהו חדש משלושת הימים האחרונים."},
+ {sel:"#startQuick",t:"השאלון — נקודת הפתיחה",x:"11 שאלות, פחות מדקה. בסוף מגלים איזו מפלגה בגוש הדמוקרטי מתאימה לכם. אף תשובה לא נשמרת ולא נשלחת לאף אחד."},
+ {sel:'.tab[data-tab="feed"]',t:"הפיד 🌀",x:"דום־סקרולינג בחירות: משפט אחד לכרטיס, מקור על כל אחד, אינסופי. סמנו ״מעניין״ והפיד מתכוונן אליכם — בלי לשמור דבר."},
+ {sel:'.tab[data-tab="games"]',t:"12 משחקים",x:"מנדטל יומי, מעבדת הקול השרוף, ״שכנעו את הדוד״, הקימו ממשלה — כולם על מועמדים ומספרים אמיתיים. ללמוד תוך כדי משחק."},
+ {sel:'.tab[data-tab="learn"]',t:"תכל׳ס 🧠",x:"מחלקת האקטואליה, פנקס הכישלונות, מילון המפלגות, נושאי הליבה — וחיפוש על הכול. כל טענה עם כפתור 🔎 לבדיקה עצמית."},
+ {sel:"#infoBtn,.infoicon",t:"ומי אנחנו?",x:"פרויקט אזרחי עצמאי, לא מטעם ולא ממומן. דעות מסומנות כדעות, עובדות עם מקור, אפס מעקב. הכול כתוב בכפתור הזה. בהצלחה — ונתראה בקלפי 🗳️"}
+];
+let tourI=0, tourEls=null;
+function tourStart(){ tourI=0; showTab("home"); if(!tourEls){ const hole=document.createElement("div"); hole.className="tourhole"; const box=document.createElement("div"); box.className="tourbox"; document.body.appendChild(hole); document.body.appendChild(box); tourEls={hole,box}; } tourStep(); }
+function tourEnd(){ if(!tourEls) return; tourEls.hole.remove(); tourEls.box.remove(); tourEls=null; }
+function tourStep(){
+  const st=TOUR[tourI]; if(!st){ tourEnd(); return; }
+  const el=document.querySelector(st.sel); if(!el){ tourI++; tourStep(); return; }
+  try{ el.scrollIntoView({block:"center",behavior:"smooth"}); }catch(_){ }
+  setTimeout(()=>{
+    const r=el.getBoundingClientRect(); const pad=6;
+    const {hole,box}=tourEls;
+    hole.style.left=(r.left-pad)+"px"; hole.style.top=(r.top-pad)+"px"; hole.style.width=(r.width+pad*2)+"px"; hole.style.height=(r.height+pad*2)+"px";
+    box.innerHTML=`<h4>${st.t}</h4><p>${st.x}</p><div class="tb"><button class="tskip" id="tourSkip">דלגו</button><span class="tstep">${tourI+1}/${TOUR.length}</span><button class="tnext" id="tourNext">${tourI<TOUR.length-1?"הבא ➡":"סיימנו ✓"}</button></div>`;
+    const below=r.bottom+12, boxH=box.offsetHeight||150;
+    if(below+boxH<window.innerHeight-10){ box.style.top=below+"px"; box.style.bottom="auto"; } else { box.style.top="auto"; box.style.bottom=(window.innerHeight-r.top+12)+"px"; }
+    $("#tourNext").onclick=()=>{ tourI++; tourStep(); }; $("#tourSkip").onclick=tourEnd;
+  },260);
+}
+$("#tourfab").onclick=tourStart;
+document.addEventListener("keydown",e=>{ if(e.key==="Escape"&&tourEls) tourEnd(); });
 </script>
 </body>
 </html>
