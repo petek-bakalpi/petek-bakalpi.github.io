@@ -440,6 +440,7 @@
   .podgo{margin-top:8px;padding:8px 18px;border-radius:999px;border:0;background:var(--mint);color:#0F1530;font-weight:800;font-size:13px;cursor:pointer;font-family:inherit}
   .podbox iframe{display:block;width:100%;height:152px;border:0;border-radius:12px}
   .podbox blockquote.instagram-media{margin:0 auto!important;max-width:540px;width:100%!important;min-width:0!important}
+  .vidframe{display:block;width:100%;aspect-ratio:4/3;border:0;border-radius:12px;background:#000}
   .vidcard{display:block;position:relative;border-radius:12px;overflow:hidden;margin:8px 0;background:#000;text-decoration:none;color:#fff}
   .vidcard img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;opacity:.85}
   .vidcard .vplay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:44px;text-shadow:0 2px 12px rgba(0,0,0,.7)}
@@ -797,7 +798,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="3.16.1";
+const APP_VERSION="3.16.2";
 const APP_UPDATED="9.10.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
@@ -2050,7 +2051,7 @@ function openDisclaimer(){
     <div class="xsec xbg"><b>📚 עובדות, דעות — וטעויות</b>הכלי משלב עובדות (בהתבסס על תחקירים ופרסומים עיתונאיים גלויים, עם כפתורי 🔎 לבדיקה עצמית בכל כרטיס) לצד פרשנות ודעה — והוא לא מתיימר להיות אמת חד־משמעית. למרות מאמצי הדיוק, ייתכנו טעויות, אי־דיוקים או מידע שהתיישן. מצאתם טעות? ספרו ליוצר — היא תתוקן במהירות ובשמחה. ההצבעה היא החלטתכם בלבד: קראו, הצליבו, והחליטו בעצמכם.</div>
     <div class="xsec xbg"><b>⚖️ חזקת החפות</b>כל אזכור של חקירה, חשד או הליך משפטי מתייחס לפרסומים בלבד; חזקת החפות שמורה לכל המוזכרים, וכל הליך יוכרע רק בערכאות המוסמכות. הציטוטים מובאים כלשונם מתוך פרסומים גלויים ולצורכי דיווח וביקורת.</div>
     <div class="xsec xbg"><b>🤖 שקיפות מלאה: נבנה בעזרת AI</b>חלק ניכר מהכלי — הקוד, הניסוחים וריכוז המידע — נוצר בסיוע בינה מלאכותית (Claude של Anthropic), בהנחיית היוצר ובבקרתו. AI עלול לטעות; זו עוד סיבה טובה ללחוץ על כפתורי הבדיקה ולקרוא מקורות ראשוניים. אגב, מיולי 2026 חלה בישראל חובת סימון על תעמולת בחירות שנוצרת ב־AI — אנחנו לא תעמולה מטעם אף גורם, אבל מסמנים בשמחה גם בלי החובה. שקיפות היא לא איום.</div>
-    <div class="xsec xbg"><b>🔒 פרטיות</b>הכלי רץ כולו אצלכם במכשיר: אין לנו שרת שאוסף נתונים, אין עוגיות, ושום תשובה או תוצאה לא נשמרת ולא נשלחת לאף אחד. (האתר מתארח כקובץ סטטי ב־GitHub Pages, שכמו כל ספק אחסון מנהל לוגים טכניים בסיסיים — אך אנחנו לא רואים אותם ולא אוספים דבר.) גילוי אחד נוסף: הפונטים נטענים משרתי Google Fonts — בקשה שחושפת לגוגל את כתובת ה־IP שלכם ותו לא, כמו כמעט בכל אתר; בעתיד נטמיע את הפונטים בקובץ עצמו ונסגור גם את זה. ובמסך ״מחלקת הדיגיטל״ בלבד נטען סקריפט ההטמעה הרשמי של X (עם דגל ״אל תעקוב״) כדי להציג ציוצים במקור; נגני פודקאסט ווידאו (ספוטיפיי, יוטיוב) והטמעות אינסטגרם (Meta) נטענים רק אחרי לחיצה מפורשת על ▶, וכתבות וידאו מאתרי חדשות מוצגות כתמונת תצוגה הנטענת מאתר המקור ונפתחות שם — מי שלא רוצה, פשוט לא נכנס למסך הזה או לא לוחץ. קישורי החיפוש מובילים לאתרים חיצוניים שבאחריות מפעיליהם.</div>
+    <div class="xsec xbg"><b>🔒 פרטיות</b>הכלי רץ כולו אצלכם במכשיר: אין לנו שרת שאוסף נתונים, אין עוגיות, ושום תשובה או תוצאה לא נשמרת ולא נשלחת לאף אחד. (האתר מתארח כקובץ סטטי ב־GitHub Pages, שכמו כל ספק אחסון מנהל לוגים טכניים בסיסיים — אך אנחנו לא רואים אותם ולא אוספים דבר.) גילוי אחד נוסף: הפונטים נטענים משרתי Google Fonts — בקשה שחושפת לגוגל את כתובת ה־IP שלכם ותו לא, כמו כמעט בכל אתר; בעתיד נטמיע את הפונטים בקובץ עצמו ונסגור גם את זה. ובמסך ״מחלקת הדיגיטל״ בלבד נטען סקריפט ההטמעה הרשמי של X (עם דגל ״אל תעקוב״) כדי להציג ציוצים במקור; נגני פודקאסט ווידאו (ספוטיפיי, יוטיוב) והטמעות אינסטגרם (Meta) נטענים רק אחרי לחיצה מפורשת על ▶, וכתבות וידאו מאתרי חדשות מוצגות כתמונת תצוגה הנטענת מאתר המקור, והנגן של האתר (למשל מאקו) נטען גם הוא רק בלחיצה — מי שלא רוצה, פשוט לא נכנס למסך הזה או לא לוחץ. קישורי החיפוש מובילים לאתרים חיצוניים שבאחריות מפעיליהם.</div>
     <div class="xsec xbg"><b>🧪 ולא, זה לא מדע</b>השאלון, המצפן והמשחקים הם כלי המחשה חינוכיים — לא סקר, לא מחקר ולא ייעוץ מכל סוג. המשקלות והמיקומים הם הערכות של היוצר, ומוזמנים לחלוק עליהן.</div>
     <p style="text-align:center;color:var(--muted);font-size:11px">גרסה ${APP_VERSION} · עודכן: ${APP_UPDATED}</p>
     <button class="closebtn">סבבה, הבנתי 👍</button>
@@ -3415,6 +3416,7 @@ const HOT=[
  {who:"חדשות 12 — ירון אברהם", handle:"", dt:"7.10.2026", kind:"כתבת וידאו",
   video:"https://www.mako.co.il/news-channel12?subChannelId=354f3daf88a50a10VgnVCM100000700a10acRCRD&vcmid=6a685ed7d3711a10VgnVCM200000650a10acRCRD",
   img:"https://img.mako.co.il/2026/10/07/Sipurei_Hassifa0710_autoOrient_i.jpg",
+  embed:"https://www.mako.co.il/AjaxPage?jspName=embedHTML5video.jsp&galleryChannelId=e30cc13e751fc610VgnVCM200000650a10acRCRD&videoChannelId=354f3daf88a50a10VgnVCM100000700a10acRCRD&vcmid=6a685ed7d3711a10VgnVCM200000650a10acRCRD",
   title:"תחקיר: האזהרות שקיבל ראש הממשלה לפני 7.10", show:"מהדורה מרכזית · N12",
   text:"הכתבה המצולמת של התחקיר: מכתב הלוי ״בין אדום לכחול״, הטיוטה הגנוזה מליל גלנט, ״שידברו עם אלה בקפלן״ — והמסמכים עצמם על המסך.",
   note:"הגרסה הכתובה, עם ציר הזמן המלא ותגובת רה״מ, במחלקת האקטואליה. <button class='dlchip' data-pg='facts' data-k='אלה בקפלן'>📬 לפריט המלא</button>",
@@ -3484,8 +3486,15 @@ const HOT=[
 /* כרטיס פודקאסט — placeholder; נגן ספוטיפיי הרשמי נטען רק בלחיצה (פרטיות) */
 /* כרטיס וידאו — אתרי החדשות לא מאפשרים הטמעה; תמונת תצוגה + פתיחה באתר המקור בחלון חדש */
 function vidBox(h){
+  if(h.embed) return `<div class="podbox"><a class="vidcard" href="${h.video}" data-vidload="${h.embed}" rel="noopener"><img src="${h.img}" alt="" loading="lazy"><div class="vplay">▶</div><div class="vcap">${h.title||""}<small>${h.show||""} · הלחיצה טוענת את הנגן של האתר · <span style="text-decoration:underline">פתיחה במקור ↗</span></small></div></a></div>`;
   return `<a class="vidcard" href="${h.video}" target="_blank" rel="noopener"><img src="${h.img}" alt="" loading="lazy"><div class="vplay">▶</div><div class="vcap">${h.title||""}<small>${h.show||""} · נפתח באתר המקור ↗</small></div></a>`;
 }
+document.addEventListener("click",e=>{
+  const a=e.target.closest("[data-vidload]"); if(!a) return;
+  e.preventDefault();
+  const box=a.closest(".podbox"); if(!box) return;
+  box.innerHTML=`<iframe class="vidframe" src="${a.dataset.vidload}" allowfullscreen allow="autoplay; fullscreen; picture-in-picture" loading="lazy" title="${a.querySelector(".vcap")?a.querySelector(".vcap").firstChild.textContent:"וידאו"}"></iframe><div style="font-size:10.5px;opacity:.75;margin-top:4px;text-align:center"><a href="${a.getAttribute("href")}" target="_blank" rel="noopener" style="color:#7FA8FF">לא נטען? פתחו באתר המקור ↗</a></div>`;
+});
 /* רילס/פוסט אינסטגרם — ההטמעה הרשמית של Meta נטענת רק בלחיצה (פרטיות) */
 function igBox(h){
   return `<div class="podbox"><div class="podph"><div style="font-size:30px;line-height:1">📱</div><b style="font-size:14px;display:block;margin-top:4px">${h.title||"רילס באינסטגרם"}</b><div style="font-size:12px;opacity:.75">${h.who||""}</div><button class="podgo" data-igload="${h.insta}">▶ הציגו כאן</button><div style="font-size:10.5px;opacity:.75;margin-top:5px">הלחיצה טוענת את ההטמעה הרשמית של אינסטגרם (Meta) · <a href="${h.insta}" target="_blank" rel="noopener" style="color:#7FA8FF">פתחו באינסטגרם ↗</a></div></div></div>`;
@@ -3509,7 +3518,7 @@ document.addEventListener("click",e=>{
 function renderHot(){
   hot.innerHTML=`
     <h2>מחלקת הדיגיטל<br><span class="hl">בחירת העורך 📡</span></h2>
-    <p style="text-align:center;color:var(--muted);font-size:12px">הנקודות החכמות, השנונות והחשובות שעלו ברשת — ציוצים, פודקאסטים וסרטונים במקור, עם קרדיט מלא.<br><span style="font-size:10.5px">🔒 ציוצים נטענים דרך הסקריפט הרשמי של X, רק במסך הזה ועם דגל ״אל תעקוב״; נגני ספוטיפיי/יוטיוב והטמעות אינסטגרם נטענים רק בלחיצה על ▶; כתבות וידאו מאתרי חדשות נפתחות באתר המקור (רק תמונת התצוגה נטענת משם). בלי רשת/עם חוסם — יוצג הטקסט והקישור.</span></p>
+    <p style="text-align:center;color:var(--muted);font-size:12px">הנקודות החכמות, השנונות והחשובות שעלו ברשת — ציוצים, פודקאסטים וסרטונים במקור, עם קרדיט מלא.<br><span style="font-size:10.5px">🔒 ציוצים נטענים דרך הסקריפט הרשמי של X, רק במסך הזה ועם דגל ״אל תעקוב״; נגני ספוטיפיי/יוטיוב והטמעות אינסטגרם נטענים רק בלחיצה על ▶; כתבות וידאו מאתרי חדשות: תמונת התצוגה נטענת מהאתר, והנגן שלו — רק בלחיצה. בלי רשת/עם חוסם — יוצג הטקסט והקישור.</span></p>
     ${HOT.slice().sort((a,b)=>{const p=d=>{const m=/(\d{1,2})\.(\d{1,2})\.(\d{4})/.exec(d||"");return m?new Date(+m[3],+m[2]-1,+m[1]).getTime():0;};return p(b.dt)-p(a.dt);}).map(h=>`
       <div class="rescard" style="margin-bottom:10px;text-align:right">
         <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
