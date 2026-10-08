@@ -799,7 +799,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="3.16.7";
+const APP_VERSION="3.16.8";
 const APP_UPDATED="9.10.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
@@ -3410,6 +3410,13 @@ function wvSettle(choice,r){
 /* ================= HOT TAKES ================= */
 /* {who,handle,dt,text,note,url?,srch,kind:"ציוץ"|"תגובה"|"הצהרה"} — note = ההערה שלנו (מסומנת כדעה) */
 const HOT=[
+ {who:"חדשות 12", handle:"", dt:"6.10.2026", kind:"כתבת וידאו",
+  video:"https://www.mako.co.il/news-channel12?subChannelId=8cae3daf88a50a10VgnVCM100000700a10acRCRD&vcmid=461d547169211a10VgnVCM200000650a10acRCRD",
+  img:"https://img.mako.co.il/2026/10/06/20magal_vtr2_n20261006_v1_0_I.jpg",
+  title:"ההשתלחות במשפחות החטופים והנרצחים", show:"מהדורה מרכזית · N12",
+  text:"כתבת N12 על גל ההשתלחויות במשפחות החטופים והנרצחים של 7.10 — ההקשר המצולם לפריטים על משפחת שושני, בונצל–ליפשיץ והאיום על קבר גל איזנקוט.",
+  note:"<button class='dlchip' data-pg='facts' data-k='משפחת שושני'>🎗️ שושני מול גוטליב</button> <button class='dlchip' data-pg='facts' data-k='השאירו על קבר'>🪦 הקבר של גל איזנקוט</button> <button class='dlchip' data-pg='facts' data-k='תיק 7.10'>📕 תיק 7.10</button>",
+  srch:"ההשתלחות במשפחות החטופים והנרצחים חדשות 12 מהדורה מרכזית"},
  {who:"חדשות 12", handle:"", dt:"6.10.2026", kind:"כתבת וידאו",
   video:"https://www.mako.co.il/news-channel12?subChannelId=8cae3daf88a50a10VgnVCM100000700a10acRCRD&vcmid=b7e61209a2211a10VgnVCM100000700a10acRCRD",
   img:"https://img.mako.co.il/2026/10/06/20modin_vtr2_n20261006_v1_0_I.jpg",
