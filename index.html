@@ -347,6 +347,12 @@
   .orgkn .orgnode{background:rgba(180,140,242,.08);border-color:rgba(180,140,242,.4)}
   /* feed — action rail + nudge */
   .fdc:not(.cta){padding-left:66px;padding-top:64px;justify-content:center}
+  /* רילס בפיד: הכרטיס עצמו נגלל, ההטמעה לא נחתכת */
+  .fdc[data-k="ig"]{justify-content:flex-start;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+  .fdc[data-k="ig"] .tw{max-height:none;overflow:visible;padding:4px}
+  .fdc[data-k="ig"] .igbox{max-width:340px;margin:0 auto}
+  .fdc[data-k="ig"] .igbox iframe{min-height:0}
+  .fdc[data-k="ig"] .wm{display:none}
   .fdc:not(.cta) .lbl{position:absolute;top:18px;right:20px;left:66px}
   .fdprog{position:absolute;top:0;left:0;right:0;height:4px;background:rgba(255,255,255,.18);z-index:6;display:none}
   .fdprog i{display:block;height:100%;width:0;background:#fff;box-shadow:0 0 8px rgba(255,255,255,.8)}
@@ -799,7 +805,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="3.17.2";
+const APP_VERSION="3.17.3";
 const APP_UPDATED="9.10.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
