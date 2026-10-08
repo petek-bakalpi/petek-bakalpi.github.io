@@ -439,6 +439,11 @@
   .podbox{margin:8px 0}.podph{border:1px dashed rgba(139,147,184,.55);border-radius:12px;padding:12px;text-align:center}
   .podgo{margin-top:8px;padding:8px 18px;border-radius:999px;border:0;background:var(--mint);color:#0F1530;font-weight:800;font-size:13px;cursor:pointer;font-family:inherit}
   .podbox iframe{display:block;width:100%;height:152px;border:0;border-radius:12px}
+  .vidcard{display:block;position:relative;border-radius:12px;overflow:hidden;margin:8px 0;background:#000;text-decoration:none;color:#fff}
+  .vidcard img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;opacity:.85}
+  .vidcard .vplay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:44px;text-shadow:0 2px 12px rgba(0,0,0,.7)}
+  .vidcard .vcap{position:absolute;right:0;left:0;bottom:0;padding:22px 10px 8px;background:linear-gradient(transparent,rgba(0,0,0,.85));font-size:12.5px;font-weight:800;text-align:right}
+  .vidcard .vcap small{display:block;font-weight:500;opacity:.8;font-size:10.5px}
   @keyframes xpulse{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
   /* breaking news strip */
   .breaking{display:flex;align-items:center;flex:0 0 auto;min-height:35px;width:100%;box-sizing:border-box;align-self:stretch;margin:0 auto 12px;max-width:520px;border-radius:10px;overflow:hidden;cursor:pointer;border:1.5px solid rgba(255,89,100,.65);background:rgba(255,89,100,.12)}
@@ -791,7 +796,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="3.15.2";
+const APP_VERSION="3.16";
 const APP_UPDATED="9.10.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
@@ -2044,7 +2049,7 @@ function openDisclaimer(){
     <div class="xsec xbg"><b>📚 עובדות, דעות — וטעויות</b>הכלי משלב עובדות (בהתבסס על תחקירים ופרסומים עיתונאיים גלויים, עם כפתורי 🔎 לבדיקה עצמית בכל כרטיס) לצד פרשנות ודעה — והוא לא מתיימר להיות אמת חד־משמעית. למרות מאמצי הדיוק, ייתכנו טעויות, אי־דיוקים או מידע שהתיישן. מצאתם טעות? ספרו ליוצר — היא תתוקן במהירות ובשמחה. ההצבעה היא החלטתכם בלבד: קראו, הצליבו, והחליטו בעצמכם.</div>
     <div class="xsec xbg"><b>⚖️ חזקת החפות</b>כל אזכור של חקירה, חשד או הליך משפטי מתייחס לפרסומים בלבד; חזקת החפות שמורה לכל המוזכרים, וכל הליך יוכרע רק בערכאות המוסמכות. הציטוטים מובאים כלשונם מתוך פרסומים גלויים ולצורכי דיווח וביקורת.</div>
     <div class="xsec xbg"><b>🤖 שקיפות מלאה: נבנה בעזרת AI</b>חלק ניכר מהכלי — הקוד, הניסוחים וריכוז המידע — נוצר בסיוע בינה מלאכותית (Claude של Anthropic), בהנחיית היוצר ובבקרתו. AI עלול לטעות; זו עוד סיבה טובה ללחוץ על כפתורי הבדיקה ולקרוא מקורות ראשוניים. אגב, מיולי 2026 חלה בישראל חובת סימון על תעמולת בחירות שנוצרת ב־AI — אנחנו לא תעמולה מטעם אף גורם, אבל מסמנים בשמחה גם בלי החובה. שקיפות היא לא איום.</div>
-    <div class="xsec xbg"><b>🔒 פרטיות</b>הכלי רץ כולו אצלכם במכשיר: אין לנו שרת שאוסף נתונים, אין עוגיות, ושום תשובה או תוצאה לא נשמרת ולא נשלחת לאף אחד. (האתר מתארח כקובץ סטטי ב־GitHub Pages, שכמו כל ספק אחסון מנהל לוגים טכניים בסיסיים — אך אנחנו לא רואים אותם ולא אוספים דבר.) גילוי אחד נוסף: הפונטים נטענים משרתי Google Fonts — בקשה שחושפת לגוגל את כתובת ה־IP שלכם ותו לא, כמו כמעט בכל אתר; בעתיד נטמיע את הפונטים בקובץ עצמו ונסגור גם את זה. ובמסך ״מחלקת הדיגיטל״ בלבד נטען סקריפט ההטמעה הרשמי של X (עם דגל ״אל תעקוב״) כדי להציג ציוצים במקור; נגני פודקאסט ווידאו (ספוטיפיי, יוטיוב) נטענים רק אחרי לחיצה מפורשת על ▶ — מי שלא רוצה, פשוט לא נכנס למסך הזה או לא לוחץ. קישורי החיפוש מובילים לאתרים חיצוניים שבאחריות מפעיליהם.</div>
+    <div class="xsec xbg"><b>🔒 פרטיות</b>הכלי רץ כולו אצלכם במכשיר: אין לנו שרת שאוסף נתונים, אין עוגיות, ושום תשובה או תוצאה לא נשמרת ולא נשלחת לאף אחד. (האתר מתארח כקובץ סטטי ב־GitHub Pages, שכמו כל ספק אחסון מנהל לוגים טכניים בסיסיים — אך אנחנו לא רואים אותם ולא אוספים דבר.) גילוי אחד נוסף: הפונטים נטענים משרתי Google Fonts — בקשה שחושפת לגוגל את כתובת ה־IP שלכם ותו לא, כמו כמעט בכל אתר; בעתיד נטמיע את הפונטים בקובץ עצמו ונסגור גם את זה. ובמסך ״מחלקת הדיגיטל״ בלבד נטען סקריפט ההטמעה הרשמי של X (עם דגל ״אל תעקוב״) כדי להציג ציוצים במקור; נגני פודקאסט ווידאו (ספוטיפיי, יוטיוב) נטענים רק אחרי לחיצה מפורשת על ▶, וכתבות וידאו מאתרי חדשות מוצגות כתמונת תצוגה הנטענת מאתר המקור ונפתחות שם — מי שלא רוצה, פשוט לא נכנס למסך הזה או לא לוחץ. קישורי החיפוש מובילים לאתרים חיצוניים שבאחריות מפעיליהם.</div>
     <div class="xsec xbg"><b>🧪 ולא, זה לא מדע</b>השאלון, המצפן והמשחקים הם כלי המחשה חינוכיים — לא סקר, לא מחקר ולא ייעוץ מכל סוג. המשקלות והמיקומים הם הערכות של היוצר, ומוזמנים לחלוק עליהן.</div>
     <p style="text-align:center;color:var(--muted);font-size:11px">גרסה ${APP_VERSION} · עודכן: ${APP_UPDATED}</p>
     <button class="closebtn">סבבה, הבנתי 👍</button>
@@ -2057,6 +2062,17 @@ $("#toDisc").onclick=()=>openDisclaimer();
 
 /* ================= FACT CHECK / ACTUALIA ================= */
 const FACTS=[
+ {e:"🏢", t:"״יהיו לנו אלפי הרוגים״, ״כל הבניינים פה ייהרסו״ — נתניהו בשבועות הראשונים, מול הנרטיב ״חד ומוכן״", dt:"8.10.2026",
+  url:"https://www.mako.co.il/news-military/2026_q4/Article-22a23606f6711a1026.htm",
+  claim:"הנרטיב של נתניהו ואנשיו על 7.10 והימים שאחריו: ראש ממשלה ״חד, מוכן״, שולט בפרטים ויודע לאן הוא מכוון מהרגע הראשון — המצביא שניהל את המלחמה ביד בטוחה.",
+  said:"חשיפה נוספת של ירון אברהם (חדשות 12, 8.10), על בסיס שיחות עם מקורות פוליטיים, צבאיים, ביטחוניים ומדיניים — ולפיה התמונה כמעט הפוכה. <b>התמרון:</b> בשבועות הראשונים הצבא הכין תוכנית תמרון ברורה; נתניהו היסס. בשיחותיו: ״אם נצא לתמרון יהיו לנו אלפי הרוגים״. בקבינט המלחמה: חמאס ״ישים את החטופים על הגגות״ כמגן אנושי, ודעת הקהל לא מוכנה למחיר. בסוף — לחץ הצבא ולחץ גלנט, נתניהו השתכנע, צה״ל יצא. <b>חיזבאללה:</b> לאנשים בחדרו בקריה ולבכירי ביטחון, בתנועת יד: ״כל הבניינים פה ייהרסו״; האש של חיזבאללה תגרום ״נזק בלתי קונבנציונלי באמצעים קונבנציונליים״; ובשיחות סגורות: ״הנזק של ירי מחיזבאללה שקול לנזק של פצצת אטום״ — איראן עם פצצה, 200 אלף הרוגים, ״אבל לא נגמרה ישראל״, וכך תרגיש ישראל מול חיזבאללה. הכתב מוסיף, ובהגינות: בהמשך נתניהו חתם על החלטות אמיצות ששינו את מאזן הכוחות באזור; ועומק החשש מחיזבאללה עשוי להסביר גם את מדיניות ההכלה שלפני 7.10 וגם את ההימנעות ממהלך יזום בצפון ב־11.10. בכתבה אין תגובה של לשכת רה״מ.",
+  twist:"זהירות — זה לא פריט על ״נתניהו פחדן״. להסס לפני תמרון עם 250 חטופים בעזה זה לא חטא; גם הצבא טעה לא מעט בשלושת השנים האלה, והכרטיס שלנו על ניהול המלחמה אומר במפורש איפה נתניהו צדק. הפריט הוא על הפער בין מה שנאמר בחדרים למה שמסופר לבוחר: ״חד ומוכן״ מול ״אלפי הרוגים״ ו״פצצת אטום״. ושימו לב לקו שהכתב מותח: אותו פחד מחיזבאללה הוא ההסבר להכלה של השנים שלפני — ״שקט תמורת שקט״, מזוודות, ״חמאס מורתע״ — ולהחלטה לא לפתוח בצפון ב־11.10. והנה המבחן של ההערכה: ב־2024 ישראל יצאה למערכה מול חיזבאללה; הבניינים בקריה עומדים. חזקת החפות ומבחן המקור: ציטוטים ממקורות אנונימיים, בלי תגובה — תתייחסו בהתאם, ובדקו בעצמכם.",
+  bottom:"אפשר לפחד. אי אפשר לפחד בחדר ולמכור ״חד ומוכן״ בקמפיין. מי שמבקש קרדיט על ההחלטות האמיצות של 2024 צריך גם לענות על ההכלה של 2023 — ועל זה יש רק מקום אחד: ועדת חקירה ממלכתית. <button class='dlchip gold' data-pg='core' data-k='ניהול המלחמה'>🎖️ ניהול המלחמה: איפה צדק, איפה לא</button> <button class='dlchip' data-pg='facts' data-k='אלה בקפלן'>📬 האזהרות שלפני</button> <button class='dlchip' data-pg='facts' data-k='בוראים מציאות'>🎭 בוראים מציאות</button>",
+  srch:"נתניהו יהיו לנו אלפי הרוגים תמרון חטופים על הגגות כל הבניינים ייהרסו חיזבאללה פצצת אטום ירון אברהם חשיפה",
+  race:{h:"🏢 ״כל הבניינים פה ייהרסו״", parts:[
+   "הנרטיב: ראש ממשלה ״חד ומוכן״ מהרגע הראשון. החשיפה: בשבועות הראשונים הצבא מוכן לתמרון — ונתניהו: ״יהיו לנו אלפי הרוגים״, ״ישימו את החטופים על הגגות״.",
+   "על חיזבאללה, בתנועת יד בקריה: ״כל הבניינים פה ייהרסו״. בשיחות סגורות: הנזק ״שקול לפצצת אטום״. אותו פחד הסביר את ההכלה שלפני — ואת ה־11.10.",
+   "בהגינות: אחר כך באו החלטות אמיצות. אבל מי שרוצה קרדיט על 2024 עונה גם על 2023. המקום לענות: ועדה ממלכתית. 27.10."]}},
  {e:"📬", t:"״שידברו עם אלה בקפלן״ — שישה מכתבי אזהרה, ארבעה מסמכי אמ״ן, אפס דיונים: כך הוזהר נתניהו לפני 7.10", dt:"7.10.2026",
   url:"https://www.mako.co.il/news-diplomatic/2026_q4/Article-34c4117686611a1026.htm",
   claim:"מטעם ראש הממשלה, בתגובה לתחקיר: נתניהו ״לא קיבל התרעה מקדימה״ על מתקפת חמאס; לפי הפרוטוקולים שמסר למבקר המדינה, ראשי מערכת הביטחון ״טענו שוב ושוב שחמאס מורתע״ וביקשו הקלות הומניטריות. ובזמן אמת, יולי 2023, בפורום המטכ״ל: ״אני שם עליכם 80 מיליארד שקל בשנה ואתם עושים לי מרד״.",
@@ -3391,6 +3407,14 @@ function wvSettle(choice,r){
 /* ================= HOT TAKES ================= */
 /* {who,handle,dt,text,note,url?,srch,kind:"ציוץ"|"תגובה"|"הצהרה"} — note = ההערה שלנו (מסומנת כדעה) */
 const HOT=[
+ {who:"חדשות 12 — ירון אברהם", handle:"", dt:"7.10.2026", kind:"כתבת וידאו",
+  video:"https://www.mako.co.il/news-channel12?subChannelId=354f3daf88a50a10VgnVCM100000700a10acRCRD&vcmid=6a685ed7d3711a10VgnVCM200000650a10acRCRD",
+  img:"https://img.mako.co.il/2026/10/07/Sipurei_Hassifa0710_autoOrient_i.jpg",
+  title:"תחקיר: האזהרות שקיבל ראש הממשלה לפני 7.10", show:"מהדורה מרכזית · N12",
+  text:"הכתבה המצולמת של התחקיר: מכתב הלוי ״בין אדום לכחול״, הטיוטה הגנוזה מליל גלנט, ״שידברו עם אלה בקפלן״ — והמסמכים עצמם על המסך.",
+  note:"הגרסה הכתובה, עם ציר הזמן המלא ותגובת רה״מ, במחלקת האקטואליה. <button class='dlchip' data-pg='facts' data-k='אלה בקפלן'>📬 לפריט המלא</button>",
+  url:"https://www.mako.co.il/news-diplomatic/2026_q4/Article-34c4117686611a1026.htm",
+  srch:"תחקיר האזהרות שקיבל ראש הממשלה לפני 7.10 חדשות 12 ירון אברהם"},
  {who:"הקרנף — יואב רבינוביץ׳", handle:"", dt:"7.10.2026", kind:"פודקאסט",
   spotify:"72EbjvwqldbrtGEv8JcaDT", title:"פרק 471 — צבא שיש לו מדינה", show:"הקרנף", dur:"19 דק׳",
   text:"לקראת יום השנה ל־7.10 הקרנף סוגר את סדרת ״שכתוב ההיסטוריה״: נתניהו טוען שלפני 7.10 ישראל הייתה ״צבא שיש לו מדינה״ — וההיסטוריה, לפי הפרק, מראה תמונה אחרת.",
@@ -3453,6 +3477,10 @@ const HOT=[
   srch:"הסולידית hasolidit נתניהו התרעה איחוד האמירויות"}
 ];
 /* כרטיס פודקאסט — placeholder; נגן ספוטיפיי הרשמי נטען רק בלחיצה (פרטיות) */
+/* כרטיס וידאו — אתרי החדשות לא מאפשרים הטמעה; תמונת תצוגה + פתיחה באתר המקור בחלון חדש */
+function vidBox(h){
+  return `<a class="vidcard" href="${h.video}" target="_blank" rel="noopener"><img src="${h.img}" alt="" loading="lazy"><div class="vplay">▶</div><div class="vcap">${h.title||""}<small>${h.show||""} · נפתח באתר המקור ↗</small></div></a>`;
+}
 function podBox(h){
   return `<div class="podbox"><div class="podph"><div style="font-size:30px;line-height:1">🎧</div><b style="font-size:14px;display:block;margin-top:4px">${h.title||""}</b><div style="font-size:12px;opacity:.75">${h.show||""}${h.dur?" · "+h.dur:""}</div><button class="podgo" data-podload="${h.spotify}">▶ נגנו כאן</button><div style="font-size:10.5px;opacity:.75;margin-top:5px">הלחיצה טוענת את נגן ספוטיפיי הרשמי · <a href="https://open.spotify.com/episode/${h.spotify}" target="_blank" rel="noopener" style="color:#7FA8FF">פתחו בספוטיפיי ↗</a></div></div></div>`;
 }
@@ -3464,7 +3492,7 @@ document.addEventListener("click",e=>{
 function renderHot(){
   hot.innerHTML=`
     <h2>מחלקת הדיגיטל<br><span class="hl">בחירת העורך 📡</span></h2>
-    <p style="text-align:center;color:var(--muted);font-size:12px">הנקודות החכמות, השנונות והחשובות שעלו ברשת — ציוצים, פודקאסטים וסרטונים במקור, עם קרדיט מלא.<br><span style="font-size:10.5px">🔒 ציוצים נטענים דרך הסקריפט הרשמי של X, רק במסך הזה ועם דגל ״אל תעקוב״; נגני ספוטיפיי/יוטיוב נטענים רק בלחיצה על ▶. בלי רשת/עם חוסם — יוצג הטקסט והקישור.</span></p>
+    <p style="text-align:center;color:var(--muted);font-size:12px">הנקודות החכמות, השנונות והחשובות שעלו ברשת — ציוצים, פודקאסטים וסרטונים במקור, עם קרדיט מלא.<br><span style="font-size:10.5px">🔒 ציוצים נטענים דרך הסקריפט הרשמי של X, רק במסך הזה ועם דגל ״אל תעקוב״; נגני ספוטיפיי/יוטיוב נטענים רק בלחיצה על ▶; כתבות וידאו מאתרי חדשות נפתחות באתר המקור (רק תמונת התצוגה נטענת משם). בלי רשת/עם חוסם — יוצג הטקסט והקישור.</span></p>
     ${HOT.slice().sort((a,b)=>{const p=d=>{const m=/(\d{1,2})\.(\d{1,2})\.(\d{4})/.exec(d||"");return m?new Date(+m[3],+m[2]-1,+m[1]).getTime():0;};return p(b.dt)-p(a.dt);}).map(h=>`
       <div class="rescard" style="margin-bottom:10px;text-align:right">
         <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
@@ -3474,12 +3502,14 @@ function renderHot(){
         ${h.tweet
           ? `<blockquote class="twitter-tweet twload" data-theme="dark" data-lang="he" data-dnt="true" data-align="center"><p dir="rtl" style="color:var(--muted);font-size:12px">⏳ טוען את הציוץ מ-X…</p><a href="${h.tweet}" target="_blank" rel="noopener" style="color:#7FA8FF;font-size:12px">${h.who} ${h.handle} ↗</a></blockquote>`
           : h.spotify ? podBox(h)+(h.text?`<p style="font-size:13px;line-height:1.55;margin:6px 0;color:var(--muted)">${h.text}</p>`:"")
+          : h.video ? vidBox(h)+(h.text?`<p style="font-size:13px;line-height:1.55;margin:6px 0;color:var(--muted)">${h.text}</p>`:"")
           : `<p style="font-size:14px;line-height:1.55;margin:8px 0;border-right:3px solid var(--coral);padding-right:10px">״${h.text}״</p>`}
         ${h.note?`<div class="xsec xbg" style="margin:6px 0 8px;font-size:12.5px"><b>💬 ההערה שלנו (דעה)</b>${h.note}</div>`:""}
         ${h.url?`<a class="srch" target="_blank" rel="noopener" href="${h.url}" style="background:rgba(61,123,255,.12);border-color:rgba(61,123,255,.5);color:#7FA8FF">🔗 למקור</a> `:""}<a class="srch" target="_blank" rel="noopener" href="https://www.google.com/search?q=${encodeURIComponent(h.srch)}">🔎 אמתו בעצמכם</a>
       </div>`).join("")}
     <button class="btn backbtn" data-back>⬅ חזרה</button>`;
   hot.querySelector("[data-back]").onclick=()=>goBack();
+  hot.querySelectorAll(".dlchip").forEach(b=>b.onclick=(e)=>{e.stopPropagation();deepOpen(b.dataset.pg,b.dataset.k);});
   setTimeout(()=>{ hot.querySelectorAll("blockquote.twload p").forEach(pp=>{ pp.textContent="לא הצלחנו לטעון את ההטמעה — פתחו את הציוץ ב-X:"; }); },6000);
   /* טעינה עצלה של סקריפט ההטמעה הרשמי — רק אם יש ציוץ מוטמע */
   if(HOT.some(h=>h.tweet)){
@@ -3511,7 +3541,7 @@ function tsBuild(){
   FACTS.forEach(f=>ix.push({e:f.e,pg:"facts",key:f.t.slice(0,28),label:f.t,text:[f.t,f.claim,f.said,f.twist,f.bottom].join(" ")}));
   LEDGER.forEach(c=>{ if(c.t) ix.push({e:c.e,pg:"led",key:c.t.slice(0,28),label:c.t,text:c.t+" "+c.body}); });
   CORE_ISSUES.forEach(c=>ix.push({e:c.e,pg:"core",key:c.t.slice(0,28),label:c.t,text:[c.t,c.body,c.why,c.deep].join(" ")}));
-  HOT.forEach(h=>ix.push({e:h.spotify?"🎧":"📡",pg:"hot",key:h.who,label:h.who+(h.handle?" "+h.handle:""),text:h.who+" "+h.handle+" "+(h.title||"")+" "+(h.show||"")+" "+h.text+" "+h.note}));
+  HOT.forEach(h=>ix.push({e:h.spotify?"🎧":h.video?"📺":"📡",pg:"hot",key:h.who,label:h.who+(h.handle?" "+h.handle:""),text:h.who+" "+h.handle+" "+(h.title||"")+" "+(h.show||"")+" "+h.text+" "+h.note}));
   HL_ITEMS.forEach(h=>ix.push({e:"💸",pg:"budget",key:h.t.slice(0,24),label:h.t,text:h.t+" "+h.sub+" "+h.d}));
   DICT_DEM.forEach(d=>{
     ix.push({e:d.e,pg:"dict",key:d.n.split(" — ")[0]+"|",label:d.n,text:[d.n,d.idc,d.leader,d.record,(d.pro||[]).join(" "),(d.con||[]).join(" ")].join(" ")});
@@ -3716,7 +3746,7 @@ const FD_CTA=[
 ];
 let fdPool=[], fdCount=0, fdIO=null, fdInIO=null, fdShown=0;
 /* דילר: תור לכל סוג + משקלים; לא אותו סוג פעמיים ברצף; מועמד לכל היותר אחת ל-4 */
-const FD_W={txt:5,spin:3,led:2,core:2,cand:2,whoq:2,party:2,expl:1.5,num:1.5,quote:1.5,vs:1.5,game:1.5,hilo:1,tweet:1,pod:1};
+const FD_W={txt:5,spin:3,led:2,core:2,cand:2,whoq:2,party:2,expl:1.5,num:1.5,quote:1.5,vs:1.5,game:1.5,hilo:1,tweet:1,pod:1,vid:1};
 let fdDealt=0, fdEggShown=0, fdStash=[];
 let fdQ={}, fdLast=[], fdAll=[];
 /* לייקים — זיכרון סשן בלבד: משקל לפי סוג ולפי נושא */
@@ -3773,7 +3803,7 @@ function fdBuildPool(){
   FACTS.forEach(f=>{ if(f.race&&f.race.parts) f.race.parts.forEach(pt=>pool.push({k:"txt",t:pt,src:f.t,key:f.t.slice(0,28),e:f.e})); });
   HL_ITEMS.forEach(h=>pool.push({k:"num",v:h.v,t:h.t,s:h.sub||h.d||"",key:h.t.slice(0,24)}));
   QUOTES.forEach(q=>pool.push({k:"quote",t:q.q,a:q.a,s:q.ctx||""}));
-  HOT.forEach(h=>{ if(h.tweet) pool.push({k:"tweet",url:h.tweet,who:h.who,handle:h.handle||"",dt:h.dt||"",note:h.note||""}); else if(h.spotify) pool.push({k:"pod",h:h,url:h.url||("https://open.spotify.com/episode/"+h.spotify),who:h.who,dt:h.dt||"",note:h.note||""}); });
+  HOT.forEach(h=>{ if(h.tweet) pool.push({k:"tweet",url:h.tweet,who:h.who,handle:h.handle||"",dt:h.dt||"",note:h.note||""}); else if(h.spotify) pool.push({k:"pod",h:h,url:h.url||("https://open.spotify.com/episode/"+h.spotify),who:h.who,dt:h.dt||"",note:h.note||""}); else if(h.video) pool.push({k:"vid",h:h,url:h.video,who:h.who,dt:h.dt||"",note:h.note||""}); });
   /* lead(): משפטים שלמים עד שיש הקשר (≥min), בלי לחרוג מ-max; לעולם לא חותך באמצע משפט אם אפשר */
   const firstSent=(t,max)=>{ const min=Math.min(130,max-40); t=(t||"").replace(/<[^>]*>/g," ").replace(/\s+/g," ").trim();
     const sents=t.split(/(?<=[.!?״”])\s+(?=[^\s])/); let out="";
@@ -3866,6 +3896,9 @@ function fdCard(c,i){
   }
   if(c.k==="quote"){
     return `<div class="fdc" data-k="quote" style="background:${g}"><div class="wm">💬</div><div class="lbl src"><a href="#" data-go="quote">💬 אמרו · מי אמר את זה? ↗</a></div><div><div class="qmark">״</div><div class="big">${fdLines(c.t)}</div><div class="sub"><span class="ln">— ${c.a}${c.s?" · "+c.s:""}</span></div></div><div class="bar"><button data-share="${encodeURIComponent("״"+c.t+"״ — "+c.a)}">📤 שתפו</button></div></div>`;
+  }
+  if(c.k==="vid"){
+    return `<div class="fdc" data-k="vid" style="background:${g}"><div class="wm">📺</div><div class="lbl src"><a href="#" data-go="hot" data-key="${c.who}">📡 מחלקת הדיגיטל · כתבת וידאו ↗${c.dt?`<span style="display:block;font-weight:500;opacity:.85;font-size:10.5px;margin-top:2px">🗓️ ${c.dt}</span>`:""}</a></div><div class="tw">${vidBox(c.h)}${c.h.text?`<div style="font-size:12.5px;opacity:.9;margin-top:8px">${c.h.text}</div>`:""}</div><div class="bar"><a class="btnlike" href="${c.url}" target="_blank" rel="noopener">📺 לכתבה ב-N12</a><button data-share="${encodeURIComponent(c.url)}">📤 שתפו</button></div></div>`;
   }
   if(c.k==="pod"){
     return `<div class="fdc" data-k="pod" style="background:${g}"><div class="wm">🎧</div><div class="lbl src"><a href="#" data-go="hot" data-key="${c.who}">📡 מחלקת הדיגיטל · פודקאסט ↗${c.dt?`<span style="display:block;font-weight:500;opacity:.85;font-size:10.5px;margin-top:2px">🗓️ ${c.dt}</span>`:""}</a></div><div class="tw">${podBox(c.h)}${c.note?`<div style="font-size:12.5px;opacity:.9;margin-top:8px">💬 ${c.note}</div>`:""}</div><div class="bar"><a class="btnlike" href="${c.url}" target="_blank" rel="noopener">🎧 פתחו בספוטיפיי</a><button data-share="${encodeURIComponent(c.url)}">📤 שתפו</button></div></div>`;
