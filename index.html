@@ -805,7 +805,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="3.21";
+const APP_VERSION="3.21.1";
 const APP_UPDATED="19.10.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
@@ -3582,6 +3582,13 @@ function wvSettle(choice,r){
 /* ================= HOT TAKES ================= */
 /* {who,handle,dt,text,note,url?,srch,kind:"ציוץ"|"תגובה"|"הצהרה"} — note = ההערה שלנו (מסומנת כדעה) */
 const HOT=[
+ {who:"חדשות 12", handle:"", dt:"18.10.2026", kind:"כתבת וידאו",
+  video:"https://www.mako.co.il/news-channel12?subChannelId=5ae23daf88a50a10VgnVCM100000700a10acRCRD&vcmid=4b16063792051a10VgnVCM100000700a10acRCRD",
+  img:"https://img.mako.co.il/2026/10/18/sipuei24_autoOrient_i.jpg",
+  title:"ריאיון עם יעקב אשר — יו״ר יהדות התורה החדש", show:"מהדורה מרכזית · N12",
+  text:"הריאיון עם מי שהציב השבוע את התנאי: ״יהדות התורה לא תיכנס לממשלה שלא תעביר דה־פקטו את החוק להסדרת מעמדם של תלמידי הישיבות״.",
+  note:"<button class='dlchip' data-pg='facts' data-k='לא תהיה ממשלה בלי'>✡️ דרעי ואשר: המחיר</button> <button class='dlchip' data-pg='facts' data-k='כיתה א'>🏫 כיתה א׳ 2030</button>",
+  srch:"ריאיון יעקב אשר יו״ר יהדות התורה חדשות 12 מהדורה מרכזית"},
  {who:"עמרי מניב (חדשות 12)", handle:"@omrimaniv", dt:"19.10.2026", kind:"ציוץ",
   tweet:"https://twitter.com/omrimaniv/status/2112225208807391460",
   text:"", note:"",
