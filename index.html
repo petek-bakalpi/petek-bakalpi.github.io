@@ -809,7 +809,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="3.22";
+const APP_VERSION="3.22.1";
 const APP_UPDATED="19.10.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
@@ -4074,10 +4074,10 @@ const FD_CTA=[
 let fdPool=[], fdCount=0, fdIO=null, fdInIO=null, fdShown=0;
 /* דילר: תור לכל סוג + משקלים; לא אותו סוג פעמיים ברצף; מועמד לכל היותר אחת ל-4 */
 const FD_W={txt:5,spin:3,led:2,core:2,cand:2,whoq:2,party:2,expl:1.5,num:1.5,quote:1.5,vs:1.5,game:1.5,hilo:1,tweet:1,pod:1,vid:1,ig:1};
-/* סינון הפיד — קבוצות תוכן; ברירת מחדל: מחלקת האקטואליה בלבד */
+/* סינון הפיד — קבוצות תוכן; ברירת מחדל: אקטואליה + דיגיטל */
 const FD_G={txt:"facts",tweet:"digital",pod:"digital",vid:"digital",ig:"digital",led:"ledger",core:"ledger",expl:"ledger",num:"ledger",quote:"ledger",party:"parties",cand:"parties",game:"games",whoq:"games",hilo:"games",spin:"games",vs:"games"};
 const FD_GL=[["facts","🔍 אקטואליה"],["digital","📡 דיגיטל"],["ledger","📓 פנקס וליבה"],["parties","🗳️ מפלגות ומועמדים"],["games","🎮 משחקים"]];
-let fdFilter=new Set(["facts"]);
+const FD_DEF=["facts","digital"]; let fdFilter=new Set(FD_DEF);
 let fdDealt=0, fdEggShown=0, fdStash=[];
 let fdQ={}, fdLast=[], fdAll=[];
 /* לייקים — זיכרון סשן בלבד: משקל לפי סוג ולפי נושא */
@@ -4356,20 +4356,20 @@ function fdShare(txt){
 function startFeed(){
   fdAll=fdBuildPool().filter(c=>fdFilter.has(FD_G[c.k])); fdQ={}; fdLast=[]; fdCount=0; fdShown=0; fdDealt=0; fdEggShown=0; fdStash=[]; fdLikeT={}; fdLikeTopic={}; fdLikeN=0;
   feed.innerHTML=`<div class="fdtop"><span>🌀 הפיד</span><button class="fdtog" id="fdHelpBtn" title="איך הפיד עובד">❔</button><button class="fdtog" id="fdAuto" title="גלילה אוטומטית">▶ אוטו</button><span id="fdCounter" style="font-size:11px;color:var(--muted);font-family:inherit">כרטיס 1 · עוד ${Math.max(0,Math.ceil((ELECTION_DATE-new Date())/864e5))} ימים</span><button class="linkbtn" data-back style="margin:0;padding:4px 8px">✕</button></div>
-    <div class="fdfilt" id="fdFilt">${FD_GL.map(([g,l])=>`<button class="fdf${fdFilter.has(g)?" on":""}" data-g="${g}">${l}</button>`).join("")}<button class="fdf all" data-g="all">${fdFilter.size===FD_GL.length?"רק אקטואליה":"הכול"}</button></div>
+    <div class="fdfilt" id="fdFilt">${FD_GL.map(([g,l])=>`<button class="fdf${fdFilter.has(g)?" on":""}" data-g="${g}">${l}</button>`).join("")}<button class="fdf all" data-g="all">${fdFilter.size===FD_GL.length?"חזרה לברירת המחדל":"הכול"}</button></div>
     <div class="fdwrap" id="fdWrap"><div id="fdSent" style="height:2px"></div></div>
       <div class="fdhelp" id="fdHelp"><h3>❔ איך הפיד עובד</h3>
         <p><b>❤️ ״מעניין״ = ״עוד מזה״.</b> כל כרטיס שייך לסוג (פנקס, נושא ליבה, מועמד, ציטוט…) ולנושא (האדם או הפריט שמאחוריו). סימון ״מעניין״ מעלה את הסיכוי לכרטיסים מאותו סוג ועל אותו נושא בהמשך הגלילה — בעדינות, כדי שהפיד לא ייסגר עליכם.</p>
         <p><b>🔒 שום דבר לא נשמר.</b> הסימונים חיים בזיכרון של המסך הזה בלבד, ונמחקים כשסוגרים את האפליקציה. לא נשלח, לא נשמר בטלפון, לא נראה על ידינו.</p>
         <p><b>🎲 בלי סימונים:</b> הסדר אקראי־ממושקל, עם שני כללים בלבד — לא אותו סוג פעמיים ברצף, ומועמד לכל היותר אחת לארבעה כרטיסים. כל 9 כרטיסים — הצעה לפעולה. וכשעוברים על כל המאגר — ההפתעה.</p>
         <p><b>🗓️ תאריך</b> מופיע על כל כרטיס שמקורו במחלקת האקטואליה, כמו במחלקה עצמה.</p>
-        <p><b>🎛️ סינון:</b> הכפתורים למעלה בוחרים אילו סוגי תוכן נכנסים לפיד. ברירת המחדל — מחלקת האקטואליה בלבד; ״הכול״ פותח גם את הדיגיטל, הפנקס, המפלגות והמשחקים. שינוי סינון מתחיל פיד חדש.</p>
+        <p><b>🎛️ סינון:</b> הכפתורים למעלה בוחרים אילו סוגי תוכן נכנסים לפיד. ברירת המחדל — מחלקת האקטואליה ומחלקת הדיגיטל; ״הכול״ פותח גם את הפנקס, המפלגות והמשחקים. שינוי סינון מתחיל פיד חדש.</p>
         <button class="fdgo" id="fdHelpClose" style="align-self:center">הבנתי, ממשיכים 🌀</button></div>
     <div class="fdhint">⬆ גללו</div>`;
   feed.querySelector("[data-back]").onclick=()=>showTab("home");
   $("#fdFilt").querySelectorAll(".fdf").forEach(b=>b.onclick=()=>{
     const g=b.dataset.g;
-    if(g==="all"){ fdFilter = fdFilter.size===FD_GL.length ? new Set(["facts"]) : new Set(FD_GL.map(x=>x[0])); }
+    if(g==="all"){ fdFilter = fdFilter.size===FD_GL.length ? new Set(FD_DEF) : new Set(FD_GL.map(x=>x[0])); }
     else if(fdFilter.has(g)){ if(fdFilter.size>1) fdFilter.delete(g); else return; }
     else fdFilter.add(g);
     fdAutoStop(); startFeed();
