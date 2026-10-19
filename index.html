@@ -471,7 +471,9 @@
   .breaking .btext.static{position:static;white-space:normal;line-height:1.3;padding:6px 8px;font-size:12px}
   .breaking .btrack.static{height:auto}
   /* version + countdown */
-  .countpill{display:block;text-align:center;margin:0 auto 10px;background:rgba(245,184,65,.12);border:1.5px solid rgba(245,184,65,.5);color:var(--gold);border-radius:999px;padding:7px 16px;font-family:'Secular One';font-size:15px;width:fit-content}
+  .countpill{display:block;text-align:center;margin:0 auto 10px;background:rgba(245,184,65,.12);border:1.5px solid rgba(245,184,65,.5);color:var(--gold);border-radius:18px;padding:7px 18px 6px;font-family:'Secular One';font-size:15px;width:fit-content;cursor:pointer;line-height:1.25;transition:transform .12s}
+  .countpill:active{transform:scale(.97)}
+  .countpill .cp5{display:block;font-family:'Heebo';font-weight:800;font-size:12px;color:var(--paper);margin-top:3px;border-top:1px dashed rgba(245,184,65,.45);padding-top:4px}
   .verline{text-align:center;color:var(--muted);font-size:10.5px;margin-top:14px;opacity:.8}
   /* race to the ballot */
   .race-area{position:relative;height:calc(100dvh - 335px);min-height:300px;max-height:640px;border-radius:16px;overflow:hidden;background:linear-gradient(180deg,#141B3D 0%,#1B2450 62%,#26305E 62%,#1E2748 100%);border:1px solid rgba(139,147,184,.3);touch-action:manipulation;user-select:none}
@@ -579,7 +581,7 @@
 
   <!-- INTRO -->
   <section class="screen on" id="intro">
-    <div class="countrow"><div class="countpill" id="countdown"></div><button class="tourfab" id="tourfab" title="סיור מודרך — מה יש כאן?">❔</button><button class="xfab" id="xfab" title="מחלקת הדיגיטל — בחירת העורך">📡<span class="xbadge" id="xbadge">!</span></button></div>
+    <div class="countrow"><div class="countpill" id="countdown"><span id="cdMain"></span><span class="cp5">⏱️ 5 דקות לפני הקלפי — 10 העובדות המכריעות ←</span></div><button class="tourfab" id="tourfab" title="סיור מודרך — מה יש כאן?">❔</button><button class="xfab" id="xfab" title="מחלקת הדיגיטל — בחירת העורך">📡<span class="xbadge" id="xbadge">!</span></button></div>
     <div class="breaking" id="breaking"><span class="blabel">⚡ מבזק</span><span class="btrack"><span class="btext" id="btext"></span></span></div>
     <div class="kicker">בחירות 2026 · הכנסת ה־26</div>
     <h1>פתק<br><span class="hl">בקלפי</span></h1>
@@ -591,7 +593,6 @@
     <p class="tiny">המהירה — בסלנג ולפי הפרשנות של חבר שלכם 🙃 המעמיקה — מנוסחת ניטרלית, על בסיס עמדות מוצהרות של המפלגות. שתיהן פישוט, לא סקר ולא מדע. פרויקט אישי ועצמאי — פרטים בכפתור ❓</p>
     <p class="verline" id="verline"></p>
     <div class="recrow">
-      <button class="recchip" id="toFive" style="border-color:rgba(245,184,65,.7);color:var(--gold);font-weight:800">⏱️ 5 דקות לפני הקלפי</button>
       <button class="recchip" id="toCmp">🧭 המצפן הישראלי</button>
       <button class="recchip" id="toCore">🔥 על מה בכלל רבים?</button>
       <button class="recchip" id="toDisc">❓ מי עומד מאחורי זה?</button>
@@ -817,7 +818,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="3.23.1";
+const APP_VERSION="3.23.2";
 const APP_UPDATED="19.10.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
@@ -3390,7 +3391,7 @@ $("#coreCount").textContent = CORE_ISSUES.length+" נושאים · לכל אחד
 /* countdown + version */
 (function(){
   const days=Math.ceil((ELECTION_DATE-new Date())/864e5);
-  const el=$("#countdown");
+  const el=$("#cdMain");
   if(days>1) el.textContent="🗳️ עוד "+days+" ימים לבחירות · 27.10.2026";
   else if(days===1) el.textContent="🗳️ מחר יום הבחירות! לכו לישון מוקדם";
   else if(days===0) el.textContent="🗳️ היום! לכו להצביע — עכשיו!";
@@ -3893,7 +3894,7 @@ function renderFive(){
   five.querySelectorAll(".dlchip").forEach(b=>b.onclick=(e)=>{e.stopPropagation();deepOpen(b.dataset.pg,b.dataset.k);});
   $("#fiveShare").onclick=async(e)=>{ const txt="5 דקות לפני הקלפי — 10 העובדות המכריעות של הקמפיין, כל אחת עם מקור: https://petek-bakalpi.github.io/ (לחצו ⏱️ בעמוד הראשי)"; if(navigator.share){ navigator.share({text:txt}).catch(()=>{}); } else { try{ await navigator.clipboard.writeText(txt); e.target.textContent="הועתק! ✅"; }catch(_){ e.target.textContent="לא הצלחנו להעתיק"; } } };
 }
-$("#toFive").onclick=()=>{ lastTab="home"; renderFive(); show(five); };
+$("#countdown").onclick=()=>{ lastTab="home"; renderFive(); show(five); };
 $("#lFive").onclick=()=>{ lastTab="learn"; renderFive(); show(five); };
 
 /* ================= TACHLES SEARCH ================= */
@@ -4442,7 +4443,7 @@ function startFeed(){
 
 /* ================= GUIDED TOUR ================= */
 const TOUR=[
- {sel:"#countdown",t:"הספירה לאחור",x:"27 באוקטובר. כל מה שיש כאן בנוי כדי שתגיעו לקלפי מוכנים — ושתביאו עוד מישהו."},
+ {sel:"#countdown",t:"הספירה לאחור — ו־5 דקות לפני הקלפי",x:"27 באוקטובר. לחיצה כאן פותחת את 10 העובדות המכריעות של הקמפיין — לקרוא ב־5 דקות, ולשלוח למי שמתלבט."},
  {sel:"#breaking",t:"המבזק",x:"הסיפור החשוב ביותר כרגע, לפי העורך. הוא רץ בלולאה; הקישו עליו וקפצו ישירות לפריט המלא, עם המקורות."},
  {sel:"#xfab",t:"מחלקת הדיגיטל",x:"בחירת העורך מהרשת — ציוצים, פודקאסטים וסרטונים מוטמעים במקור. סימן קריאה אדום = יש משהו חדש משלושת הימים האחרונים."},
  {sel:"#startQuick",t:"השאלון — נקודת הפתיחה",x:"11 שאלות, פחות מדקה. בסוף מגלים איזו מפלגה בגוש הדמוקרטי מתאימה לכם. אף תשובה לא נשמרת ולא נשלחת לאף אחד."},
