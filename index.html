@@ -805,7 +805,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="3.20.1";
+const APP_VERSION="3.20.2";
 const APP_UPDATED="19.10.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
@@ -2011,7 +2011,7 @@ function renderDict(){
   dict.dataset.done="1";
   dict.innerHTML=`
     <h2>מילון המפלגות<br><span class="hl">בעד, נגד — ובלי יחצנות 📒</span></h2>
-    <div class="infocard"><p>📌 <b>שימו לב:</b> הרשימות הרשמיות לכנסת טרם הוגשו לוועדת הבחירות — הנתונים כאן לפי אתרי המפלגות והכרזות פומביות, נכון ליולי 2026, ויתעדכנו.</p></div>
+    <div class="infocard"><p>📌 <b>שימו לב:</b> הרשימות הרשמיות הוגשו לוועדת הבחירות (ספטמבר 2026) — סדר המועמדים כאן הוא הסדר הרשמי; המצעים לפי אתרי המפלגות והצהרות פומביות, ומתעדכנים עד יום הבחירות.</p></div>
     <div class="ledsec">💙 המחנה הדמוקרטי — ארבע שתקמנה ממשלה יחד</div>
     ${DICT_DEM.map((d,i)=>`
       <div class="acc" style="margin-bottom:8px">
@@ -4101,7 +4101,7 @@ function fdCard(c,i){
   const g=FD_GRAD[i%FD_GRAD.length];
   if(c.k==="cta"){
     const days=Math.max(0,Math.ceil((ELECTION_DATE-new Date())/864e5));
-    return `<div class="fdc cta" style="background:${g}"><div class="wm">🗳️</div><div class="big"><span class="ln">${c.t.replace("{d}",'<span class="gold">'+days+'</span>')}</span></div><div class="sub"><span class="ln">${c.s}</span></div><div class="bar">${c.b==="share"?"":`<button class="fdgo" data-cta="${c.b}">${({quiz:"▶ <b>עבור לשאלון</b>",wv:"▶ <b>עבור למעבדת הקול השרוף</b>",uncle:"▶ <b>עבור למשחק:</b> שכנעו את הדוד",tik:"📕 <b>פתח את תיק 7.10</b> (PDF)"})[c.b]}</button>`}<span data-share="${encodeURIComponent(c.t.replace("{d}",days)+" "+c.s)}" hidden></span></div></div>`;
+    return `<div class="fdc cta" style="background:${g}"><div class="wm">🗳️</div><div class="big"><span class="ln">${c.t.includes("{d}")&&days<=1 ? (days===1?"מחר יום הבחירות.":"היום יום הבחירות.") : c.t.replace("{d}",'<span class="gold">'+days+'</span>')}</span></div><div class="sub"><span class="ln">${c.s}</span></div><div class="bar">${c.b==="share"?"":`<button class="fdgo" data-cta="${c.b}">${({quiz:"▶ <b>עבור לשאלון</b>",wv:"▶ <b>עבור למעבדת הקול השרוף</b>",uncle:"▶ <b>עבור למשחק:</b> שכנעו את הדוד",tik:"📕 <b>פתח את תיק 7.10</b> (PDF)"})[c.b]}</button>`}<span data-share="${encodeURIComponent(c.t.replace("{d}",days)+" "+c.s)}" hidden></span></div></div>`;
   }
   if(c.k==="num"){
     const target=c.v>=1000?Math.round(c.v/100)/10:Math.round(c.v);
