@@ -818,7 +818,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="3.23.4";
+const APP_VERSION="3.24";
 const APP_UPDATED="20.10.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
@@ -2085,6 +2085,17 @@ $("#toDisc").onclick=()=>openDisclaimer();
 
 /* ================= FACT CHECK / ACTUALIA ================= */
 const FACTS=[
+ {e:"🏳️‍🌈", t:"פינדרוס: התמיכה במינוי אוחנה ליו״ר הכנסת הייתה ״חילול השם״ — ולכן לממשלה ״אין סייעתא דשמיא״", dt:"15.10.2026",
+  url:"https://www.mako.co.il/news-israel-elections/2026_q4/Article-dc55b06693f31a1026.htm",
+  claim:"הנרטיב של הקואליציה: ממשלת ימין מלאה שהציבה יו״ר כנסת הומו גאה — ראו, סובלנות; ומנגד ״שונאי החרדים״ במחנה השני. הליכוד ואוחנה — שתיקה.",
+  said:"בריאיון לאברהם פריינד בעיתון ״משפחה״ (פורסם 15.10; דפנה ליאל, N12): ח״כ יצחק פינדרוס (יהדות התורה) אמר שהתמיכה במינוי אמיר אוחנה ליו״ר הכנסת הייתה כרוכה ב״חילול השם״, ושזו הסיבה שלממשלה אין ״סייעתא דשמיא״; ״אני חושב שהחילול השם הזה יש לו מחיר״. ההסכמים הקואליציוניים היו ״חוברת יפהפייה של ממשלת חלומות״ — אבל הייתה ״תקלה״ בהצבעה על יו״ר הכנסת (הוא עצמו עוד לא היה ח״כ אז; נכנס בנורבגי). מינוי דומה בעתיד? ״יצטרך להיות מובא בפני גדולי ישראל״. ובאותו ריאיון: יהדות התורה לא מחויבת אוטומטית לגוש הימין, והסדרת מעמד תלמידי הישיבות היא תנאי לכל תמיכה; ובדיעבד — ההנהגה הרבנית הסתייגה מלכתחילה מההתלהבות של הח״כים החרדים מהמהלכים נגד בית המשפט העליון. הרקע: ביוני 2023 אמר פינדרוס ב״אנשים״ (קשת 12) ש״הפריצות בעריות״ מסוכנת לישראל יותר מדאעש, חיזבאללה וחמאס; האגודה למען הלהט״ב דרשה חקירה. תגובה של אוחנה, הליכוד או נתניהו — אין בכתבה.",
+  twist:"זה לא ״עוד ציטוט של פינדרוס״. זה שותף קואליציוני שאומר, שבוע לפני הבחירות, שהמינוי של יו״ר הכנסת מטעם הליכוד — האיש שמנהל את הפרלמנט — הוא חטא דתי עם ״מחיר״, ושבפעם הבאה ״גדולי ישראל״ יחליטו. ומי שאמור להגן על אוחנה — הליכוד, נתניהו, אוחנה עצמו — שותק, כי המחיר של המילה הזו ידוע: ״לא תהיה ממשלה בלי״ (דרעי ואשר, באותו שבוע). כלומר הסובלנות שהקואליציה מוכרת היא בדיוק עד הגבול שהשותפים מרשים. ולמי שאומר ״גם במחנה שלכם יש״ — נכון, ובמחנה שלנו ליברמן, לפיד וגולן עומדים על נישואים אזרחיים וחוקת שוויון בכתב, במצעים. ההבדל הוא לא מי מכבד הומואים; ההבדל הוא מי מוכן לשלם בהם.",
+  bottom:"ממשלה שיו״ר הכנסת שלה הוא ״חילול השם״ לשותפיה — ושותקת — אמרה לכם מה שווה הסובלנות שלה: בדיוק כמה שהקואליציה עולה. <button class='dlchip' data-pg='facts' data-k='לא תהיה ממשלה בלי'>✡️ דרעי ואשר: המחיר</button> <button class='dlchip' data-pg='hot' data-k='סיפורי פינדרוס'>🎧 לוינסון: סיפורי פינדרוס</button> <button class='dlchip' data-pg='led' data-k='אמיר אוחנה'>📓 אוחנה · הפנקס</button> <button class='dlchip gold' data-pg='core' data-k='חוק הגיוס'>🧠 חוק הגיוס</button>",
+  srch:"פינדרוס אוחנה חילול השם סייעתא דשמיא ריאיון משפחה יו״ר הכנסת",
+  race:{h:"🏳️‍🌈 ״חילול השם״", parts:[
+   "פינדרוס (יהדות התורה): התמיכה במינוי אוחנה ליו״ר הכנסת הייתה ״חילול השם״ — ולכן לממשלה ״אין סייעתא דשמיא״. ״יש לו מחיר״.",
+   "בפעם הבאה? ״יצטרך להיות מובא בפני גדולי ישראל״. הליכוד, נתניהו, אוחנה — שתיקה. כי ״לא תהיה ממשלה בלי״.",
+   "הסובלנות של הקואליציה נגמרת בדיוק איפה שהשותפים מרשים. ההבדל הוא לא מי מכבד — אלא מי מוכן לשלם. 27.10."]}},
  {e:"🇺🇸", t:"טראמפ מתערב: ״אם ייבחר מנהיג אחר — אמריקה תצטרך לסיים את העבודה בעצמה״. איזנקוט: ״רק אזרחי ישראל יקבעו״", dt:"18.10.2026",
   url:"https://www.ynet.co.il/news/elections2026/article/byxi3imngl",
   claim:"המסר של הקמפיין: טראמפ מאחורינו — רק נתניהו יכול לעבוד עם הממשל, ״יחד נשלים את המשימה״ (איראן); מי שלא מצביע לו מסכן את הברית. ובאוגוסט טראמפ עצמו: ״לא ראוי״ שאתערב בבחירות בישראל.",
@@ -3826,7 +3837,7 @@ function igProcess(root){
   else if(!document.getElementById("igembed")){ const sc=document.createElement("script"); sc.id="igembed"; sc.async=true; sc.src="https://www.instagram.com/embed.js"; document.body.appendChild(sc); }
 }
 function podBox(h){
-  return `<div class="podbox"><iframe src="https://open.spotify.com/embed/episode/${h.spotify}?utm_source=generator&theme=0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="${h.title||"נגן ספוטיפיי"}"></iframe><div style="font-size:10.5px;opacity:.75;margin-top:4px;text-align:center">🎧 ${h.show||""}${h.dur?" · "+h.dur:""} · נגן ספוטיפיי הרשמי · <a href="https://open.spotify.com/episode/${h.spotify}" target="_blank" rel="noopener" style="color:#7FA8FF">פתחו בספוטיפיי ↗</a></div></div>`;
+  return `<div class="podbox"><iframe src="https://open.spotify.com/embed/episode/${h.spotify}?utm_source=generator&theme=0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="${h.title||"נגן ספוטיפיי"}"></iframe><div style="font-size:11px;opacity:.8;margin-top:4px;text-align:center"><b>${h.title||""}</b> · ${h.show||""}${h.dur?" · "+h.dur:""} · 🎧 נגן ספוטיפיי הרשמי · <a href="https://open.spotify.com/episode/${h.spotify}" target="_blank" rel="noopener" style="color:#7FA8FF">פתחו בספוטיפיי ↗</a></div></div>`;
 }
 document.addEventListener("click",e=>{
   const b=e.target.closest("[data-podload]"); if(!b) return;
