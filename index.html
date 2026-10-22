@@ -831,7 +831,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="3.25.4";
+const APP_VERSION="3.26";
 const APP_UPDATED="21.10.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
@@ -4614,7 +4614,7 @@ function startFeed(){
     else fdFilter.add(g);
     fdAutoStop(); startFeed();
   });
-  $("#fdHelpBtn").onclick=()=>$("#fdHelp").classList.add("on"); $("#fdHelpClose").onclick=()=>$("#fdHelp").classList.remove("on");
+  $("#fdHelpBtn").onclick=()=>{ fdAutoStop(); if(!feed.querySelector("#fdWrap .fdc .rail")) fdAppend(1); tourStart(TOUR_FEED); }; $("#fdHelpClose").onclick=()=>$("#fdHelp").classList.remove("on");
   const tog=$("#fdAuto");
   tog.onclick=()=>{ fdAuto=!fdAuto; tog.classList.toggle("on",fdAuto); feed.classList.toggle("fdauto",fdAuto); tog.textContent=fdAuto?"⏸ אוטו":"▶ אוטו";
     feed.querySelectorAll(".fdnudge.on").forEach(n=>n.classList.remove("on")); clearTimeout(fdNudgeT);
@@ -4655,23 +4655,33 @@ const TOUR=[
  {sel:"#infoBtn,.infoicon",t:"ומי אנחנו?",x:"פרויקט אזרחי עצמאי, לא מטעם ולא ממומן. דעות מסומנות כדעות, עובדות עם מקור, אפס מעקב. הכול כתוב בכפתור הזה. בהצלחה — ונתראה בקלפי 🗳️"}
 ];
 let tourI=0, tourEls=null;
-function tourStart(){ tourI=0; showTab("home"); if(!tourEls){ const hole=document.createElement("div"); hole.className="tourhole"; const box=document.createElement("div"); box.className="tourbox"; document.body.appendChild(hole); document.body.appendChild(box); tourEls={hole,box}; } tourStep(); }
+const TOUR_FEED=[
+ {sel:"#fdWrap .fdc",t:"כרטיס אחד, משפט אחד",x:"כל כרטיס הוא עובדה, ציטוט, מספר או ציוץ — עם תאריך ומקור. גללו למעלה לכרטיס הבא. הכותרת הקטנה למעלה היא קישור לפריט המלא בתכל׳ס."},
+ {sel:"#fdWrap .fdc .rail .rb.heart",t:"❤️ ״מעניין״ = עוד מזה",x:"סימון מעלה בעדינות את הסיכוי לכרטיסים מאותו סוג ועל אותו נושא. לחיצה כפולה על הכרטיס עושה אותו דבר. לא נשמר בשום מקום — חי רק במסך הזה."},
+ {sel:"#fdWrap .fdc .rail [data-rshare]",t:"שתפו · העתקו · מקור",x:"שליחה בוואטסאפ, העתקה כטקסט עם קישור, או קפיצה למקור החיצוני (ציוץ ב־X, כתבה). כל כרטיס ניתן לשיתוף בנפרד."},
+ {sel:"#fdFilt",t:"🎛️ סינון",x:"אילו סוגי תוכן נכנסים לפיד. ברירת המחדל: מחלקת האקטואליה ומחלקת הדיגיטל; ״הכול״ פותח גם את הפנקס, המפלגות והמשחקים. שינוי מתחיל פיד חדש."},
+ {sel:"#fdAuto",t:"▶ אוטו",x:"גלילה אוטומטית כמו סטורי: פס התקדמות על הכרטיס, 5–12 שניות לפי אורך הטקסט. לחיצה ארוכה עוצרת. לחיצה נוספת כאן מכבה."},
+ {sel:"#fdHelpBtn",t:"❔ ההסבר המלא",x:"כאן תמיד אפשר להריץ את הסיור הזה שוב. כל 9 כרטיסים — הצעה לפעולה; וכשעוברים על כל המאגר — הפתעה. 🌀",more:"📖 גרסת הטקסט"},
+];
+let tourList=TOUR, tourAfter=null;
+function tourStart(list){ tourList=Array.isArray(list)?list:TOUR; tourI=0; if(tourList===TOUR) showTab("home"); if(!tourEls){ const hole=document.createElement("div"); hole.className="tourhole"; const box=document.createElement("div"); box.className="tourbox"; document.body.appendChild(hole); document.body.appendChild(box); tourEls={hole,box}; } tourStep(); }
 function tourEnd(){ if(!tourEls) return; tourEls.hole.remove(); tourEls.box.remove(); tourEls=null; }
 function tourStep(){
-  const st=TOUR[tourI]; if(!st){ tourEnd(); return; }
+  const st=tourList[tourI]; if(!st){ tourEnd(); return; }
   const el=document.querySelector(st.sel); if(!el){ tourI++; tourStep(); return; }
   try{ el.scrollIntoView({block:"center",behavior:"smooth"}); }catch(_){ }
   setTimeout(()=>{
     const r=el.getBoundingClientRect(); const pad=6;
     const {hole,box}=tourEls;
     hole.style.left=(r.left-pad)+"px"; hole.style.top=(r.top-pad)+"px"; hole.style.width=(r.width+pad*2)+"px"; hole.style.height=(r.height+pad*2)+"px";
-    box.innerHTML=`<h4>${st.t}</h4><p>${st.x}</p><div class="tb"><button class="tskip" id="tourSkip">דלגו</button><span class="tstep">${tourI+1}/${TOUR.length}</span><button class="tnext" id="tourNext">${tourI<TOUR.length-1?"הבא ➡":"סיימנו ✓"}</button></div>`;
+    box.innerHTML=`<h4>${st.t}</h4><p>${st.x}</p><div class="tb"><button class="tskip" id="tourSkip">דלגו</button><span class="tstep">${tourI+1}/${tourList.length}</span>${st.more?`<button class="tskip" id="tourMore">${st.more}</button>`:""}<button class="tnext" id="tourNext">${tourI<tourList.length-1?"הבא ➡":"סיימנו ✓"}</button></div>`;
     const below=r.bottom+12, boxH=box.offsetHeight||150;
     if(below+boxH<window.innerHeight-10){ box.style.top=below+"px"; box.style.bottom="auto"; } else { box.style.top="auto"; box.style.bottom=(window.innerHeight-r.top+12)+"px"; }
     $("#tourNext").onclick=()=>{ tourI++; tourStep(); }; $("#tourSkip").onclick=tourEnd;
+    const mb=$("#tourMore"); if(mb) mb.onclick=()=>{ tourEnd(); const h=$("#fdHelp"); if(h) h.classList.add("on"); };
   },260);
 }
-$("#tourfab").onclick=tourStart;
+$("#tourfab").onclick=()=>tourStart(TOUR);
 document.addEventListener("keydown",e=>{ if(e.key==="Escape"&&tourEls) tourEnd(); });
 </script>
 </body>
