@@ -831,7 +831,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="3.25.3";
+const APP_VERSION="3.25.4";
 const APP_UPDATED="21.10.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
@@ -1174,6 +1174,7 @@ function showResult(){
         <div class="head"><span class="pname">${PARTIES[r.k].name}</span><span class="ppct" style="color:${PARTIES[r.k].color}">${r.pct}%</span></div>
         <div class="bar"><i data-w="${r.pct}" style="background:${PARTIES[r.k].color}"></i></div>`).join("")}
     </div>
+    <button class="whybtn" id="resCmp" style="border-color:rgba(245,184,65,.6);color:var(--gold);font-weight:800">🧭 איפה אתם על המצפן הישראלי? ⭐ לפי ${QUESTIONS.length} התשובות שלכם</button>
     <div class="common">🤝 <b>וזה החלק היפה:</b> על מה שחשוב באמת — ועדת חקירה ממלכתית ל־7.10, חוק גיוס, ביטול חוקי ההפיכה — כל הארבע מחויבות לאותו הדבר, והצהירו שיקימו ממשלה יחד. אז איזו שלא תבחרו, אתם באותו צד.</div>
     <p class="caveat">${mode==="deep"
       ?"הניסוח כאן ניטרלי והמשקלות מבוססים על עמדות מוצהרות ופומביות של המפלגות — אבל כל שאלון הוא פישוט. קראו את המצעים, השוו בעצמכם — וב־27.10 תצביעו."
@@ -1186,8 +1187,7 @@ function showResult(){
     <div class="hiddenblock" id="whyPanel"></div>
     <button class="whybtn" id="fullBtn">🔬 שקיפות מלאה — כל שאלה, כל נקודה</button>
     <div class="hiddenblock" id="fullPanel"></div>
-    <button class="btn revealbtn" id="resWho" style="font-size:16px">🎭 בונוס: נחשו מי — הכירו את האנשים ברשימות</button>
-    <button class="whybtn" id="resCmp">🧭 ראו את עצמכם על המצפן הישראלי</button>`;
+    <button class="btn revealbtn" id="resWho" style="font-size:16px">🎭 בונוס: נחשו מי — הכירו את האנשים ברשימות</button>`;
   $("#lastRes").style.display="";
   show(result);
   requestAnimationFrame(()=>setTimeout(()=>{
