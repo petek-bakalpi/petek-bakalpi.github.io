@@ -66,7 +66,7 @@
     border-radius:16px;padding:16px 20px;transition:transform .12s ease, filter .12s ease;color:var(--ink)
   }
   .btn:active{transform:scale(.96)}
-  .btn-go{background:var(--blue);color:#fff;box-shadow:0 10px 30px rgba(61,123,255,.45);width:100%;max-width:320px;margin:4px auto 0}
+  .btn-go{background:#2A62DE;color:#fff;box-shadow:0 10px 30px rgba(61,123,255,.45);width:100%;max-width:320px;margin:4px auto 0}
   .btn-deep{background:var(--ink2);color:var(--paper);border:1.5px solid rgba(139,147,184,.4);box-shadow:none;margin-top:0;font-size:16px}
   .tiny{font-size:12px;color:var(--muted);max-width:38ch;margin:0 auto;line-height:1.5}
 
@@ -163,7 +163,7 @@
   .infocard p{font-size:13.5px;line-height:1.6;color:#C9D0EA}
   .infocard p b{color:var(--paper)}
   .nicecard{background:rgba(51,214,159,.10);border-color:rgba(51,214,159,.35)}
-  .backbtn{background:var(--blue);color:#fff;width:100%;max-width:320px;margin:4px auto}
+  .backbtn{background:#2A62DE;color:#fff;width:100%;max-width:320px;margin:4px auto}
   .revealbtn{background:var(--mint);width:100%;max-width:320px;margin:0 auto}
   .hiddenblock{display:none}
   .hiddenblock.on{display:flex;flex-direction:column;gap:14px}
@@ -202,7 +202,7 @@
   .xbg{background:rgba(139,147,184,.12)}
   .xpro{background:rgba(51,214,159,.10);border:1px solid rgba(51,214,159,.3)}
   .xcon{background:rgba(255,89,100,.10);border:1px solid rgba(255,89,100,.3)}
-  .sheet .closebtn{background:var(--blue);color:#fff;border:0;border-radius:14px;padding:13px;font-family:'Heebo';font-weight:900;font-size:16px;cursor:pointer}
+  .sheet .closebtn{background:#2A62DE;color:#fff;border:0;border-radius:14px;padding:13px;font-family:'Heebo';font-weight:900;font-size:16px;cursor:pointer}
   /* why-this-result */
   .whybtn{background:none;border:1.5px dashed rgba(139,147,184,.45);color:var(--muted);border-radius:14px;padding:12px;font-family:'Heebo';font-weight:700;font-size:14px;cursor:pointer;width:100%}
   .whyrow{display:flex;flex-direction:column;gap:4px;background:rgba(139,147,184,.10);border-radius:12px;padding:10px 12px}
@@ -594,7 +594,7 @@
 
   <!-- INTRO -->
   <section class="screen on" id="intro">
-    <div class="countrow"><div class="countpill" id="countdown"><span id="cdMain"></span><span class="cp5">⏱️ 5 דקות לפני הקלפי — 10 העובדות המכריעות ←</span></div><button class="tourfab" id="tourfab" title="סיור מודרך — מה יש כאן?">❔</button><button class="xfab" id="xfab" title="מחלקת הדיגיטל — בחירת העורך">📡<span class="xbadge" id="xbadge">!</span></button></div>
+    <div class="countrow"><div class="countpill" id="countdown"><span id="cdMain"></span><span class="cp5">⏱️ 5 דקות לפני הקלפי — 10 העובדות המכריעות ←</span></div><button class="tourfab" id="tourfab" title="סיור מודרך — מה יש כאן?" aria-label="סיור מודרך — מה יש כאן?">❔</button><button class="xfab" id="xfab" title="מחלקת הדיגיטל — בחירת העורך" aria-label="מחלקת הדיגיטל — בחירת העורך">📡<span class="xbadge" id="xbadge">!</span></button></div>
     <div class="breaking" id="breaking"><span class="blabel">⚡ מבזק</span><span class="btrack"><span class="btext" id="btext"></span></span></div>
     <div class="kicker">בחירות 2026 · הכנסת ה־26</div>
     <h1>פתק<br><span class="hl">בקלפי</span></h1>
@@ -831,8 +831,8 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="3.26.1";
-const APP_UPDATED="21.10.2026";
+const APP_VERSION="3.26.2";
+const APP_UPDATED="23.10.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
 const BREAKING={txt:"טראמפ מתערב: ״אם ייבחר מנהיג אחר — אמריקה תצטרך לסיים את העבודה בעצמה״ · איזנקוט: ״רק אזרחי ישראל יקבעו מי יהיה ראש הממשלה״ · למחרת בסקר: 45% מול 33% ⚡", key:"טראמפ מתערב"};
@@ -4595,7 +4595,7 @@ function fdShare(txt){
 }
 function startFeed(){
   fdAll=fdBuildPool().filter(c=>fdFilter.has(FD_G[c.k])); fdQ={}; fdLast=[]; fdCount=0; fdShown=0; fdDealt=0; fdEggShown=0; fdStash=[]; fdLikeT={}; fdLikeTopic={}; fdLikeN=0;
-  feed.innerHTML=`<div class="fdtop"><span>🌀 הפיד</span><button class="fdtog" id="fdHelpBtn" title="איך הפיד עובד">❔</button><button class="fdtog" id="fdAuto" title="גלילה אוטומטית">▶ אוטו</button><span id="fdCounter" style="font-size:11px;color:var(--muted);font-family:inherit">כרטיס 1 · עוד ${Math.max(0,Math.ceil((ELECTION_DATE-new Date())/864e5))} ימים</span><button class="linkbtn" data-back style="margin:0;padding:4px 8px">✕</button></div>
+  feed.innerHTML=`<div class="fdtop"><span>🌀 הפיד</span><button class="fdtog" id="fdHelpBtn" title="איך הפיד עובד" aria-label="איך הפיד עובד — סיור בפיד">❔</button><button class="fdtog" id="fdAuto" title="גלילה אוטומטית">▶ אוטו</button><span id="fdCounter" style="font-size:11px;color:var(--muted);font-family:inherit">כרטיס 1 · עוד ${Math.max(0,Math.ceil((ELECTION_DATE-new Date())/864e5))} ימים</span><button class="linkbtn" data-back style="margin:0;padding:4px 8px" aria-label="סגירה וחזרה">✕</button></div>
     <div class="fdfilt" id="fdFilt">${FD_GL.map(([g,l])=>`<button class="fdf${fdFilter.has(g)?" on":""}" data-g="${g}">${l}</button>`).join("")}<button class="fdf all" data-g="all">${fdFilter.size===FD_GL.length?"חזרה לברירת המחדל":"הכול"}</button></div>
     <div class="fdwrap" id="fdWrap"><div id="fdSent" style="height:2px"></div></div>
       <div class="fdhelp" id="fdHelp"><h3>❔ איך הפיד עובד</h3>
