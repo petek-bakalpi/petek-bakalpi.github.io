@@ -824,7 +824,7 @@
     <div class="srchbox"><input id="tsq" type="search" placeholder="חפשו כל דבר: שם, נושא, מספר…" autocomplete="off" inputmode="search"><span class="sico">🔎</span><div class="srchres" id="tsr"></div></div>
     <div class="ledsec">🚨 חם עכשיו</div>
     <button class="menucard" id="lFive"><span class="me">⏱️</span><span><div class="mt">5 דקות לפני הקלפי</div><div class="md">10 העובדות המכריעות של הקמפיין — בלי משחקים, כל אחת עם 🔎 ועם הדרך לעומק</div></span><span class="mtime">5 דק'</span></button>
-    <button class="menucard" id="lPolls"><span class="me">📊</span><span><div class="mt">כל הסקרים האחרונים <span class="newtag inl">חדש</span></div><div class="md">8 הסקרים הסופיים לפני הבחירות (22–23.10) — טבלה אחת, גושים, ממוצע, מי על החסימה ומה זה אומר</div></span><span class="mtime">4 דק'</span></button>
+    <button class="menucard" id="lPolls"><span class="me">📊</span><span><div class="mt">כל הסקרים האחרונים <span class="newtag inl">חדש</span></div><div class="md">10 הסקרים הסופיים — האחרון של כל גוף סוקר (19–23.10) — טבלה אחת, גושים, ממוצע, מי על החסימה ומה זה אומר</div></span><span class="mtime">4 דק'</span></button>
     <button class="menucard" id="lFacts"><span class="me">🔍</span><span><div class="mt">מחלקת אקטואליה — בדיקת מציאות</div><div class="md">האשמות, ספינים וציטוטים מסולפים — מול מה שנאמר באמת</div></span></button>
     <button class="menucard" id="lHot"><span class="me">📡</span><span><div class="mt">מחלקת הדיגיטל</div><div class="md">בחירת העורך: ציוצים, פודקאסטים וסרטונים — הנקודות החכמות והחשובות מהרשת</div></span><span class="mtime">3 דק'</span></button>
     <button class="menucard" id="lPoison"><span class="me">🤖</span><span><div class="mt">מה זו ״מכונת הרעל״?</div><div class="md">איך עובדת תעשיית ההסתה המתואמת — ואיך מזהים אותה בשנייה</div></span></button>
@@ -855,7 +855,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="3.27";
+const APP_VERSION="3.27.1";
 const APP_UPDATED="24.10.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
@@ -4115,7 +4115,7 @@ function renderFive(){
     <h2>5 דקות לפני הקלפי<br><span class="hl">10 העובדות המכריעות ⏱️</span></h2>
     <p style="text-align:center;color:var(--muted);font-size:12px">בלי משחקים, בלי נאומים. עשר עובדות מהקמפיין הזה, כל אחת עם 🔎 לבדיקה עצמית ועם הדרך לעומק. חזקת החפות על כל חקירה; מה שדעה — מסומן ככזה. הסדר הוא העריכה שלנו.</p>
     ${FIVE.map((f,i)=>`<div class="fivecard"><span class="fn">${i+1}</span><h4>${f.e} ${f.t}</h4><p>${f.b}</p><div class="frow">${f.chips.map(([pg,k,l])=>`<button class='dlchip${pg==="core"?" gold":""}' data-pg='${pg}' data-k='${k}'>${l}</button>`).join("")} ${srch(f.srch)}</div></div>`).join("")}
-    <div class="infocard" style="margin-top:6px"><p style="margin:0;font-size:13px"><b>ומה עכשיו?</b> הסקרים הסופיים (23.10): N12 56:50, חדשות 13 54:50, כאן 52:50, מעריב 54:48 — אף גוש לא ב־61. 7%–13% עוד לא החליטו; וינטר מתחת לחסימה, הנדל–זליכה על הקו. ארבע מפלגות במחנה הדמוקרטי — כולן עוברות, כל קול להן נספר. הבחירות יוכרעו בין מי שבא למי שלא. אם הגעתם עד כאן, תשלחו את זה לאדם אחד שעוד לא החליט. <button class='dlchip' data-pg='votes' data-k=''>🗑️ הקול השרוף</button> <button class='dlchip' data-pg='polls' data-k=''>📊 כל 8 הסקרים האחרונים</button></p></div>
+    <div class="infocard" style="margin-top:6px"><p style="margin:0;font-size:13px"><b>ומה עכשיו?</b> הסקרים הסופיים (23.10): N12 56:50, חדשות 13 54:50, כאן 52:50, מעריב 54:48 — אף גוש לא ב־61. 7%–13% עוד לא החליטו; וינטר מתחת לחסימה, הנדל–זליכה על הקו. ארבע מפלגות במחנה הדמוקרטי — כולן עוברות, כל קול להן נספר. הבחירות יוכרעו בין מי שבא למי שלא. אם הגעתם עד כאן, תשלחו את זה לאדם אחד שעוד לא החליט. <button class='dlchip' data-pg='votes' data-k=''>🗑️ הקול השרוף</button> <button class='dlchip' data-pg='polls' data-k=''>📊 כל 10 הסקרים האחרונים</button></p></div>
     <div style="display:flex;gap:8px;margin:12px 0 4px"><button class="btn btn-go" id="fiveShare" style="margin:0;flex:1">📤 שלחו לחבר שמתלבט</button></div>
     <button class="btn backbtn" data-back>⬅ חזרה</button>`;
   five.querySelector("[data-back]").onclick=()=>goBack();
@@ -4139,6 +4139,10 @@ const POLLS=[
   s:{yashar:23,likud:21,byachad:14,dem:8,joint:9,beit:7,shas:8,utj:7,otzma:8,rz:6,raam:5,milu:4,amcha:0},below:"עמך ישראל 2.7%",und:"7% טרם החליטו"},
  {id:"zman",src:"זמן ישראל",inst:"תתיקה + Adgenda",dt:"22.10",n:"500 · ±4.4%",url:"https://www.zman.co.il/735649/",
   s:{yashar:23,likud:21,byachad:11,dem:8,joint:9,beit:9,shas:8,utj:8,otzma:8,rz:6,raam:5,milu:4,amcha:0},below:"עמך ישראל 3.0% (המילואימניקים 3.6% — עובר)",und:"13% לא החליטו סופית (8.4% בתוך הגוש, 2.4% בין הגושים); 59.6%: נתניהו צריך לפרוש אם לא יקים ממשלה"},
+ {id:"c16",src:"ערוץ 16",inst:"יצחק כ״ץ (מאגר מוחות)",dt:"22.10",n:"לא פורסם",url:"https://www.ice.co.il/research/news/article/1134767",
+  s:{yashar:20,likud:17,byachad:14,dem:9,joint:9,beit:7,shas:7,utj:8,otzma:9,rz:7,raam:5,milu:4,amcha:4},below:"הציבור החרדי (אחוז לא פורסם); עמך ישראל והנדל–זליכה — עוברים"},
+ {id:"walla",src:"וואלה",inst:"לזר (פאנל4אול)",dt:"20.10",n:"601 · ±4%",url:"https://www.walla.co.il/news/politics/383958175",
+  s:{yashar:23,likud:19,byachad:14,dem:9,joint:8,beit:8,shas:8,utj:7,otzma:8,rz:6,raam:6,milu:4,amcha:0},below:"עמך ישראל 2.9%",und:"45% בטוחים לגמרי במפלגה, 49% די בטוחים, 5% לא כל כך"},
  {id:"i24",src:"i24NEWS",inst:"דיירקט פולס (צוריאל שרון)",dt:"22.10",n:"5,124 · ±1.4%",url:"https://www.i24news.tv/he/news/israel-elections-2026/polls",out:true,
   s:{yashar:21,likud:26,byachad:12,dem:8,joint:9,beit:6,shas:8,utj:7,otzma:8,rz:6,raam:5,milu:0,amcha:4},below:"המילואימניקים — מתחת (אחוז לא פורסם)"},
  {id:"c14",src:"ערוץ 14",inst:"NEXT DATA (שלמה פילבר)",dt:"22.10",n:"7,936",url:"https://www.emess.co.il/radio/1949481",out:true,
@@ -4162,29 +4166,29 @@ function renderPolls(){
   const below=all.map(p=>`<li><b>${p.src}:</b> ${p.below}${p.und?` · <span style="color:var(--muted)">${p.und}</span>`:""}</li>`).join("");
   const srcs=all.map(p=>`<li><a class="srch" style="margin:0" target="_blank" rel="noopener" href="${p.url}">${p.src} · ${p.inst} · ${p.dt} ↗</a> <span style="color:var(--muted)">מדגם ${p.n}</span></li>`).join("");
   polls.innerHTML=`
-    <h2>כל הסקרים האחרונים<br><span class="hl">8 סקרים, טבלה אחת 📊</span></h2>
-    <p style="text-align:center;color:var(--muted);font-size:12px">כל סקרי המנדטים שפורסמו ב־22–23.10.2026 — האחרונים המותרים לפרסום לפני הבחירות (חוק הבחירות אוסר פרסום סקרים מיום שישי בערב). המספרים כפי שפורסמו; הגושים חושבו מהמפלגות (וינטר נספר בגוש נתניהו — <button class='dlchip' data-pg='votes' data-k=''>למה</button>). ⚠️ = סקר שחורג מכל האחרים.</p>
+    <h2>כל הסקרים האחרונים<br><span class="hl">10 סקרים, טבלה אחת 📊</span></h2>
+    <p style="text-align:center;color:var(--muted);font-size:12px">הסקר האחרון של כל גוף סוקר בישראל (19–23.10.2026) — האחרונים המותרים לפרסום לפני הבחירות (חוק הבחירות אוסר פרסום סקרים מיום שישי בערב). עשרה סקרים, עשרה גופים; מי שלא כאן (ynet/ידיעות, הארץ, גלובס) פשוט לא פרסם סקר מנדטים משלו. המספרים כפי שפורסמו; הגושים חושבו מהמפלגות (וינטר נספר בגוש נתניהו — <button class='dlchip' data-pg='votes' data-k=''>למה</button>). ⚠️ = סקר שחורג מכל האחרים.</p>
     <div class="ledsec">⚖️ הגושים — סקר אחרי סקר</div>
     <div class="pleg"><span><i style="background:var(--blue)"></i>גוש השינוי</span><span><i style="background:var(--mint)"></i>ערבים</span><span><i style="background:#8B93B8"></i>הנדל–זליכה</span><span><i style="background:var(--coral)"></i>גוש נתניהו</span></div>
     ${blocCards}
-    <div class="infocard" style="margin-bottom:10px"><p style="margin:0;font-size:13px"><b>השורה התחתונה:</b> בשישה מתוך שמונה סקרים גוש נתניהו תקוע על 48–51 וגוש השינוי על 51–56. <b>אף גוש לא מגיע ל־61 באף סקר</b> — גם לא בשני הסקרים החורגים (ערוץ 14: 62 ל״ימין״ רק אם סופרים אחרת; i24: 59). הכרעה — או ממשלה שנשענת גם על המפלגות הערביות או על הנדל–זליכה, או סבב חמישי… שישי. ${srch("סקרים אחרונים בחירות 2026 גושים 23.10")}</p></div>
+    <div class="infocard" style="margin-bottom:10px"><p style="margin:0;font-size:13px"><b>השורה התחתונה:</b> בשמונה מתוך עשרה סקרים גוש נתניהו תקוע על 48–52 (ה־52 רק אם וינטר עובר) וגוש השינוי על 50–56. <b>אף גוש לא מגיע ל־61 באף סקר</b> — גם לא בשני הסקרים החורגים (ערוץ 14: 62 ל״ימין״ רק אם סופרים אחרת; i24: 59). הכרעה — או ממשלה שנשענת גם על המפלגות הערביות או על הנדל–זליכה, או סבב חמישי… שישי. ${srch("סקרים אחרונים בחירות 2026 גושים 23.10")}</p></div>
     <div class="ledsec">🧮 מפלגה־מפלגה</div>
-    <p style="color:var(--muted);font-size:11.5px;margin:2px 2px 6px">גללו שמאלה לכל הסקרים ← · ״ממוצע״ ו״טווח״ מחושבים על ששת הסקרים הלא־חורגים · — = מתחת לאחוז החסימה</p>
-    <div class="ptwrap"><table class="ptbl"><thead><tr><th>מפלגה</th>${th}<th class="avg">ממוצע 6</th><th class="avg">טווח</th></tr></thead><tbody>${rows}${tot}</tbody></table></div>
+    <p style="color:var(--muted);font-size:11.5px;margin:2px 2px 6px">גללו שמאלה לכל הסקרים ← · ״ממוצע״ ו״טווח״ מחושבים על שמונת הסקרים הלא־חורגים · — = מתחת לאחוז החסימה</p>
+    <div class="ptwrap"><table class="ptbl"><thead><tr><th>מפלגה</th>${th}<th class="avg">ממוצע 8</th><th class="avg">טווח</th></tr></thead><tbody>${rows}${tot}</tbody></table></div>
     <div class="ledsec">⚠️ שני הסקרים החורגים</div>
-    <div class="infocard" style="margin-bottom:10px"><p style="margin:0 0 6px;font-size:13px"><b>ערוץ 14 (NEXT DATA):</b> ליכוד 30, גוש ״ימין״ 62. <b>i24NEWS (דיירקט פולס):</b> ליכוד 26, קואליציה 59. כל ששת הסקרים האחרים: ליכוד 19–21. הפער — 5 עד 11 מנדטים לליכוד — גדול בהרבה מכל טעות דגימה. <b>עובדות:</b> את סקר ערוץ 14 מנתח שלמה פילבר, לשעבר מנכ״ל משרד התקשורת מטעם נתניהו ועד המדינה בתיק 4000; ״מדגם של 7,936״ נשמע מרשים, אבל מדגם אינטרנטי שאינו אקראי לא מתקן את עצמו בגודל — טעות הדגימה המוצהרת לא מכסה הטיית מדגם. <b>דעתנו:</b> אל תתעלמו מהם, אבל אל תבנו עליהם. מה שחשוב: <u>גם לפי הסקרים האלה</u> לנתניהו אין 61 בלי וינטר על החסימה (i24) או בלי ספירה שונה (14). ${srch("סקר ערוץ 14 NEXT DATA פילבר ליכוד 30")}</p></div>
+    <div class="infocard" style="margin-bottom:10px"><p style="margin:0 0 6px;font-size:13px"><b>ערוץ 14 (NEXT DATA):</b> ליכוד 30, גוש ״ימין״ 62. <b>i24NEWS (דיירקט פולס):</b> ליכוד 26, קואליציה 59. כל שמונת הסקרים האחרים: ליכוד 17–21. הפער — 5 עד 13 מנדטים לליכוד — גדול בהרבה מכל טעות דגימה. <b>עובדות:</b> את סקר ערוץ 14 מנתח שלמה פילבר, לשעבר מנכ״ל משרד התקשורת מטעם נתניהו ועד המדינה בתיק 4000; ״מדגם של 7,936״ נשמע מרשים, אבל מדגם אינטרנטי שאינו אקראי לא מתקן את עצמו בגודל — טעות הדגימה המוצהרת לא מכסה הטיית מדגם. <b>דעתנו:</b> אל תתעלמו מהם, אבל אל תבנו עליהם. מה שחשוב: <u>גם לפי הסקרים האלה</u> לנתניהו אין 61 בלי וינטר על החסימה (i24) או בלי ספירה שונה (14). ${srch("סקר ערוץ 14 NEXT DATA פילבר ליכוד 30")}</p></div>
     <div class="ledsec">🪓 על אחוז החסימה</div>
     <div class="infocard" style="margin-bottom:10px"><ul class="psrc" style="margin:0;padding-right:16px">${below}</ul>
-    <p style="margin:8px 0 0;font-size:13px"><b>מה זה אומר:</b> וינטר (עמך ישראל) מתחת לחסימה ב־7 מתוך 8 — 2.5%–3.1% של קולות הימין שעלולים להישרף. הנדל–זליכה עוברים ב־4 סקרים (4 מנדטים) ונופלים ב־4 (2.4%–3.0%) — זה הסכין הכי חד של הבחירות האלה: 4 מנדטים שקובעים אם גוש השינוי מתקרב ל־60 או נשאר ב־52. ארבע המפלגות של המחנה הדמוקרטי — כולן עוברות בכל הסקרים. <button class='dlchip' data-pg='votes' data-k=''>🗑️ הקול השרוף</button> <button class='dlchip' data-pg='facts' data-k='גנץ פרש'>🚪 גנץ פרש</button></p></div>
+    <p style="margin:8px 0 0;font-size:13px"><b>מה זה אומר:</b> וינטר (עמך ישראל) מתחת לחסימה ב־8 מתוך 10 — 2.5%–3.1% של קולות הימין שעלולים להישרף. הנדל–זליכה עוברים ב־6 סקרים (4 מנדטים) ונופלים ב־4 (2.4%–3.0%) — זה הסכין הכי חד של הבחירות האלה: 4 מנדטים שקובעים אם גוש השינוי מתקרב ל־60 או נשאר ב־52. ארבע המפלגות של המחנה הדמוקרטי — כולן עוברות בכל הסקרים. <button class='dlchip' data-pg='votes' data-k=''>🗑️ הקול השרוף</button> <button class='dlchip' data-pg='facts' data-k='גנץ פרש'>🚪 גנץ פרש</button></p></div>
     <div class="ledsec">🤔 המתלבטים — ומי קובע</div>
     <div class="infocard" style="margin-bottom:10px"><p style="margin:0;font-size:13px">ישראל היום: <b>7%</b> טרם החליטו. זמן ישראל: <b>13%</b> לא סגורים (8.4% בתוך הגוש, 2.4% בין הגושים), ו־25.6% כבר שינו דעתם במהלך הקמפיין. 7%–13% זה 8–15 מנדטים שעוד באוויר — יותר מההפרש בין הגושים בכל סקר. <b>דעתנו:</b> הסקרים מודדים את מי שעונה לסוקר, לא את מי שיוצא מהבית ביום שלישי. בבחירות שבהן ההפרש הוא 2–6 מנדטים, הצבעה אחת של אדם שלא תכנן להצביע שווה יותר מכל סקר. ${srch("אחוז הצבעה בחירות 2026 מתלבטים")}</p></div>
     <div class="ledsec">📚 המקורות</div>
-    <div class="infocard" style="margin-bottom:10px"><ul class="psrc" style="margin:0;padding-right:16px">${srcs}</ul><p style="margin:8px 0 0;font-size:11.5px;color:var(--muted)">ריכוזים: <a class="srch" style="margin:0" target="_blank" rel="noopener" href="https://www.ynet.co.il/news/elections2026/article/hy500sxt2mx">ynet ↗</a> · <a class="srch" style="margin:0" target="_blank" rel="noopener" href="https://www.davar1.co.il/703301/">דבר ↗</a>. לא כללנו את סקר ערוץ 16 (יצחק כ״ץ, 22.10) כי המספרים שפורסמו לא מסתכמים ל־120. מצאתם טעות או סקר שפספסנו? שלחו קישור.</p></div>
+    <div class="infocard" style="margin-bottom:10px"><ul class="psrc" style="margin:0;padding-right:16px">${srcs}</ul><p style="margin:8px 0 0;font-size:11.5px;color:var(--muted)">ריכוזים: <a class="srch" style="margin:0" target="_blank" rel="noopener" href="https://www.ynet.co.il/news/elections2026/article/hy500sxt2mx">ynet ↗</a> · <a class="srch" style="margin:0" target="_blank" rel="noopener" href="https://www.haaretz.co.il/news/elections/2026-10-23/ty-article/000001a1-69ad-d29a-a1a5-ebaf49c50000">הארץ ↗</a> · <a class="srch" style="margin:0" target="_blank" rel="noopener" href="https://www.davar1.co.il/703301/">דבר ↗</a>. ערוץ 16: הגושים חושבו מהמפלגות (הכתבה שפרסמה אותם סיכמה אחרת). וואלה: סקר מ־19.10 — האחרון שלהם. מצאתם טעות או סקר שפספסנו? שלחו קישור.</p></div>
     <div style="display:flex;gap:8px;margin:12px 0 4px"><button class="btn btn-go" id="pollsShare" style="margin:0;flex:1">📤 שלחו את הטבלה</button></div>
     <button class="btn backbtn" data-back>⬅ חזרה</button>`;
   polls.querySelector("[data-back]").onclick=()=>goBack();
   polls.querySelectorAll(".dlchip").forEach(b=>b.onclick=(e)=>{e.stopPropagation();deepOpen(b.dataset.pg,b.dataset.k);});
-  $("#pollsShare").onclick=async(e)=>{ const txt="כל 8 הסקרים האחרונים לפני הבחירות בטבלה אחת — גושים, מפלגות, מי על החסימה: https://petek-bakalpi.github.io/ (תכל'ס ← 📊 כל הסקרים האחרונים)"; if(navigator.share){ navigator.share({text:txt}).catch(()=>{}); } else { try{ await navigator.clipboard.writeText(txt); e.target.textContent="הועתק! ✅"; }catch(_){ e.target.textContent="לא הצלחנו להעתיק"; } } };
+  $("#pollsShare").onclick=async(e)=>{ const txt="כל 10 הסקרים האחרונים לפני הבחירות בטבלה אחת — גושים, מפלגות, מי על החסימה: https://petek-bakalpi.github.io/ (תכל'ס ← 📊 כל הסקרים האחרונים)"; if(navigator.share){ navigator.share({text:txt}).catch(()=>{}); } else { try{ await navigator.clipboard.writeText(txt); e.target.textContent="הועתק! ✅"; }catch(_){ e.target.textContent="לא הצלחנו להעתיק"; } } };
 }
 $("#lPolls").onclick=()=>{ lastTab="learn"; renderPolls(); show(polls); };
 
@@ -4209,7 +4213,7 @@ function tsBuild(){
     const re=/<b>(\d+) (?:🔒 )?· ([^<]+)<\/b> — ([^<]*)/g; let m; const html=bibi.innerHTML;
     while((m=re.exec(html))){ ix.push({e:"🔴",pg:"bibi",key:"|"+m[2].trim(),label:m[2].trim()+" · הליכוד, מקום "+m[1],sub:"רשימת הליכוד",text:m[2]+" "+m[3]}); }
   }catch(_){}
-  [["🤖","poison","מכונת הרעל — מעגל הכביסה, שופרות, בוטים, הסתה, תדרוכים"],["🗑️","votes","הקול השרוף, אחוז החסימה, באדר עופר, הגוש שבין הגושים, גנץ, הנדל, זליכה, מנדטים"],["🧭","cmp","המצפן הישראלי — מיקום המפלגות על הצירים"],["📊","polls","סקרים סקר מנדטים גושים ממוצע אחוז החסימה חדשות 12 13 כאן מעריב ישראל היום i24 ערוץ 14 זמן ישראל קנטאר מדגם לזר דיירקט פולס NEXT DATA פילבר מתלבטים"]].forEach(([e,pg,t])=>ix.push({e,pg,key:"",label:tsPageName[pg],text:t}));
+  [["🤖","poison","מכונת הרעל — מעגל הכביסה, שופרות, בוטים, הסתה, תדרוכים"],["🗑️","votes","הקול השרוף, אחוז החסימה, באדר עופר, הגוש שבין הגושים, גנץ, הנדל, זליכה, מנדטים"],["🧭","cmp","המצפן הישראלי — מיקום המפלגות על הצירים"],["📊","polls","סקרים סקר מנדטים גושים ממוצע אחוז החסימה חדשות 12 13 כאן מעריב ישראל היום i24 ערוץ 14 ערוץ 16 וואלה זמן ישראל קנטאר מדגם לזר דיירקט פולס NEXT DATA פילבר מתלבטים"]].forEach(([e,pg,t])=>ix.push({e,pg,key:"",label:tsPageName[pg],text:t}));
   ix.forEach(x=>{ x.n=tsNorm(x.text); x.nl=tsNorm(x.label); x.sub=x.sub||tsPageName[x.pg]; });
   return ix;
 }
