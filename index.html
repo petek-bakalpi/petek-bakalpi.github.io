@@ -465,15 +465,15 @@
 .ptbl tr.tot td{border-top:2px solid rgba(139,147,184,.4);font-weight:800}
 .psrc{font-size:12px;line-height:1.7}
 .psrc li{margin-bottom:4px}
-.antboard{display:grid;gap:2px;background:rgba(0,0,0,.28);padding:5px;border-radius:14px;border:1px solid rgba(139,147,184,.22);margin:2px auto;width:100%;max-width:296px;box-sizing:border-box}
+.antboard{display:flex;justify-content:center;background:rgba(0,0,0,.28);padding:5px;border-radius:14px;border:1px solid rgba(139,147,184,.22);margin:2px auto;width:100%;max-width:330px;box-sizing:border-box}
+.antboard canvas{display:block;border-radius:8px}
+.antlv{display:flex;justify-content:center;gap:3px;flex-wrap:wrap;margin:0}
+.antdot{width:30px;height:30px;border-radius:9px;border:1.5px solid rgba(139,147,184,.3);background:rgba(255,255,255,.04);font-size:15px;padding:0;cursor:pointer;opacity:.55;line-height:1}
+.antdot.on{opacity:1;border-color:var(--gold);background:rgba(245,184,65,.14)}
 .anth2{font-size:21px!important;margin:0!important;text-align:center}
 .anth2 .hl{font-size:14px;display:block;margin-top:2px}
 .anttoast{position:absolute;left:8px;right:8px;z-index:7;background:var(--ink);border:1.5px solid var(--gold);border-radius:14px;padding:10px 12px;font-size:12.5px;line-height:1.5;box-shadow:0 10px 30px rgba(0,0,0,.5);animation:antin .3s ease}
 @keyframes antin{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
-.antboard .ac{aspect-ratio:1;border-radius:3px;background:var(--c);box-shadow:inset 0 -2px 0 rgba(0,0,0,.28);display:flex;align-items:center;justify-content:center;font-size:13px;line-height:1;transition:opacity .28s,transform .28s}
-.antboard .ac.empty{background:transparent;box-shadow:none}
-.antboard .ac.eat{transform:scale(1.18);z-index:1}
-.antboard .ac.gone{opacity:0;background:transparent;box-shadow:none;transform:scale(.5)}
 .antstat{display:flex;justify-content:space-between;align-items:center;font-size:11.5px;color:var(--muted);margin:2px 2px;gap:6px}
 .anttray{display:flex;gap:6px;justify-content:center;margin:2px 0}
 .anttray .as{width:50px;height:50px;border-radius:12px;border:1.5px dashed rgba(139,147,184,.4);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#0F1530;line-height:1.1;position:relative}
@@ -496,7 +496,6 @@
 .anthelp b{color:var(--paper)}
 #ants{position:relative;gap:6px}
 .antgame{display:flex;flex-direction:column;gap:3px}
-.antfly{position:absolute;font-size:15px;line-height:1;pointer-events:none;z-index:5;transition:left .38s ease-in,top .38s ease-in}
 .antover{background:var(--ink2);border:1px solid rgba(255,89,100,.45);border-radius:16px;padding:14px;text-align:center;margin-top:8px}
 
 
@@ -836,7 +835,7 @@
   <section class="screen infopage" id="gmenu">
     <h2>משחקים<br><span class="hl">ללמוד בלי להרגיש 🎮</span></h2>
     <div class="ledsec">🎲 שונה בכל משחק — מוגרל ממאגר</div>
-    <button class="menucard" id="gAnts"><span class="me">🐜</span><span><div class="mt">נמלים בקלפי <span class="newtag inl">חדש</span></div><div class="md">פאזל־פיקסלים רגוע, בלי שעון, לכל גיל: הנמלים אוכלות את התמונה — ואתם אוספים עובדה עם כל צבע. 5 תמונות, 20 עובדות</div></span><span class="mtime">3–5 דק'</span></button>
+    <button class="menucard" id="gAnts"><span class="me">🐜</span><span><div class="mt">נמלים בקלפי <span class="newtag inl">חדש</span></div><div class="md">פאזל־פיקסלים בסגנון ״אכילת התמונה״: קופסאות נמלים, תאים מוגבלים, ואפשר להיתקע. 8 תמונות בקושי עולה, עובדה עם כל צבע — 32 עובדות</div></span><span class="mtime">2–3 דק' לתמונה</span></button>
     <button class="menucard" id="gWho"><span class="me">🎭</span><span><div class="mt">נחשו מי</div><div class="md">הכירו את המועמדים דרך רמזים — פלוסים ומינוסים</div></span><span class="mtime">3 דק'</span></button>
     <button class="menucard" id="gQuote"><span class="me">🎤</span><span><div class="mt">מי אמר את זה?! <span class="newtag inl">⏱️ חדש</span></div><div class="md">69 ציטוטים אמיתיים — נחשו מי הדובר. ועכשיו: ⏱️ 60 שניות נגד השעון</div></span><span class="mtime">1–4 דק'</span></button>
     <button class="menucard" id="gHL"><span class="me">📊</span><span><div class="mt">יותר או פחות?! <span class="newtag inl">⏱️ חדש</span></div><div class="md">37 מספרים אמיתיים מהתקציב ומהחדשות — ועכשיו: ⏱️ 60 שניות נגד השעון</div></span><span class="mtime">1–2 דק'</span></button>
@@ -891,7 +890,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="3.28";
+const APP_VERSION="3.29";
 const APP_UPDATED="24.10.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
@@ -4443,119 +4442,177 @@ function mmEnd(){
 
 
 /* ================= נמלים בקלפי — pixel puzzle ================= */
-const ANTS_COL=["#3D7BFF","#F5B841","#FF5964","#33D69F","#B07CFF"];
+const ANTS_COL=["#3D7BFF","#F5B841","#FF5964","#33D69F","#F7F8FC"];
+const ANTS_PIX={
+ ballot:[".....EEEEEE...",".....ECCCCE...",".....EEEEEE...",".BBBBBBEEBBBB.",".BBBBBBBBBBBB.","..AAAAAAAAAA..","..AAAAAAAAAA..","..AAAAAAADDA..","..AAAAAADDAA..","..ADDAADDAAA..","..AADDDDAAAA..","..AAADDAAAAA..","..CCCCCCCCCC..","..BB......BB.."],
+ hourglass:[".CCCCCCCCCCCC.",".CCCCCCCCCCCC.","..AEBBBBBBEA..","..AEBBBBBBEA..","...AABBBBAA...","....AABBAA....",".....AEEA.....",".....AEEA.....","....AAEEAA....","...AAABBAAA...","..AEABBBBAEA..","..AEBBBBBBEA..",".DDDDDDDDDDDD.",".DDDDDDDDDDDD."],
+ piggy:[".......BB.....","......BBBB....","......BBBB....","..C...CBBC....","..CCCCCCCCCC..",".CCCCECCCCCCC.",".CCCCACCCCCEE.",".CCCCCCCCCCEA.",".CCCCCCCCCCEE.","..CCCCCCCCCC..","..DD.....DD...","..DD.....DD...","DDDDDDDDDDDDDD","DDDDDDDDDDDDDD"],
+ robot:["......CC......","......BB......",".AAAAAAAAAAAA.",".AAAAAAAAAAAA.",".AAEEEAAEEEAA.",".AAEBEAAEBEAA.",".AAEEEAAEEEAA.",".AAAAAAAAAAAA.",".ADDDDDDDDDDA.",".ADADADADADDA.",".ADDDDDDDDDDA.",".AAAAAAAAAAAA.","....BBBBBB....","..CCCCCCCCCC.."],
+ house:["......C.......",".....CCC...BB.","....CCCCC..BB.","...CCCCCCC.BB.","..CCCCCCCCCCC.",".CCCCCCCCCCCCC","..BBBBBBBBBBB.","..BEEBBBBBEEB.","..BEEBBAABEEB.","..BBBBBAABBBB.","..BBBBBAABBBB.","..BBBBBAABBBB.","DDDDDDDDDDDDDD","DDDDDDDDDDDDDD"],
+ ribbon:["DDDDDDDDDDDDDD","DAAAAAAAAAAAAD","DAACCC..CCCAAD","DACEECCCCCCCAD","DACECBBBBCCCAD","DACCBBEEBBCCAD","DACCBE..EBCCAD","DACCCBBBBCCCAD","DAACBBBBBBCAAD","DAAACBB.BBCAAD","DAAAABB..BBAAD","DAAAAB....BAAD","DAAAAAAAAAAAAD","DDDDDDDDDDDDDD"],
+ scales:["..............","......BB......",".BBBBBBBBBBBB.",".E....BB....E.",".E....BB....E.",".E....BB....E.",".AAA..BB..AAA.","..AA..BB..AA..","......BB......","......BB......","....EEEEEE....","....CCCCCC....","..CCCCCCCCCC..",".............."],
+ menorah:["C.C.C.C.C.C.C.","B.B.B.B.B.B.B.","B.B.B.B.B.B.B.","B.B.B.B.B.B.B.","B.B.B.B.B.B.B.","BBBBBBBBBBBBB.","D.....B.....D.","DD....B....DD.",".DD...B...DD..","..DDBBBBBDD...","...EEEEEEE....","...EEEEEEE....","..AAAAAAAAA...",".............."],
+};
+/* facts: לפי צבע A,B,C,D (כחול, זהב, אדום, ירוק); הלבן (E) מגלה את הטיפ */
 const ANTS_LV=[
- {e:"🗳️",name:"הקלפי",topic:"הקול שלכם",slots:5,
-  pic:["....CCCC....","....CDDC....","....CCCC....",".BBBBCCBBBB.",".BBBBBBBBBB.",".AAAAAAAAAA.",".AAAAAAADDA.",".AAAAAADDAA.",".ADDAADDAAA.",".AADDDDAAAA.",".AAADDAAAAA.",".AAAAAAAAAA."],
+ {e:"🗳️",name:"הקלפי",topic:"הקול שלכם",pic:"ballot",bg:"D",stars:1,slots:5,decoys:1,shuffle:.2,nmin:14,nmax:36,rate:4,peek:3,margin:1,
   facts:[
    {e:"📊",t:"10 סקרים סופיים, אף גוש לא ב־61: גוש נתניהו 48–52, גוש השינוי 50–56. הכול בתוך טעות הדגימה.",chips:[["polls","","📊 כל הסקרים"]]},
    {e:"🗑️",t:"קול למפלגה שלא עוברת 3.25% נשרף — ומחולק לכולם, גם לצד השני. ב־2022 הסף היה 154,855 קולות.",chips:[["votes","","🗑️ הקול השרוף"]]},
    {e:"🤔",t:"7%–13% עוד לא החליטו — 8–15 מנדטים באוויר, יותר מההפרש בין הגושים בכל סקר.",chips:[["polls","","🤔 המתלבטים"]]},
    {e:"🚪",t:"גנץ פרש (19.10) — הקול הזה כבר לא נשרף. וינטר מתחת לחסימה ב־8 מ־10 סקרים.",chips:[["facts","גנץ פרש","🚪 גנץ פרש"],["facts","וינטר נכנס","🪃 וינטר"]]}],
   tip:"כל נמלה אכלה פיקסל אחד. לבד — כלום; ביחד — תמונה שלמה. ככה גם מנדט: 36,227 קולות ב־2022 (המכון הישראלי לדמוקרטיה), ואף אחד מהם לא נראה לבד."},
- {e:"⏳",name:"שעון החול",topic:"7.10 — ההתרעות",slots:5,
-  pic:[".BBBBBBBBBB.",".BBBBBBBBBB.","..ACCCCCCA..","..ACCCCCCA..","...ACCCCA...","....ACCA....","....ACCA....","...AADDAA...","..ADDDDDDA..","..ADDDDDDA..",".BBBBBBBBBB.",".BBBBBBBBBB."],
+ {e:"⏳",name:"שעון החול",topic:"7.10 — ההתרעות",pic:"hourglass",bg:"B",stars:1,slots:5,decoys:2,shuffle:.3,nmin:15,nmax:40,rate:4,peek:3,margin:1,
   facts:[
    {e:"⏳",t:"לפחות חמש התרעות אישיות — מצרים, האמירויות, הרשות — עד 48 שעות לפני 7.10. ראשי הביטחון לא שותפו.",chips:[["facts","ההתרעות: הכרונולוגיה","⏳ הכרונולוגיה"]]},
    {e:"📬",t:"שישה מכתבי אזהרה, ארבעה מסמכי אמ״ן, אפס דיונים. התשובה מהלשכה: ״שידברו עם אלה בקפלן״.",chips:[["facts","אלה בקפלן","📬 המכתבים"]]},
    {e:"🎯",t:"13.9.2023: רונן בר הציע לסכל יעדי חמאס בעזה. נתניהו: ״רק אם יהיה פיגוע נורא. אחרת עדיף משהו קטן״.",chips:[["facts","רק אם יהיה פיגוע נורא","🎯 ההצעה שנדחתה"]]},
    {e:"📓",t:"המזכיר הצבאי אבי גיל: ״זה זיוף״ — 16 מחברות, המלצות סיכול ״לא התקבלו״, וקצרנית שהונחתה לשנות שעה.",chips:[["facts","זה זיוף","📓 הפריט"],["hot","אבי גיל","📺 הראיון המלא"]]}],
-  tip:"קופסה שהצבע שלה מכוסה מחכה בתא ותופסת מקום. התרעה שלא דנים בה — מחכה במגירה."},
- {e:"🛒",name:"העגלה",topic:"יוקר המחיה",slots:4,decoys:1,
-  pic:["..........DD",".........DDD","...C.C..DD..","..CCCCCCCDD.","..CCCCCCCCD.",".AAAAAAAAAA.",".AAAAAAAAAA.","..AAAAAAAA..","...AAAAAA...","...BB..BB...","..BBB..BBB..","............"],
+  tip:"החול בפנים נחשף רק אחרי שהזכוכית נאכלת. התרעה שלא דנים בה — נשארת סגורה בפנים."},
+ {e:"🐷",name:"הקופה",topic:"יוקר המחיה",pic:"piggy",bg:"A",stars:2,slots:4,decoys:3,shuffle:.35,nmin:15,nmax:40,rate:4,peek:3,margin:1,
   facts:[
-   {e:"✂️",t:"קיצוץ רוחבי של 2.6 מיליארד — רווחה (140 מ׳), בריאות (150 מ׳), חינוך (285 מ׳). ״אף שקל לא קוצץ מהכספים הקואליציוניים״.",chips:[["facts","קיצוץ רוחבי","✂️ הקיצוץ"]]},
+   {e:"🛡️",t:"450 מיליארד לביטחון לעשור — בלי מקור מימון. מספר בלי מקור הוא סלוגן; לפיד: המימון יגיע ממע״מ 21–22%.",chips:[["budget","התוספת לתקציב הביטחון","🛡️ 450 מיליארד"],["facts","נשיא עוין","🏛️ הפריט"]]},
    {e:"💸",t:"כספים קואליציוניים 2025: 5 מיליארד ₪ — פי שבעה מממשלת השינוי (700 מיליון). כסף קואליציוני הוא בחירה, לא כורח.",chips:[["budget","כספים קואליציוניים","💸 המספרים"]]},
-   {e:"📉",t:"עלות המלחמה למשק ~300 מיליארד, גירעון של 133 מיליארד ב־2024, ארבע הורדות דירוג בקדנציה אחת.",chips:[["budget","עלות המלחמה","📉 עלות המלחמה"],["budget","הגירעון התקציבי","📉 הגירעון"]]},
-   {e:"🛡️",t:"450 מיליארד לביטחון לעשור — בלי מקור מימון. מספר בלי מקור הוא סלוגן; לפיד: המימון יגיע ממע״מ 21–22%.",chips:[["budget","התוספת לתקציב הביטחון","🛡️ 450 מיליארד"],["facts","נשיא עוין","🏛️ הפריט"]]}],
+   {e:"✂️",t:"קיצוץ רוחבי של 2.6 מיליארד — רווחה (140 מ׳), בריאות (150 מ׳), חינוך (285 מ׳). ״אף שקל לא קוצץ מהכספים הקואליציוניים״.",chips:[["facts","קיצוץ רוחבי","✂️ הקיצוץ"]]},
+   {e:"📉",t:"עלות המלחמה למשק ~300 מיליארד, גירעון של 133 מיליארד ב־2024, ארבע הורדות דירוג בקדנציה אחת.",chips:[["budget","עלות המלחמה","📉 עלות המלחמה"],["budget","הגירעון התקציבי","📉 הגירעון"]]}],
   tip:"הנמלים אוכלות קודם את מה שחשוף. גם בתקציב — קיצצו קודם ממי שלא יכול להתנגד."},
- {e:"🤖",name:"הרובוט",topic:"מכונת הרעל",slots:4,decoys:1,
-  pic:[".....BB.....",".....BB.....","....BBBB....",".AAAAAAAAAA.",".AAAAAAAAAA.",".AACCAACCAA.",".AACCAACCAA.",".AAAAAAAAAA.",".ADDDDDDDDA.",".ADADADADDA.",".ADDDDDDDDA.",".AAAAAAAAAA."],
+ {e:"🤖",name:"הרובוט",topic:"מכונת הרעל",pic:"robot",bg:"D",stars:2,slots:4,decoys:2,shuffle:.4,nmin:15,nmax:45,rate:4,peek:2,margin:0,
   facts:[
    {e:"🎙️",t:"ערוץ 14: ינון מגל על איזנקוט — ״קוף שמאחוריו אשכנזים אליטיסטים״. למחרת פאנליסט חזר על זה והאולפן צחק.",chips:[["facts","קוף שמאחוריו","🎙️ הפריט"]]},
    {e:"🤖",t:"100 פרופילים מזויפים — מבצע ההשפעה של בן גביר, נגד סמוטריץ׳ ווינטר. לא נגד השמאל — נגד השותפים.",chips:[["facts","100 פרופילים","🤖 הפריט"]]},
-   {e:"🔄",t:"מעגל הכביסה: שופר ← בוט ← ״גורמים״ ← כותרת. כך ספין הופך ל״חדשות״ — ואיך מזהים אותו בשנייה.",chips:[["poison","","🤖 מכונת הרעל"]]},
-   {e:"🎗️",t:"מועמד הליכוד לשורדת השבי בת ה־85: ״הלוואי שיכולתי להחזיר אותך לחמאס״.",chips:[["facts","מועמד הליכוד לשורדת","🎗️ הפריט"],["hot","ההשתלחות במשפחות","📺 ההשתלחות במשפחות"]]}],
-  tip:"ברובוט יש רק 4 תאים. גם מכונת הרעל עובדת עם מעט שופרות — העוצמה היא בחזרה, לא במספר."},
- {e:"🏛️",name:"הכנסת",topic:"הממשלה הבאה",slots:4,decoys:2,
-  pic:["....CCC.....","....CCC.....","....C.......","BBBBBBBBBBBB",".BBBBBBBBBB.",".AA.AA.AA.AA",".AA.AA.AA.AA",".AA.AA.AA.AA",".AA.AA.AA.AA","DDDDDDDDDDDD","DDDDDDDDDDDD","............"],
+   {e:"🎗️",t:"מועמד הליכוד לשורדת השבי בת ה־85: ״הלוואי שיכולתי להחזיר אותך לחמאס״.",chips:[["facts","מועמד הליכוד לשורדת","🎗️ הפריט"],["hot","ההשתלחות במשפחות","📺 ההשתלחות במשפחות"]]},
+   {e:"🔄",t:"מעגל הכביסה: שופר ← בוט ← ״גורמים״ ← כותרת. כך ספין הופך ל״חדשות״ — ואיך מזהים אותו בשנייה.",chips:[["poison","","🤖 מכונת הרעל"]]}],
+  tip:"העיניים של הרובוט נחשפות אחרונות. מכונת הרעל עובדת עם מעט שופרות — העוצמה היא בחזרה, לא במספר."},
+ {e:"🏠",name:"הבית",topic:"דיור, חינוך, מוחות",pic:"house",bg:"A",stars:2,slots:4,decoys:3,shuffle:.45,nmin:15,nmax:45,rate:4,peek:2,margin:0,
   facts:[
+   {e:"🏠",t:"מאז 2009 מחירי הדירות יותר מהכפילו את עצמם; הרפורמות המבניות — קרקעות, תכנון, מיסוי משקיעים — נתקעו שוב ושוב בגלל אינטרסים קואליציוניים.",chips:[["core","משבר הדיור","🧠 משבר הדיור"]]},
+   {e:"🧳",t:"מאז 2023: גל עזיבה של רופאים, חוקרים ואנשי הייטק. ההייטק הוא כ־50% מהיצוא ומקור המס שמממן הכול.",chips:[["core","בריחת המוחות","🧠 בריחת המוחות"]]},
+   {e:"📉",t:"פיזה בירידה מתמשכת, כיתות מהצפופות ב־OECD, מחסור במורים — ולפי פרסומים, עיכוב פרסום נתונים במקום טיפול.",chips:[["core","החינוך הכללי","🧠 החינוך"]]},
+   {e:"🧳",t:"200 אלף מפונים, 12.5 מיליארד ₪, שנתיים מחוץ לבית — חלק מהמחיר של ״אין פתרון מדיני״.",chips:[["budget","המפונים","💸 המפונים"]]}],
+  tip:"החלונות הם הפיקסלים הכי עמוקים בבית. כשמסתירים נתונים — ציוני פיזה, נתוני רצח — אי אפשר לראות פנימה."},
+ {e:"🎗️",name:"הסרט הצהוב",topic:"החטופים",pic:"ribbon",bg:"A",stars:3,slots:3,decoys:2,shuffle:.5,nmin:15,nmax:45,rate:5,peek:2,margin:0,
+  facts:[
+   {e:"🎗️",t:"מעל 255 נחטפו; 87 חזרו בארון. המזכיר הצבאי, כשנשאל אם חטופים מתו בשבי כשאפשר היה להחזירם: ״זה מדויק״.",chips:[["facts","זה זיוף","📓 אבי גיל"],["hot","ההשתלחות במשפחות","📺 ההשתלחות במשפחות"]]},
+   {e:"🎗️",t:"משפחת שושני מכפר עזה — מירה, בכירה בשב״כ, בתה אופיר נפגעה — מול עלילת הדם של טלי גוטליב.",chips:[["facts","משפחת שושני","🎗️ הפריט"],["led","טלי גוטליב","📓 גוטליב"]]},
+   {e:"📕",t:"״תיק 7.10״ — כתב האישום של המשפחות: 12 עמודים, 64 הערות שוליים, כל טענה עם מקור פומבי.",chips:[["facts","תיק 7.10","📕 תיק 7.10"]]},
+   {e:"🧠",t:"עשרות חטופים הוחזרו בעסקאות — אבל הצטברו עדויות שעסקאות עוכבו או פוצצו משיקולים קואליציוניים: איומי סמוטריץ׳ ובן גביר לפרק את הממשלה.",chips:[["core","החטופים","🧠 עסקאות מול הישרדות"]]}],
+  tip:"הלב מתגלה רק אחרי שמסירים את המסגרת. ככה גם הסיפור של 7.10 — שכבה אחרי שכבה."},
+ {e:"⚖️",name:"המאזניים",topic:"שומרי הסף",pic:"scales",bg:"D",stars:3,slots:3,decoys:2,shuffle:.5,nmin:15,nmax:45,rate:5,peek:1,margin:0,
+  facts:[
+   {e:"🛡️",t:"ניסיונות הדחה של ראש השב״כ והיועמ״שית, פוליטיזציה של המשטרה — כל מי שאומר ״לא״ מוכרז אויב.",chips:[["core","פגיעה בשומרי הסף","🧠 שומרי הסף"]]},
+   {e:"🏛️",t:"2023: ניסיון לשנות את שיטת המשטר — החלשת בג״ץ, שליטה במינוי שופטים, ביטול הסבירות. לישראל אין חוקה; בית המשפט הוא הבלם היחיד. הוכרז שיימשך.",chips:[["core","ההפיכה המשטרית","🧠 ההפיכה"]]},
+   {e:"🕶️",t:"זיני מונה לראש השב״כ אחרי ״ריאיון״ של חמש דקות ברכב רה״מ — ולא מאבטח את איזנקוט וגולן. את שרה והבנים — כן, לכל החיים.",chips:[["core","תיק זיני","🧠 תיק זיני"],["facts","זיני לא מאבטח","🛡️ הפריט"]]},
+   {e:"🗳️",t:"2,000 ״משקיפים״ בקלפיות ערביות ואפליקציה שמזהה מי הצביע — אחרי שבג״ץ אסר; ביסמוט מטיל דופי בוועדת הבחירות.",chips:[["facts","משקיפים","👁️ הפריט"],["core","טוהר הבחירות","🧠 טוהר הבחירות"]]}],
+  tip:"המאזניים מחזיקים רק כשהבסיס שלם. שומרי הסף הם הבסיס."},
+ {e:"🕎",name:"המנורה",topic:"הממשלה הבאה",pic:"menorah",bg:"A",stars:3,slots:3,decoys:3,shuffle:.6,nmin:15,nmax:45,rate:5,peek:1,margin:0,
+  facts:[
+   {e:"🔴",t:"הליכוד רץ בלי מצע. שוב. מה שכן נאמר: ״בעוד שנתיים יכול לעלות נשיא עוין״ ו־450 מיליארד בלי מקור מימון.",chips:[["bibi","","🔴 רשימת הליכוד"],["facts","נשיא עוין","🏛️ הפריט"]]},
    {e:"✡️",t:"דרעי: ״לא תהיה ממשלה בישראל שש״ס תומכת או משתתפת בלי שנסדיר את מעמד תלמידי הישיבות״. באותו שבוע בוטל מבצע מעצרי העריקים.",chips:[["facts","לא תהיה ממשלה בלי","✡️ הפריט"],["core","חוק הגיוס","🧠 חוק הגיוס"]]},
-   {e:"🏫",t:"2030: יותר תלמידי כיתה א׳ בחינוך החרדי מאשר בממלכתי־עברי — והלמ״ס טעתה ב־23,600.",chips:[["facts","כיתה א","🏫 הפריט"],["core","לימודי ליבה","🧠 ליבה"]]},
    {e:"🔍",t:"שלוש שנים — ואין ועדת חקירה ממלכתית. ראש השב״כ לשעבר: ״בהיעדר ועדה ממלכתית, האמת תתברר בבית המשפט״.",chips:[["core","ועדת חקירה","🧠 ממלכתית מול ממשלתית"],["facts","רונן בר תובע","⚖️ התביעה"]]},
-   {e:"🔴",t:"הליכוד רץ בלי מצע. שוב. מה שכן נאמר: ״בעוד שנתיים יכול לעלות נשיא עוין״ ו־450 מיליארד בלי מקור מימון.",chips:[["bibi","","🔴 רשימת הליכוד"],["facts","נשיא עוין","🏛️ הפריט"]]}],
-  tip:"העמודים בכנסת נאכלים רק אחרי שהגג יורד — החלל ביניהם סגור. ככה גם קואליציה: קודם התנאים, אחר כך הממשלה."},
+   {e:"🏫",t:"2030: יותר תלמידי כיתה א׳ בחינוך החרדי מאשר בממלכתי־עברי — והלמ״ס טעתה ב־23,600.",chips:[["facts","כיתה א","🏫 הפריט"],["core","לימודי ליבה","🧠 ליבה"]]}],
+  tip:"שבעה קנים, בסיס אחד. קואליציה: קודם התנאים — אחר כך הממשלה."},
 ];
-let antsS=null, antsTimer=null;
-function antsParse(pic){ return pic.map(row=>[...row].map(ch=>ch==="."?0:ch.charCodeAt(0)-64)); }
-function antsExposed(g){
-  const H=g.length,W=g[0].length, out=g.map(r=>r.map(()=>false)), q=[];
-  for(let y=0;y<H;y++)for(let x=0;x<W;x++){ if(g[y][x]===0&&(y===0||x===0||y===H-1||x===W-1)){ out[y][x]=true; q.push([y,x]); } }
-  const D=[[1,0],[-1,0],[0,1],[0,-1]];
-  while(q.length){ const [y,x]=q.pop(); for(const [dy,dx] of D){ const ny=y+dy,nx=x+dx; if(ny<0||nx<0||ny>=H||nx>=W) continue; if(g[ny][nx]===0&&!out[ny][nx]){ out[ny][nx]=true; q.push([ny,nx]); } } }
-  const ex=[];
-  for(let y=0;y<H;y++)for(let x=0;x<W;x++){ if(g[y][x]>0){ let e=(y===0||x===0||y===H-1||x===W-1); if(!e) for(const [dy,dx] of D){ if(out[y+dy][x+dx]){ e=true; break; } } if(e) ex.push([y,x]); } }
-  return ex;
+const ANTS_SCALE=3;
+/* --- לוח: חשיפה אינקרמנטלית (תא ״חשוף״ = צבעוני וצמוד לריק שמחובר לחוץ) --- */
+function antsBoard(pic,scale,bg){ /* bg: אות צבע שממלאת את הרקע — התמונה הופכת ל״מדבקה״ מלאה, והאובייקט מכוסה עד שאוכלים את הרקע */
+  const H=pic.length*scale, W=pic[0].length*scale, N=W*H;
+  const b={W,H,g:new Uint8Array(N),out:new Uint8Array(N),expo:new Uint8Array(N),lists:[[],[],[],[],[],[]],cnt:[0,0,0,0,0,0],left:0};
+  for(let y=0;y<H;y++)for(let x=0;x<W;x++){ let ch=pic[(y/scale)|0][(x/scale)|0]; if(ch==="."&&bg) ch=bg; const v=ch==="."?0:ch.charCodeAt(0)-64; b.g[y*W+x]=v; if(v){ b.cnt[v]++; b.left++; } }
+  for(let y=0;y<H;y++)for(let x=0;x<W;x++){ if(y===0||x===0||y===H-1||x===W-1){ const i=y*W+x; if(b.g[i]===0){ if(!b.out[i]) antsMarkOut(b,i); } else if(!b.expo[i]){ b.expo[i]=1; b.lists[b.g[i]].push(i); } } }
+  return b;
 }
+function antsMarkOut(b,i0){
+  const W=b.W,H=b.H,st=[i0]; b.out[i0]=1;
+  while(st.length){ const i=st.pop(), y=(i/W)|0, x=i%W;
+    const nb=[]; if(y>0) nb.push(i-W); if(y<H-1) nb.push(i+W); if(x>0) nb.push(i-1); if(x<W-1) nb.push(i+1);
+    for(const j of nb){ if(b.g[j]===0){ if(!b.out[j]){ b.out[j]=1; st.push(j); } } else if(!b.expo[j]){ b.expo[j]=1; b.lists[b.g[j]].push(j); } } }
+}
+function antsEat(b,i){ const c=b.g[i]; b.g[i]=0; b.expo[i]=0; b.left--; b.cnt[c]--; antsMarkOut(b,i); return c; }
+function antsPick(b,c){ const L=b.lists[c]; if(!L.length) return -1; const k=Math.floor(Math.random()*L.length), i=L[k]; L[k]=L[L.length-1]; L.pop(); return i; }
+function antsClone(b){ return {W:b.W,H:b.H,g:b.g.slice(),out:b.out.slice(),expo:b.expo.slice(),lists:b.lists.map(l=>l.slice()),cnt:b.cnt.slice(),left:b.left}; }
+/* --- מחולל: סדר פתיר (קילוף מבחוץ פנימה), ערבוב, פיתיונות — ובדיקה שהשלב פתיר --- */
 function antsGen(lv){
-  const g=antsParse(lv.pic), sim=g.map(r=>r.slice()), boxes=[]; let guard=0;
-  while(guard++<600){
-    const ex=antsExposed(sim); if(!ex.length) break;
-    const cols=[...new Set(ex.map(([y,x])=>sim[y][x]))];
+  const b=antsBoard(ANTS_PIX[lv.pic],ANTS_SCALE,lv.bg), sim=antsClone(b), boxes=[]; let guard=0;
+  while(sim.left>0&&guard++<2000){
+    const cols=[1,2,3,4,5].filter(c=>sim.lists[c].length); if(!cols.length) break;
     const c=cols[Math.floor(Math.random()*cols.length)];
-    const target=3+Math.floor(Math.random()*5); let n=0;
-    while(n<target){ const e=antsExposed(sim).filter(([y,x])=>sim[y][x]===c); if(!e.length) break; const [y,x]=e[Math.floor(Math.random()*e.length)]; sim[y][x]=0; n++; }
+    const target=lv.nmin+Math.floor(Math.random()*(lv.nmax-lv.nmin+1)); let n=0;
+    while(n<target){ const i=antsPick(sim,c); if(i<0) break; antsEat(sim,i); n++; }
     if(n>0) boxes.push({c,n,id:boxes.length});
   }
-  const L=3, lanes=Array.from({length:L},()=>[]);
-  boxes.forEach(b=>{ const min=Math.min(...lanes.map(l=>l.length)); const cand=lanes.filter(l=>l.length<=min+2); cand[Math.floor(Math.random()*cand.length)].push(b); });
-  return {g,lanes,nBoxes:boxes.length};
+  const lanes=[[],[],[]];
+  boxes.forEach(bx=>{ const min=Math.min(...lanes.map(l=>l.length)); const cand=lanes.filter(l=>l.length<=min+2); cand[Math.floor(Math.random()*cand.length)].push(bx); });
+  return {b,lanes,nBoxes:boxes.length};
 }
-/* סימולציה של שחקן סביר (לוקח קופסה שהצבע שלה חשוף; אחרת מחכה) — לוודא שהשלב פתיר */
-function antsSolve(g0,lanes0,slots){
-  const g=g0.map(r=>r.slice()), lanes=lanes0.map(l=>l.map(b=>({c:b.c,n:b.n}))), sl=new Array(slots).fill(null); let left=g.flat().filter(v=>v>0).length, guard=0;
-  while(left>0&&guard++<4000){
-    for(let i=0;i<sl.length;i++){ const b=sl[i]; if(!b) continue; const e=antsExposed(g).filter(([y,x])=>g[y][x]===b.c); if(!e.length){ b.wait=true; continue; } b.wait=false; const [y,x]=e[0]; g[y][x]=0; b.n--; left--; if(b.n<=0) sl[i]=null; }
-    if(left<=0) return true;
-    if(sl.every(b=>b)&&sl.every(b=>b.wait)) return false;
-    if(sl.includes(null)){ const ex=antsExposed(g), cols=new Set(ex.map(([y,x])=>g[y][x])); let pick=-1;
-      lanes.forEach((ln,l)=>{ if(pick<0&&ln.length&&cols.has(ln[0].c)) pick=l; });
-      if(pick<0&&!sl.some(b=>b&&!b.wait)){ lanes.forEach((ln,l)=>{ if(pick<0&&ln.length) pick=l; }); }
-      if(pick>=0) sl[sl.indexOf(null)]=lanes[pick].shift(); }
+function antsRebalance(lanes){ /* טור שהתרוקן מקבל את החצי האחורי של הטור הארוך ביותר */
+  for(let l=0;l<lanes.length;l++){ if(lanes[l].length) continue; let L=-1,max=1; lanes.forEach((ln,k)=>{ if(ln.length>max){ max=ln.length; L=k; } }); if(L<0) continue; const take=Math.floor(max/2); lanes[l]=lanes[L].splice(max-take,take); }
+}
+function antsSolve(b0,lanes0,slots,rate){
+  const b=antsClone(b0), lanes=lanes0.map(l=>l.map(x=>({c:x.c,n:x.n}))), sl=new Array(slots).fill(null); let guard=0;
+  while(b.left>0&&guard++<6000){
+    for(let i=0;i<sl.length;i++){ const bx=sl[i]; if(!bx) continue; let k=0; while(k<rate&&bx.n>0){ const j=antsPick(b,bx.c); if(j<0) break; antsEat(b,j); bx.n--; k++; } bx.wait=(bx.n>0&&k===0); if(bx.n<=0) sl[i]=null; }
+    if(b.left<=0) return true;
+    if(sl.every(x=>x)&&sl.every(x=>x.wait)) return false;
+    if(sl.includes(null)){ let pick=-1;
+      lanes.forEach((ln,l)=>{ if(pick<0&&ln.length&&b.lists[ln[0].c].length) pick=l; });
+      if(pick<0&&!sl.some(x=>x&&!x.wait)){ lanes.forEach((ln,l)=>{ if(pick<0&&ln.length) pick=l; }); }
+      if(pick>=0){ sl[sl.indexOf(null)]=lanes[pick].shift(); antsRebalance(lanes); } }
   }
-  return left<=0;
+  return b.left<=0;
 }
-/* שלב: סדר פתיר + ערבוב קל + ״פיתיון״ (קופסה של צבע מכוסה בחזית) — ובדיקה שהכול עדיין פתיר */
 function antsLevel(lv){
-  let base=null;
-  for(let tries=0;tries<40;tries++){
-    base=antsGen(lv); const lanes=base.lanes;
-    const ex0=antsExposed(base.g), vis=new Set(ex0.map(([y,x])=>base.g[y][x]));
-    const hidden=[]; lanes.forEach((ln,l)=>ln.forEach((b,i)=>{ if(!vis.has(b.c)) hidden.push([l,i]); }));
-    for(let k=0;k<(lv.decoys||0)&&hidden.length;k++){ const [l,i]=hidden.splice(Math.floor(Math.random()*hidden.length),1)[0]; const b=lanes[l][i]; if(!b||b.d) continue; lanes[l].splice(i,1); b.d=1; hidden.forEach(e=>{ if(e[0]===l&&e[1]>i) e[1]--; }); const t=Math.floor(Math.random()*lanes.length); lanes[t].unshift(b); hidden.forEach(e=>{ if(e[0]===t) e[1]++; }); }
-    lanes.forEach(ln=>{ for(let i=ln.length-1;i>0;i--){ if(Math.random()<.35&&!ln[i].d&&!ln[i-1].d){ const t=ln[i]; ln[i]=ln[i-1]; ln[i-1]=t; } } });
-    if(antsSolve(base.g,lanes,Math.max(2,lv.slots-1))) return base;
+  let gen=null;
+  for(let tries=0;tries<30;tries++){
+    gen=antsGen(lv); const lanes=gen.lanes;
+    const hidden=[]; lanes.forEach((ln,l)=>ln.forEach((bx,i)=>{ if(!gen.b.lists[bx.c].length) hidden.push([l,i]); }));
+    for(let k=0;k<(lv.decoys||0)&&hidden.length;k++){ const [l,i]=hidden.splice(Math.floor(Math.random()*hidden.length),1)[0]; const bx=lanes[l][i]; if(!bx||bx.d) continue; lanes[l].splice(i,1); bx.d=1; hidden.forEach(e=>{ if(e[0]===l&&e[1]>i) e[1]--; }); const t=Math.floor(Math.random()*lanes.length); lanes[t].unshift(bx); hidden.forEach(e=>{ if(e[0]===t) e[1]++; }); }
+    lanes.forEach(ln=>{ for(let i=ln.length-1;i>0;i--){ if(Math.random()<lv.shuffle&&!ln[i].d&&!ln[i-1].d){ const t=ln[i]; ln[i]=ln[i-1]; ln[i-1]=t; } } });
+    if(antsSolve(gen.b,lanes,Math.max(2,lv.slots-(lv.margin||0)),lv.rate)) return gen;
   }
   return antsGen(lv);
 }
-function antsStop(){ if(antsTimer){ clearInterval(antsTimer); antsTimer=null; } }
+/* --- סאונד (Web Audio, מסונתז, בלי קבצים) --- */
+let antsAC=null, antsMute=false;
+function antsAudio(){ if(antsMute) return null; try{ const AC=window.AudioContext||window.webkitAudioContext; if(!AC) return null; if(!antsAC) antsAC=new AC(); if(antsAC.state==="suspended") antsAC.resume(); return antsAC; }catch(_){ return null; } }
+function antsSfx(kind,delay){
+  const ac=antsAudio(); if(!ac) return; const t=ac.currentTime+(delay||0);
+  const tone=(f0,f1,dur,type,vol,at)=>{ const o=ac.createOscillator(), g=ac.createGain(); o.type=type||"sine"; o.frequency.setValueAtTime(f0,at); if(f1) o.frequency.exponentialRampToValueAtTime(f1,at+dur); g.gain.setValueAtTime(0.0001,at); g.gain.exponentialRampToValueAtTime(vol,at+0.01); g.gain.exponentialRampToValueAtTime(0.0001,at+dur); o.connect(g).connect(ac.destination); o.start(at); o.stop(at+dur+0.02); };
+  try{
+    if(kind==="bite"){
+      const len=0.07, buf=ac.createBuffer(1,Math.floor(ac.sampleRate*len),ac.sampleRate), d=buf.getChannelData(0);
+      for(let i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,2.2);
+      const src=ac.createBufferSource(); src.buffer=buf; const bp=ac.createBiquadFilter(); bp.type="bandpass"; bp.frequency.value=1100+Math.random()*1400; bp.Q.value=0.9;
+      const g=ac.createGain(); g.gain.setValueAtTime(0.35,t); g.gain.exponentialRampToValueAtTime(0.001,t+len);
+      src.connect(bp).connect(g).connect(ac.destination); src.start(t);
+      tone(180+Math.random()*120,70,0.08,"triangle",0.16,t);
+    } else if(kind==="place"){ tone(520,780,0.09,"sine",0.18,t); }
+    else if(kind==="pop"){ tone(600,1200,0.12,"sine",0.2,t); }
+    else if(kind==="fact"){ [523,659,784].forEach((f,i)=>tone(f,0,0.22,"triangle",0.16,t+i*0.09)); }
+    else if(kind==="win"){ [523,659,784,1047].forEach((f,i)=>tone(f,0,0.3,"triangle",0.18,t+i*0.12)); tone(1047,0,0.6,"sine",0.12,t+0.5); }
+    else if(kind==="stuck"){ tone(220,110,0.5,"sawtooth",0.14,t); }
+  }catch(_){}
+}
+/* --- משחק --- */
+let antsS=null, antsTimer=null, antsRAF=null;
+function antsStop(){ if(antsTimer){ clearInterval(antsTimer); antsTimer=null; } if(antsRAF){ cancelAnimationFrame(antsRAF); antsRAF=null; } }
 function startAnts(li){
   antsStop();
   li=Math.max(0,Math.min(ANTS_LV.length-1,li||0));
   const lv=ANTS_LV[li], gen=antsLevel(lv);
-  const total=gen.g.flat().filter(v=>v>0).length;
-  antsS={li,lv,g:gen.g,lanes:gen.lanes,nBoxes:gen.nBoxes,slots:new Array(lv.slots).fill(null),eaten:0,total,done:[],won:false,stuck:false,moves:0};
+  antsS={li,lv,b:gen.b,lanes:gen.lanes,nBoxes:gen.nBoxes,slots:new Array(lv.slots).fill(null),eaten:0,total:gen.b.left,done:[],won:false,stuck:false,moves:0,flights:[],pend:new Map(),tick:0};
   renderAnts(); show(ants);
-  antsTimer=setInterval(antsTick,600);
+  antsTimer=setInterval(antsTick,450);
+  antsDraw();
 }
 function renderAnts(){
-  const st=antsS, lv=st.lv, W=st.g[0].length;
+  const st=antsS, lv=st.lv;
   ants.innerHTML=`
-    <h2 class="anth2">🐜 נמלים בקלפי <span class="hl">שלב ${st.li+1}/${ANTS_LV.length} · ${lv.e} ${lv.name}</span></h2>
-    <div class="antstat"><span>נושא: <b>${lv.topic}</b> · עובדות: <b id="antFacts">0</b>/4</span><span>פיקסלים: <b id="antLeft">${st.total}</b> <button class="linkbtn" id="antHelpBtn" style="padding:0 4px;font-size:12px">❓ איך משחקים</button></span></div>
-    <div class="anthelp" id="antHelp" style="display:${st.li===0?"block":"none"}"><b>איך משחקים:</b> לוחצים על קופסת נמלים למטה ← היא נכנסת לתא ← הנמלים אוכלות את הפיקסלים בצבע שלהן, רק מה שחשוף מבחוץ. קופסה בצבע שעדיין מכוסה <b>מחכה ⏳ ותופסת תא</b>. כל התאים תפוסים ומחכים = תקועים. כשצבע נגמר — עובדה. בלי שעון, בלי לחץ. <button class="dlchip gold" id="antHelpOk">הבנתי ✓</button></div>
-    <div class="antgame"><div class="antboard" id="antBoard" style="grid-template-columns:repeat(${W},1fr)">${st.g.map((row,y)=>row.map((v,x)=>`<div class="ac${v?"":" empty"}" id="ac-${y}-${x}" style="--c:${v?ANTS_COL[v-1]:"transparent"}"></div>`).join("")).join("")}</div>
-    <div class="antlabel">התאים — כאן הנמלים עובדות</div>
+    <h2 class="anth2">🐜 נמלים בקלפי <span class="hl">שלב ${st.li+1}/${ANTS_LV.length} · ${lv.e} ${lv.name} · ${"⭐".repeat(lv.stars)}</span></h2>
+    <div class="antlv">${ANTS_LV.map((l,i)=>`<button class="antdot${i===st.li?" on":""}" data-li="${i}" title="${l.name}" aria-label="שלב ${i+1}: ${l.name}">${l.e}</button>`).join("")}</div>
+    <div class="antstat"><span>נושא: <b>${lv.topic}</b> · עובדות: <b id="antFacts">0</b>/4</span><span>פיקסלים: <b id="antLeft">${st.total}</b> <button class="linkbtn" id="antMute" style="padding:0 4px;font-size:13px" aria-label="השתקה">${antsMute?"🔇":"🔊"}</button><button class="linkbtn" id="antHelpBtn" style="padding:0 4px;font-size:12px">❓</button></span></div>
+    <div class="anthelp" id="antHelp" style="display:${st.li===0?"block":"none"}"><b>איך משחקים:</b> לוחצים על קופסת נמלים למטה ← היא נכנסת לתא ← הנמלים אוכלות את הפיקסלים בצבע שלהן, <b>רק מה שחשוף מבחוץ</b>. קופסה בצבע שעדיין מכוסה <b>מחכה ⏳ ותופסת תא</b>. כל התאים תפוסים ומחכים = הפסדתם את השלב. כשצבע נגמר — עובדה. הלבן מגלה טיפ. בלי שעון. <button class="dlchip gold" id="antHelpOk">הבנתי ✓</button></div>
+    <div class="antgame"><div class="antboard" id="antBoard"><canvas id="antCv" aria-label="לוח הפיקסלים"></canvas></div>
+    <div class="antlabel">התאים — כאן הנמלים עובדות (${lv.slots})</div>
     <div class="anttray" id="antTray"></div>
     <div class="antlabel">הקופסאות — לחצו על העליונה בכל טור</div>
     <div class="antlanes" id="antLanes"></div></div>
@@ -4563,114 +4620,144 @@ function renderAnts(){
     <div id="antsOut"></div>`;
   ants.querySelector("[data-back]").onclick=()=>goBack();
   $("#antHint").onclick=antsHint;
-  const hb=$("#antHelp"); $("#antHelpBtn").onclick=()=>{ hb.style.display=hb.style.display==="none"?"block":"none"; }; $("#antHelpOk").onclick=()=>{ hb.style.display="none"; };
-  antsTray(); antsLanes();
+  $("#antMute").onclick=()=>{ antsMute=!antsMute; $("#antMute").textContent=antsMute?"🔇":"🔊"; if(!antsMute) antsSfx("place"); };
+  const hb=$("#antHelp"); $("#antHelpBtn").onclick=()=>{ hb.style.display=hb.style.display==="none"?"block":"none"; }; $("#antHelpOk").onclick=()=>{ hb.style.display="none"; antsSize(); };
+  ants.querySelectorAll(".antdot").forEach(d=>d.onclick=()=>startAnts(+d.dataset.li));
+  antsSize(); antsTray(); antsLanes();
+}
+function antsSize(){
+  const st=antsS, cv=$("#antCv"), box=$("#antBoard"); if(!st||!cv||!box) return;
+  const cw=Math.max(200,Math.min(320,(box.clientWidth||300)-10));
+  const cell=Math.max(4,Math.floor((cw-2)/st.b.W)), pw=st.b.W*cell+2, ph=st.b.H*cell+2, dpr=Math.min(2,window.devicePixelRatio||1);
+  st.cell=cell; st.pw=pw; st.ph=ph;
+  cv.width=Math.round(pw*dpr); cv.height=Math.round(ph*dpr); cv.style.width=pw+"px"; cv.style.height=ph+"px";
+  let ctx=null; try{ ctx=cv.getContext("2d"); }catch(_){ ctx=null; }
+  if(!ctx){ st.ctx=null; st.octx=null; return; }
+  st.ctx=ctx; ctx.setTransform(dpr,0,0,dpr,0,0);
+  const off=document.createElement("canvas"); off.width=cv.width; off.height=cv.height; st.off=off; st.octx=off.getContext("2d"); st.octx.setTransform(dpr,0,0,dpr,0,0);
+  for(let i=0;i<st.b.W*st.b.H;i++) antsCell(i);
+  st.dirty=true;
+}
+function antsCell(i){ /* מצייר תא אחד ללוח הרקע */
+  const st=antsS; if(!st.octx) return; const c=st.cell, x=(i%st.b.W)*c+1, y=((i/st.b.W)|0)*c+1, v=st.b.g[i], p=st.pend.get(i);
+  st.octx.clearRect(x,y,c,c);
+  if(v||p){ st.octx.globalAlpha=v?1:.45; st.octx.fillStyle=ANTS_COL[(v||p)-1]; st.octx.fillRect(x,y,Math.max(1,c-1),Math.max(1,c-1)); st.octx.globalAlpha=1; }
+  st.dirty=true;
+}
+function antsDraw(){
+  const st=antsS; if(!st||!st.ctx) return;
+  antsRAF=requestAnimationFrame(antsDraw);
+  if(!ants.classList.contains("on")) return;
+  const now=performance.now(); let changed=st.dirty;
+  for(let k=st.flights.length-1;k>=0;k--){ const f=st.flights[k]; if(now>=f.t1){ st.flights.splice(k,1); st.pend.delete(f.i); antsCell(f.i); changed=true; } }
+  if(!changed&&!st.flights.length) return;
+  const ctx=st.ctx; ctx.clearRect(0,0,st.pw,st.ph); ctx.drawImage(st.off,0,0,st.pw,st.ph); st.dirty=false;
+  if(st.flights.length){ ctx.font=`${Math.max(11,Math.round(st.cell*2.2))}px serif`; ctx.textAlign="center"; ctx.textBaseline="middle";
+    for(const f of st.flights){ const u=Math.min(1,Math.max(0,(now-f.t0)/(f.t1-f.t0))), e=u<.5?2*u*u:1-Math.pow(-2*u+2,2)/2; const x=f.x0+(f.x1-f.x0)*e, y=f.y0+(f.y1-f.y0)*e;
+      ctx.save(); ctx.translate(x,y); ctx.rotate(Math.atan2(f.y1-f.y0,f.x1-f.x0)+Math.PI/2); ctx.fillText("🐜",0,0); ctx.restore(); } }
+}
+function antsFlight(slot,i,k){
+  const st=antsS; if(!st.ctx) return;
+  const cv=$("#antCv"), tray=$("#antTray"), from=tray&&tray.children[slot]; if(!cv||!from||!st.ctx) { st.pend.delete(i); antsCell(i); return; }
+  const R=cv.getBoundingClientRect(), a=from.getBoundingClientRect();
+  if(!R.width){ st.pend.delete(i); antsCell(i); return; }
+  const x0=a.left-R.left+a.width/2+(Math.random()*16-8), y0=Math.min(st.ph+14,a.top-R.top+a.height/2);
+  const x1=(i%st.b.W)*st.cell+1+st.cell/2, y1=((i/st.b.W)|0)*st.cell+1+st.cell/2;
+  const now=performance.now(), dur=380+Math.random()*160+k*45;
+  st.flights.push({i,x0,y0,x1,y1,t0:now,t1:now+dur});
 }
 function antsTray(){
   const st=antsS, el=$("#antTray"); if(!el) return;
-  el.innerHTML=st.slots.map(b=>b?`<div class="as full${b.wait?" wait":""}" style="background:${ANTS_COL[b.c-1]}" title="${b.wait?"מחכה — הצבע עדיין מכוסה":"אוכלת"}">🐜<span>×${b.n}</span></div>`:`<div class="as"></div>`).join("");
+  el.innerHTML=st.slots.map(bx=>bx?`<div class="as full${bx.wait?" wait":""}" style="background:${ANTS_COL[bx.c-1]}" title="${bx.wait?"מחכה — הצבע עדיין מכוסה":"אוכלת"}">🐜<span>×${bx.n}</span></div>`:`<div class="as"></div>`).join("");
 }
 function antsLanes(){
-  const st=antsS, el=$("#antLanes"); if(!el) return;
+  const st=antsS, el=$("#antLanes"), peek=st.lv.peek||2; if(!el) return;
   el.innerHTML=st.lanes.map((lane,l)=>{ if(!lane.length) return `<div class="antlane"><div class="empty">ריק</div></div>`;
-    const f=lane[0]; return `<div class="antlane"><button class="antbox" data-l="${l}" style="background:${ANTS_COL[f.c-1]}" aria-label="קופסה עם ${f.n} נמלים">🐜<small>×${f.n}</small></button>${lane.slice(1,4).map(b=>`<div class="antbox q" style="background:${ANTS_COL[b.c-1]}">🐜<span>×${b.n}</span></div>`).join("")}${lane.length>4?`<div class="antlabel">+${lane.length-4}</div>`:""}</div>`; }).join("");
+    const f=lane[0]; return `<div class="antlane"><button class="antbox" data-l="${l}" style="background:${ANTS_COL[f.c-1]}" aria-label="קופסה עם ${f.n} נמלים">🐜<small>×${f.n}</small></button>${lane.slice(1,1+peek).map(bx=>`<div class="antbox q" style="background:${ANTS_COL[bx.c-1]}">🐜<span>×${bx.n}</span></div>`).join("")}${lane.length>1+peek?`<div class="antlabel">+${lane.length-1-peek}</div>`:""}</div>`; }).join("");
   el.querySelectorAll(".antbox[data-l]").forEach(b=>b.onclick=()=>antsTake(+b.dataset.l));
 }
 function antsTake(l){
   const st=antsS; if(!st||st.won||st.stuck) return;
   const i=st.slots.indexOf(null);
-  if(i<0){ const t=$("#antTray"); if(t){ t.style.transform="translateX(4px)"; setTimeout(()=>t.style.transform="translateX(-4px)",80); setTimeout(()=>t.style.transform="",160); } return; }
-  const b=st.lanes[l].shift(); if(!b) return;
-  st.slots[i]=b; st.moves++; antsTray(); antsLanes();
-}
-function antsEatCell(y,x,slot){
-  const el=document.getElementById(`ac-${y}-${x}`); if(!el) return;
-  const tray=$("#antTray"), from=tray&&tray.children[slot];
-  const pop=()=>{ el.classList.add("eat"); el.textContent="🐜"; setTimeout(()=>{ el.classList.add("gone"); el.textContent=""; },220); };
-  try{
-    if(!from||!from.getBoundingClientRect) throw 0;
-    const R=ants.getBoundingClientRect(), a=from.getBoundingClientRect(), b=el.getBoundingClientRect();
-    if(!b.width) throw 0;
-    const fly=document.createElement("span"); fly.className="antfly"; fly.textContent="🐜";
-    fly.style.left=(a.left-R.left+a.width/2-8)+"px"; fly.style.top=(a.top-R.top+ants.scrollTop+a.height/2-8)+"px";
-    ants.appendChild(fly); void fly.offsetWidth;
-    fly.style.left=(b.left-R.left+b.width/2-8)+"px"; fly.style.top=(b.top-R.top+ants.scrollTop+b.height/2-8)+"px";
-    el.style.opacity=".55";
-    setTimeout(()=>{ fly.remove(); pop(); },380);
-  }catch(_){ pop(); }
+  if(i<0){ const t=$("#antTray"); if(t){ t.style.transform="translateX(4px)"; setTimeout(()=>t.style.transform="translateX(-4px)",80); setTimeout(()=>t.style.transform="",160); } antsSfx("stuck"); return; }
+  const bx=st.lanes[l].shift(); if(!bx) return;
+  st.slots[i]=bx; st.moves++; antsRebalance(st.lanes); antsSfx("place"); antsTray(); antsLanes();
 }
 function antsTick(){
   const st=antsS; if(!st||st.won||st.stuck) return;
+  st.tick++; let bites=0;
   for(let i=0;i<st.slots.length;i++){
-    const b=st.slots[i]; if(!b) continue;
-    const e=antsExposed(st.g).filter(([y,x])=>st.g[y][x]===b.c);
-    if(!e.length){ b.wait=true; continue; }
-    b.wait=false;
-    const [y,x]=e[Math.floor(Math.random()*e.length)];
-    st.g[y][x]=0; b.n--; st.eaten++; antsEatCell(y,x,i);
-    if(b.n<=0) st.slots[i]=null;
-    if(!st.done.includes(b.c) && !st.g.flat().includes(b.c)){ st.done.push(b.c); antsFact(b.c); }
+    const bx=st.slots[i]; if(!bx) continue;
+    let k=0;
+    while(k<st.lv.rate&&bx.n>0){ const j=antsPick(st.b,bx.c); if(j<0) break; const c=antsEat(st.b,j); bx.n--; st.eaten++; st.pend.set(j,c); antsCell(j); antsFlight(i,j,k); k++; }
+    bx.wait=(bx.n>0&&k===0);
+    if(k>0&&bites<3){ antsSfx("bite",bites*0.08); bites++; }
+    if(bx.n<=0){ st.slots[i]=null; antsSfx("pop",0.2); }
+    if(!st.done.includes(bx.c)&&st.b.cnt[bx.c]===0){ st.done.push(bx.c); antsFact(bx.c); }
   }
   antsTray();
-  const left=$("#antLeft"); if(left) left.textContent=st.total-st.eaten;
-  if(st.eaten>=st.total){ antsWin(); return; }
-  if(st.slots.every(b=>b) && st.slots.every(b=>b.wait)) antsStuck();
+  const left=$("#antLeft"); if(left) left.textContent=st.b.left;
+  if(st.b.left<=0){ antsWin(); return; }
+  if(st.slots.every(x=>x)&&st.slots.every(x=>x.wait)) antsStuck();
 }
-function antsFact(c){
-  const st=antsS, f=st.lv.facts[c-1]; if(!f) return;
-  const out=$("#antsOut"); if(!out) return;
-  const div=document.createElement("div");
-  div.className="voteres good antfact";
-  div.innerHTML=`<b>${f.e} צבע ${st.done.length}/${st.lv.facts.length} נגמר — עובדה:</b> ${f.t} ${f.chips.map(([pg,k,l])=>`<button class='dlchip${pg==="core"?" gold":""}' data-pg='${pg}' data-k='${k}'>${l}</button>`).join(" ")}`;
-  out.prepend(div);
-  div.querySelectorAll(".dlchip").forEach(b=>b.onclick=(e)=>{ e.stopPropagation(); deepOpen(b.dataset.pg,b.dataset.k); });
-  const fc=$("#antFacts"); if(fc) fc.textContent=st.done.length;
-  /* טוסט מעל הלוח — שלא יפספסו */
+function antsToast(html,ms){
   ants.querySelectorAll(".anttoast").forEach(t=>t.remove());
-  const toast=document.createElement("div"); toast.className="anttoast";
-  toast.innerHTML=`<div><b>${f.e} עובדה ${st.done.length}/4</b> · ${f.t}</div><div style="display:flex;gap:4px;flex-wrap:wrap;align-items:center;margin-top:4px">${f.chips.map(([pg,k,l])=>`<button class='dlchip${pg==="core"?" gold":""}' data-pg='${pg}' data-k='${k}'>${l}</button>`).join("")}<button class="linkbtn" style="padding:0 6px;margin-right:auto">✕</button></div>`;
-  toast.style.top=(ants.scrollTop+6)+"px";
+  const toast=document.createElement("div"); toast.className="anttoast"; toast.style.top=(ants.scrollTop+6)+"px"; toast.innerHTML=html;
   ants.appendChild(toast);
   toast.querySelectorAll(".dlchip").forEach(b=>b.onclick=(e)=>{ e.stopPropagation(); deepOpen(b.dataset.pg,b.dataset.k); });
-  toast.querySelector(".linkbtn").onclick=()=>toast.remove();
-  setTimeout(()=>{ if(toast.parentNode) toast.remove(); },9000);
+  const x=toast.querySelector(".antx"); if(x) x.onclick=()=>toast.remove();
+  setTimeout(()=>{ if(toast.parentNode) toast.remove(); },ms||9000);
+  return toast;
+}
+function antsFact(c){
+  const st=antsS, out=$("#antsOut"); if(!out) return;
+  if(c===5){ antsSfx("fact"); antsToast(`<div>💡 <b>הלבן נגמר — טיפ:</b> ${st.lv.tip}</div><div style="text-align:left"><button class="linkbtn antx" style="padding:0 6px">✕</button></div>`,8000); return; }
+  const f=st.lv.facts[c-1]; if(!f) return;
+  const n=st.done.filter(x=>x!==5).length;
+  const chips=f.chips.map(([pg,k,l])=>`<button class='dlchip${pg==="core"?" gold":""}' data-pg='${pg}' data-k='${k}'>${l}</button>`).join(" ");
+  const div=document.createElement("div"); div.className="voteres good antfact";
+  div.innerHTML=`<b>${f.e} צבע ${n}/4 נגמר — עובדה:</b> ${f.t} ${chips}`;
+  out.prepend(div);
+  div.querySelectorAll(".dlchip").forEach(b=>b.onclick=(e)=>{ e.stopPropagation(); deepOpen(b.dataset.pg,b.dataset.k); });
+  const fc=$("#antFacts"); if(fc) fc.textContent=n;
+  antsSfx("fact");
+  antsToast(`<div><b>${f.e} עובדה ${n}/4</b> · ${f.t}</div><div style="display:flex;gap:4px;flex-wrap:wrap;align-items:center;margin-top:4px">${chips}<button class="linkbtn antx" style="padding:0 6px;margin-right:auto">✕</button></div>`,9000);
 }
 function antsHint(){
   const st=antsS; if(!st||st.won||st.stuck) return;
-  const ex=antsExposed(st.g), cols=new Set(ex.map(([y,x])=>st.g[y][x]));
   let n=0;
-  ants.querySelectorAll(".antbox[data-l]").forEach(b=>{ const f=st.lanes[+b.dataset.l][0]; if(f&&cols.has(f.c)&&st.slots.includes(null)){ b.classList.add("hint"); n++; setTimeout(()=>b.classList.remove("hint"),2000); } });
-  if(!n){ const eating=st.slots.some(b=>b&&!b.wait);
-    ants.querySelectorAll(".anttoast").forEach(t=>t.remove());
-    const toast=document.createElement("div"); toast.className="anttoast"; toast.style.top=(ants.scrollTop+6)+"px";
-    toast.innerHTML=eating?"💡 אף קופסה בחזית לא יכולה לאכול עכשיו — אבל הנמלים בתאים עובדות. חכו שיסיימו ויחשפו צבע חדש.":"💡 כל הקופסאות בחזית הן בצבע מכוסה. אם יש תא פנוי — שחררו אחת (היא תחכה ⏳) כדי להגיע לקופסה שמאחוריה.";
-    ants.appendChild(toast); setTimeout(()=>{ if(toast.parentNode) toast.remove(); },5000); }
+  ants.querySelectorAll(".antbox[data-l]").forEach(b=>{ const f=st.lanes[+b.dataset.l][0]; if(f&&st.b.lists[f.c].length&&st.slots.includes(null)){ b.classList.add("hint"); n++; setTimeout(()=>b.classList.remove("hint"),2000); } });
+  if(!n){ const eating=st.slots.some(bx=>bx&&!bx.wait);
+    antsToast(eating?"💡 אף קופסה בחזית לא יכולה לאכול עכשיו — אבל הנמלים בתאים עובדות. חכו שיסיימו ויחשפו צבע חדש.":(st.slots.includes(null)?"💡 כל הקופסאות בחזית הן בצבע מכוסה. שחררו אחת (היא תחכה ⏳) כדי להגיע לקופסה שמאחוריה — אבל השאירו תא פנוי.":"💡 כל התאים תפוסים. אם כולם מחכים — השלב אבוד."),5000); }
 }
 function antsStuck(){
-  const st=antsS; st.stuck=true; antsStop();
+  const st=antsS; st.stuck=true; antsStop(); antsSfx("stuck");
   const out=$("#antsOut");
-  out.innerHTML=`<div class="antover"><div style="font-size:36px">🐜💤</div><h3 style="font-family:'Secular One';font-size:19px;margin:6px 0">הנמלים נתקעו</h3><p style="font-size:13px;margin:0 0 8px">כל התאים תפוסים בקופסאות שהצבע שלהן עדיין מכוסה. <b>טיפ:</b> שחררו קודם צבעים שנמצאים בשוליים של התמונה, והשאירו תא אחד פנוי לקופסה שתפתח את השכבה הבאה.</p>
+  out.innerHTML=`<div class="antover"><div style="font-size:36px">🐜💤</div><h3 style="font-family:'Secular One';font-size:19px;margin:6px 0">הנמלים נתקעו — השלב אבוד</h3><p style="font-size:13px;margin:0 0 8px">כל ${st.lv.slots} התאים תפוסים בקופסאות שהצבע שלהן עדיין מכוסה. נאכלו ${st.eaten} מתוך ${st.total}. <b>טיפ:</b> שחררו קודם צבעים שנמצאים בשוליים של התמונה, תכננו לפי הקופסאות שבתור, והשאירו תא אחד פנוי לקופסה שתפתח את השכבה הבאה.</p>
     <div class="row2" style="gap:7px"><button class="btn backbtn" id="antRetry" style="margin:0">🔁 אותה תמונה, מההתחלה</button><button class="btn btn-again" id="antSkip" style="margin:0">⏭ לשלב הבא</button></div></div>`+out.innerHTML;
   ants.scrollTop=ants.scrollHeight;
   $("#antRetry").onclick=()=>startAnts(st.li);
   $("#antSkip").onclick=()=>startAnts((st.li+1)%ANTS_LV.length);
 }
 function antsWin(){
-  const st=antsS, lv=st.lv; st.won=true; antsStop();
+  const st=antsS, lv=st.lv; st.won=true; antsStop(); antsSfx("win");
+  /* השאר את הציור רץ עוד רגע כדי שהנמלים האחרונות ינחתו */
+  const fin=()=>{ if(antsS===st&&st.flights.length){ antsDrawOnce(); requestAnimationFrame(fin); } }; fin();
   const last=st.li===ANTS_LV.length-1;
   const out=$("#antsOut");
   const facts=lv.facts.map(f=>`<li>${f.e} ${f.t} ${f.chips.map(([pg,k,l])=>`<button class='dlchip${pg==="core"?" gold":""}' data-pg='${pg}' data-k='${k}'>${l}</button>`).join(" ")}</li>`).join("");
-  out.innerHTML=`<div class="rescard" style="text-align:center"><div style="font-size:44px">${lv.e}</div><h3 style="font-family:'Secular One';font-size:21px;margin:4px 0">${lv.name} — נאכל כולו!</h3>
+  out.innerHTML=`<div class="rescard" style="text-align:center"><div style="font-size:44px">${lv.e}</div><h3 style="font-family:'Secular One';font-size:21px;margin:4px 0">${lv.name} — נאכל כולו! ${"⭐".repeat(lv.stars)}</h3>
     <p style="margin:0;font-size:13px">${st.total} פיקסלים · ${st.nBoxes} קופסאות · ${st.moves} לחיצות</p>
     ${lv.tip?`<p style="margin:0;font-size:12.5px;color:var(--muted)">💡 ${lv.tip}</p>`:""}
     <div style="text-align:right"><b style="font-size:13px">4 העובדות של ${lv.topic}:</b><ul style="margin:4px 0 0;padding-right:18px;font-size:12.5px;line-height:1.6">${facts}</ul></div>
     ${last?`<p style="margin:4px 0 0;font-size:13px"><b>🏆 סיימתם את כל ${ANTS_LV.length} התמונות — ${ANTS_LV.length*4} עובדות.</b> עכשיו הדבר הכי חשוב: <button class='dlchip gold' data-pg='five' data-k=''>⏱️ 5 דקות לפני הקלפי</button></p>`:""}
-    <div class="row2" style="gap:7px;margin-top:4px">${last?`<button class="btn backbtn" id="antNext" style="margin:0;flex:1">🔁 מההתחלה</button>`:`<button class="btn backbtn" id="antNext" style="margin:0;flex:1">⏭ התמונה הבאה: ${ANTS_LV[st.li+1].e}</button>`}<button class="btn btn-again" id="antShare" style="margin:0;flex:1">📤 שלחו למישהו שאוהב פאזלים</button></div></div>`;
+    <div class="row2" style="gap:7px;margin-top:4px">${last?`<button class="btn backbtn" id="antNext" style="margin:0;flex:1">🔁 מההתחלה</button>`:`<button class="btn backbtn" id="antNext" style="margin:0;flex:1">⏭ התמונה הבאה: ${ANTS_LV[st.li+1].e} ${"⭐".repeat(ANTS_LV[st.li+1].stars)}</button>`}<button class="btn btn-again" id="antShare" style="margin:0;flex:1">📤 שלחו למישהו שאוהב פאזלים</button></div></div>`;
   $("#antNext").onclick=()=>startAnts(last?0:st.li+1);
-  $("#antShare").onclick=async(e)=>{ const txt="🐜 נמלים בקלפי — פאזל פיקסלים רגוע, בלי שעון, שמלמד עובדה עם כל צבע: https://petek-bakalpi.github.io/ (משחקים ← נמלים בקלפי)"; if(navigator.share){ navigator.share({text:txt}).catch(()=>{}); } else { try{ await navigator.clipboard.writeText(txt); e.target.textContent="הועתק! ✅"; }catch(_){ e.target.textContent="לא הצלחנו להעתיק"; } } };
+  $("#antShare").onclick=async(e)=>{ const txt="🐜 נמלים בקלפי — פאזל פיקסלים שמלמד עובדה עם כל צבע. 8 תמונות, 32 עובדות: https://petek-bakalpi.github.io/ (משחקים ← נמלים בקלפי)"; if(navigator.share){ navigator.share({text:txt}).catch(()=>{}); } else { try{ await navigator.clipboard.writeText(txt); e.target.textContent="הועתק! ✅"; }catch(_){ e.target.textContent="לא הצלחנו להעתיק"; } } };
   out.querySelectorAll(".dlchip").forEach(b=>b.onclick=(e)=>{ e.stopPropagation(); deepOpen(b.dataset.pg,b.dataset.k); });
   ants.scrollTop=ants.scrollHeight;
 }
+function antsDrawOnce(){ const st=antsS; if(!st||!st.ctx) return; const now=performance.now(); for(let k=st.flights.length-1;k>=0;k--){ const f=st.flights[k]; if(now>=f.t1){ st.flights.splice(k,1); st.pend.delete(f.i); antsCell(f.i); } } const ctx=st.ctx; ctx.clearRect(0,0,st.pw,st.ph); ctx.drawImage(st.off,0,0,st.pw,st.ph); ctx.font=`${Math.max(11,Math.round(st.cell*2.2))}px serif`; ctx.textAlign="center"; ctx.textBaseline="middle"; for(const f of st.flights){ const u=Math.min(1,(now-f.t0)/(f.t1-f.t0)); ctx.fillText("🐜",f.x0+(f.x1-f.x0)*u,f.y0+(f.y1-f.y0)*u); } }
 
 /* ================= THE FEED (infinite) ================= */
 const FD_GRAD=["linear-gradient(160deg,#1E3A8A,#0F1530)","linear-gradient(160deg,#7C2D3E,#1a0f16)","linear-gradient(160deg,#1F6F5F,#0F1530)","linear-gradient(160deg,#5B3A9E,#0F1530)","linear-gradient(160deg,#8A5A0B,#1a1305)","linear-gradient(160deg,#2B5FD9,#0b1d4d)","linear-gradient(160deg,#B0423A,#1f0b0b)"];
@@ -4789,7 +4876,7 @@ function fdBuildPool(){
   return pool.sort(()=>Math.random()-.5);
 }
 const FD_GAMES=[
- {id:"gAnts",e:"🐜",t:"הנמלים אוכלות את התמונה. אתם אוספים עובדות.",s:"נמלים בקלפי — פאזל פיקסלים רגוע, בלי שעון, לכל גיל. 5 תמונות, 20 עובדות."},
+ {id:"gAnts",e:"🐜",t:"הנמלים אוכלות את התמונה. אתם אוספים עובדות.",s:"נמלים בקלפי — פאזל פיקסלים עם תאים מוגבלים: תכננו, או תיתקעו. 8 תמונות, 32 עובדות."},
  {id:"gUncle",e:"🧔",t:"הדוד שולח ספינים בקבוצה?",s:"התאמנו עליו: סימולטור שיחת שישי. 6 סבבים, מד שכנוע."},
  {id:"gWv",e:"🗑️",t:"10,000 קולות ביד שלכם. למי?",s:"מעבדת הקול השרוף — תראו בעיניים לאן זורם קול למפלגה שלא עוברת."},
  {id:"gMemo",e:"🃏",t:"6 זוגות. כמה מהלכים?",s:"ממו הפנקס: חברו שר לכישלון שלו."},
