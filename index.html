@@ -465,6 +465,13 @@
 .ptbl tr.tot td{border-top:2px solid rgba(139,147,184,.4);font-weight:800}
 .psrc{font-size:12px;line-height:1.7}
 .psrc li{margin-bottom:4px}
+.btbl{min-width:0}
+.btbl td:first-child{white-space:normal;font-size:12px;max-width:150px;position:static;box-shadow:none}
+.btbl th:first-child{position:static;box-shadow:none}
+.bnote{font-weight:400;font-size:10.5px;color:var(--muted);margin-top:2px}
+.bbar{position:relative;height:18px;margin:2px 0;background:rgba(255,255,255,.05);border-radius:6px;overflow:hidden;min-width:120px}
+.bbar .bb{position:absolute;right:0;top:0;bottom:0;background:rgba(61,123,255,.45);border-radius:6px}
+.bbar .bt{position:relative;font-size:11px;line-height:18px;padding:0 6px;color:var(--paper)}
 .antboard{display:flex;justify-content:center;background:rgba(0,0,0,.28);padding:5px;border-radius:14px;border:1px solid rgba(139,147,184,.22);margin:2px auto;width:100%;max-width:330px;box-sizing:border-box}
 .antboard canvas{display:block;border-radius:8px}
 .antlv{display:flex;justify-content:center;gap:3px;flex-wrap:wrap;margin:0}
@@ -911,8 +918,8 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="3.30";
-const APP_UPDATED="24.10.2026";
+const APP_VERSION="3.30.1";
+const APP_UPDATED="25.10.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
 const BREAKING={txt:"טראמפ מתערב: ״אם ייבחר מנהיג אחר — אמריקה תצטרך לסיים את העבודה בעצמה״ · איזנקוט: ״רק אזרחי ישראל יקבעו מי יהיה ראש הממשלה״ · למחרת בסקר: 45% מול 33% ⚡", key:"טראמפ מתערב"};
@@ -4213,6 +4220,20 @@ const POLLS=[
  {id:"c14",src:"ערוץ 14",inst:"NEXT DATA (שלמה פילבר)",dt:"22.10",n:"7,936",url:"https://www.emess.co.il/radio/1949481",out:true,
   s:{yashar:20,likud:30,byachad:11,dem:8,joint:8,beit:5,shas:9,utj:8,otzma:8,rz:7,raam:6,milu:0,amcha:0},below:"המילואימניקים 1.9%, עמך ישראל 1.5%, נעם 0.6%, הציבור החרדי 0.3%",und:"התאמה לרה״מ: נתניהו 54%, איזנקוט 32%, בנט 10%, ליברמן 4%"},
 ];
+/* 🎲 שוקי הימורים — לא סקר, לא מייצג; מעניין */
+const BETS={dt:"25.10.2026",src:"https://polymarket.com/politics/israel-election",rows:[
+ {q:"ראש הממשלה הבא (אחרי הבחירות)",vol:"$52.4M",o:[["איזנקוט",52],["נתניהו",28],["בנט",14],["ליברמן",3],["אוחנה",1],["ישראל כ״ץ",1]],trend:"19.10: איזנקוט 49% · נתניהו 31% · בנט 16%"},
+ {q:"מי יקבל את המנדט הראשון להרכבת ממשלה",vol:"$26K",o:[["איזנקוט",67],["נתניהו",32]]},
+ {q:"המפלגה הגדולה ביותר",vol:"$2M",o:[["ישר!",72],["הליכוד",29]]},
+ {q:"מקום שני",vol:"$56K",o:[["הליכוד",64],["ישר!",29]]},
+ {q:"מקום שלישי",vol:"$120K",o:[["ביחד",86],["עוצמה יהודית",4]]},
+ {q:"איזה גוש יקבל יותר מנדטים",vol:"$41K",o:[["גוש נתניהו",43],["האופוזיציה",57]],note:"מחושב: 100 פחות ״ביבי״"},
+ {q:"האם גוש כלשהו ישיג רוב (61)?",vol:"$32K",o:[["כן",17],["לא",83]]},
+ {q:"הליכוד — כמה מנדטים",vol:"$1M",o:[["20–24",47],["פחות מ־20",24]]},
+ {q:"ביחד — כמה מנדטים",vol:"$30K",o:[["14–16",53],["11–13",17]]},
+ {q:"אחוז הצבעה",vol:"$19K",o:[["74%+",37],["72–74%",33]]},
+ {q:"נתניהו מחוץ לתפקיד עד סוף 2026",vol:"$125M",o:[["כן",40],["לא",60]],note:"השוק הגדול ביותר — ולא על הבחירות עצמן אלא על מי יושב בלשכה ב־31.12"},
+]};
 function pollBlocs(p){ const b={chg:0,bibi:0,arab:0,other:0}; POLL_P.forEach(([k,,c])=>b[c]+=p.s[k]||0); return b; }
 function renderPolls(){
   const srch=q=>`<a class="srch" target="_blank" rel="noopener" href="https://www.google.com/search?q=${encodeURIComponent(q)}">🔎 בדקו בעצמכם</a>`;
@@ -4247,6 +4268,10 @@ function renderPolls(){
     <p style="margin:8px 0 0;font-size:13px"><b>מה זה אומר:</b> וינטר (עמך ישראל) מתחת לחסימה ב־8 מתוך 10 — 2.5%–3.1% של קולות הימין שעלולים להישרף. הנדל–זליכה עוברים ב־6 סקרים (4 מנדטים) ונופלים ב־4 (2.4%–3.0%) — זה הסכין הכי חד של הבחירות האלה: 4 מנדטים שקובעים אם גוש השינוי מתקרב ל־60 או נשאר ב־52. ארבע המפלגות של המחנה הדמוקרטי — כולן עוברות בכל הסקרים. <button class='dlchip' data-pg='votes' data-k=''>🗑️ הקול השרוף</button> <button class='dlchip' data-pg='facts' data-k='גנץ פרש'>🚪 גנץ פרש</button></p></div>
     <div class="ledsec">🤔 המתלבטים — ומי קובע</div>
     <div class="infocard" style="margin-bottom:10px"><p style="margin:0;font-size:13px">ישראל היום: <b>7%</b> טרם החליטו. זמן ישראל: <b>13%</b> לא סגורים (8.4% בתוך הגוש, 2.4% בין הגושים), ו־25.6% כבר שינו דעתם במהלך הקמפיין. 7%–13% זה 8–15 מנדטים שעוד באוויר — יותר מההפרש בין הגושים בכל סקר. <b>דעתנו:</b> הסקרים מודדים את מי שעונה לסוקר, לא את מי שיוצא מהבית ביום שלישי. בבחירות שבהן ההפרש הוא 2–6 מנדטים, הצבעה אחת של אדם שלא תכנן להצביע שווה יותר מכל סקר. ${srch("אחוז הצבעה בחירות 2026 מתלבטים")}</p></div>
+    <div class="ledsec">🎲 ההימורים — לא סקר, לא מייצג. מעניין.</div>
+    <p style="color:var(--muted);font-size:11.5px;margin:2px 2px 6px">שוקי ניבוי (Polymarket) — מה שסוחרים, רובם לא ישראלים, מוכנים לשים כסף עליו. זה לא מדגם, הנפחים בשווקים הקטנים זעירים, הימורים כאלה אינם חוקיים בישראל, ואף אחד כאן לא ממליץ. אבל זה מראה לאן הכסף זז. תמונת מצב ${BETS.dt}, מתעדכן רק בפריסה.</p>
+    <div class="ptwrap"><table class="ptbl btbl"><thead><tr><th>השוק</th><th>הסיכויים</th><th>נפח</th></tr></thead><tbody>${BETS.rows.map(r=>`<tr><td>${r.q}${r.note?`<div class="bnote">${r.note}</div>`:""}${r.trend?`<div class="bnote">📈 ${r.trend}</div>`:""}</td><td style="text-align:right;white-space:normal">${r.o.map(([n,v])=>`<div class="bbar"><span class="bb" style="width:${v}%"></span><span class="bt">${n} <b>${v}%</b></span></div>`).join("")}</td><td>${r.vol}</td></tr>`).join("")}</tbody></table></div>
+    <div class="infocard" style="margin-bottom:10px"><p style="margin:0;font-size:13px"><b>מה מעניין כאן:</b> השוק נותן לאיזנקוט 52% להיות ראש הממשלה — אבל רק 17% שגוש כלשהו יגיע ל־61. כלומר: המהמרים מאמינים לסקרים (תיקו) יותר משהם מאמינים לקמפיינים. ובשוק הגדול באמת — $125 מיליון על ״נתניהו מחוץ לתפקיד עד סוף השנה״ — הכסף אומר 60% שהוא עדיין שם ב־31 בדצמבר, גם אם יפסיד. זה הפער בין ״לנצח בבחירות״ ל״להחליף שלטון״ — ולמה הקול השרוף והמתלבטים חשובים יותר מכל סקר. <button class='dlchip' data-pg='votes' data-k=''>🗑️ הקול השרוף</button> <button class='dlchip' data-pg='core' data-k='מדינה כבת ערובה'>🧠 בחירות בלי סוף</button> <a class="srch" style="margin:0" target="_blank" rel="noopener" href="${BETS.src}">Polymarket ↗</a> · <a class="srch" style="margin:0" target="_blank" rel="noopener" href="https://kalshi.com/markets/kxisrfirstmandate/who-will-get-israels-first-mandate-to-form-a-government/kxisrfirstmandate-27">Kalshi (מנדט ראשון: איזנקוט 67%, נפח $9K) ↗</a></p></div>
     <div class="ledsec">📚 המקורות</div>
     <div class="infocard" style="margin-bottom:10px"><ul class="psrc" style="margin:0;padding-right:16px">${srcs}</ul><p style="margin:8px 0 0;font-size:11.5px;color:var(--muted)">ריכוזים: <a class="srch" style="margin:0" target="_blank" rel="noopener" href="https://www.ynet.co.il/news/elections2026/article/hy500sxt2mx">ynet ↗</a> · <a class="srch" style="margin:0" target="_blank" rel="noopener" href="https://www.haaretz.co.il/news/elections/2026-10-23/ty-article/000001a1-69ad-d29a-a1a5-ebaf49c50000">הארץ ↗</a> · <a class="srch" style="margin:0" target="_blank" rel="noopener" href="https://www.davar1.co.il/703301/">דבר ↗</a>. ערוץ 16: הגושים חושבו מהמפלגות (הכתבה שפרסמה אותם סיכמה אחרת). וואלה: סקר מ־19.10 — האחרון שלהם. מצאתם טעות או סקר שפספסנו? שלחו קישור.</p></div>
     <div style="display:flex;gap:8px;margin:12px 0 4px"><button class="btn btn-go" id="pollsShare" style="margin:0;flex:1">📤 שלחו את הטבלה</button></div>
@@ -4278,7 +4303,7 @@ function tsBuild(){
     const re=/<b>(\d+) (?:🔒 )?· ([^<]+)<\/b> — ([^<]*)/g; let m; const html=bibi.innerHTML;
     while((m=re.exec(html))){ ix.push({e:"🔴",pg:"bibi",key:"|"+m[2].trim(),label:m[2].trim()+" · הליכוד, מקום "+m[1],sub:"רשימת הליכוד",text:m[2]+" "+m[3]}); }
   }catch(_){}
-  [["🤖","poison","מכונת הרעל — מעגל הכביסה, שופרות, בוטים, הסתה, תדרוכים"],["🗑️","votes","הקול השרוף, אחוז החסימה, באדר עופר, הגוש שבין הגושים, גנץ, הנדל, זליכה, מנדטים"],["🧭","cmp","המצפן הישראלי — מיקום המפלגות על הצירים"],["📊","polls","סקרים סקר מנדטים גושים ממוצע אחוז החסימה חדשות 12 13 כאן מעריב ישראל היום i24 ערוץ 14 ערוץ 16 וואלה זמן ישראל קנטאר מדגם לזר דיירקט פולס NEXT DATA פילבר מתלבטים"]].forEach(([e,pg,t])=>ix.push({e,pg,key:"",label:tsPageName[pg],text:t}));
+  [["🤖","poison","מכונת הרעל — מעגל הכביסה, שופרות, בוטים, הסתה, תדרוכים"],["🗑️","votes","הקול השרוף, אחוז החסימה, באדר עופר, הגוש שבין הגושים, גנץ, הנדל, זליכה, מנדטים"],["🧭","cmp","המצפן הישראלי — מיקום המפלגות על הצירים"],["📊","polls","סקרים סקר מנדטים גושים ממוצע אחוז החסימה הימורים פולימרקט Polymarket Kalshi שוק ניבוי סיכויים חדשות 12 13 כאן מעריב ישראל היום i24 ערוץ 14 ערוץ 16 וואלה זמן ישראל קנטאר מדגם לזר דיירקט פולס NEXT DATA פילבר מתלבטים"]].forEach(([e,pg,t])=>ix.push({e,pg,key:"",label:tsPageName[pg],text:t}));
   ix.forEach(x=>{ x.n=tsNorm(x.text); x.nl=tsNorm(x.label); x.sub=x.sub||tsPageName[x.pg]; });
   return ix;
 }
