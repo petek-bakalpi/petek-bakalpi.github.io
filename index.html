@@ -465,6 +465,20 @@
 .ptbl tr.tot td{border-top:2px solid rgba(139,147,184,.4);font-weight:800}
 .psrc{font-size:12px;line-height:1.7}
 .psrc li{margin-bottom:4px}
+.nxcard{background:var(--ink2);border:1px solid rgba(139,147,184,.22);border-radius:16px;padding:10px 12px;margin-bottom:10px}
+.nxh{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;margin-bottom:2px}
+.nxh b{font-size:15px}
+.nxlegend{font-size:11.5px;color:var(--muted);margin-bottom:6px}
+.nxrow{display:grid;grid-template-columns:28px 1fr auto;gap:8px;align-items:center;padding:6px 4px;border-bottom:1px solid rgba(139,147,184,.12);font-size:12.5px}
+.nxrow.avgline{border-bottom:2px dashed var(--gold)}
+.nxrow .nxp{font-family:'Secular One';font-size:15px;text-align:center;color:var(--muted)}
+.nxrow.edge .nxp{color:var(--gold)}.nxrow.out .nxp{color:var(--coral)}.nxrow.safe .nxp{color:var(--mint)}
+.nxrow .nxn{display:flex;flex-direction:column;min-width:0}
+.nxrow .nxn small{color:var(--muted);font-size:11px;line-height:1.35;white-space:normal}
+.nxname{background:none;border:none;color:var(--paper);font-family:'Heebo';font-weight:800;font-size:13.5px;text-align:right;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(139,147,184,.4)}
+.nxrow .nxs{font-size:10.5px;color:var(--muted);text-align:left;max-width:110px;line-height:1.3}
+.nxrow.edge .nxs b{color:var(--gold)}.nxrow.out .nxs b{color:var(--coral)}
+.nxfoot{margin-top:6px}
 .btbl{min-width:0}
 .btbl td:first-child{white-space:normal;font-size:12px;max-width:150px;position:static;box-shadow:none}
 .btbl th:first-child{position:static;box-shadow:none}
@@ -830,6 +844,7 @@
   <section class="screen infopage" id="feed"></section>
   <section class="screen infopage" id="five"></section>
   <section class="screen infopage" id="polls"></section>
+  <section class="screen infopage" id="next"></section>
 
   <!-- MEMO -->
   <section class="screen infopage" id="memo"></section>
@@ -888,6 +903,7 @@
     <div class="ledsec">🚨 חם עכשיו</div>
     <button class="menucard" id="lFive"><span class="me">⏱️</span><span><div class="mt">5 דקות לפני הקלפי</div><div class="md">10 העובדות המכריעות של הקמפיין — בלי משחקים, כל אחת עם 🔎 ועם הדרך לעומק</div></span><span class="mtime">5 דק'</span></button>
     <button class="menucard" id="lPolls"><span class="me">📊</span><span><div class="mt">כל הסקרים האחרונים <span class="newtag inl">חדש</span></div><div class="md">10 הסקרים הסופיים — האחרון של כל גוף סוקר (19–23.10) — טבלה אחת, גושים, ממוצע, מי על החסימה ומה זה אומר</div></span><span class="mtime">4 דק'</span></button>
+    <button class="menucard" id="lNext"><span class="me">🎯</span><span><div class="mt">מי הבא בתור? <span class="newtag inl">חדש</span></div><div class="md">המבחן של המתלבט: איפה הקול שלכם מכריע מנדט — מי על הקו ומי הבא בתור בכל מפלגה במחנה, לפי 8 הסקרים הסופיים</div></span><span class="mtime">2 דק'</span></button>
     <button class="menucard" id="lFacts"><span class="me">🔍</span><span><div class="mt">מחלקת אקטואליה — בדיקת מציאות</div><div class="md">האשמות, ספינים וציטוטים מסולפים — מול מה שנאמר באמת</div></span></button>
     <button class="menucard" id="lHot"><span class="me">📡</span><span><div class="mt">מחלקת הדיגיטל</div><div class="md">בחירת העורך: ציוצים, פודקאסטים וסרטונים — הנקודות החכמות והחשובות מהרשת</div></span><span class="mtime">3 דק'</span></button>
     <button class="menucard" id="lPoison"><span class="me">🤖</span><span><div class="mt">מה זו ״מכונת הרעל״?</div><div class="md">איך עובדת תעשיית ההסתה המתואמת — ואיך מזהים אותה בשנייה</div></span></button>
@@ -918,7 +934,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="3.31";
+const APP_VERSION="3.32";
 const APP_UPDATED="26.10.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
@@ -1108,7 +1124,7 @@ function startGame(m){
 $("#startQuick").onclick=()=>startGame("quick");
 $("#startDeep").onclick=()=>startGame("deep");
 
-function show(sc){[intro,quiz,result,bibi,arab,who,coal,core,cmp,led,votes,gmenu,lmenu,quote,dict,facts,poison,budget,gov,hl,mdl,race,idle,wv,hot,uncle,memo,feed,five,polls,ants].forEach(x=>x.classList.remove("on"));sc.classList.add("on");sc.scrollTop=0; if(sc!==ants&&typeof antsStop==="function") antsStop();
+function show(sc){[intro,quiz,result,bibi,arab,who,coal,core,cmp,led,votes,gmenu,lmenu,quote,dict,facts,poison,budget,gov,hl,mdl,race,idle,wv,hot,uncle,memo,feed,five,polls,ants,next].forEach(x=>x.classList.remove("on"));sc.classList.add("on");sc.scrollTop=0; if(sc!==ants&&typeof antsStop==="function") antsStop();
   if(sc!==arab){const m=$("#arabMore"),b=$("#proArab");if(m){m.classList.remove("on");}if(b){b.style.display="";}}}
 $("#toCore").onclick=()=>{renderCore();show(core);};
 $("#toCmp").onclick=()=>{renderCompass();show(cmp);};
@@ -3726,6 +3742,7 @@ function deepOpen(pg,key){
   else if(pg==="poison"){ renderPoison(); show(poison); return; }
   else if(pg==="votes"){ renderVotes(); show(votes); return; }
   else if(pg==="polls"){ renderPolls(); show(polls); return; }
+  else if(pg==="next"){ renderNext(); show(next); return; }
   else if(pg==="five"){ renderFive(); show(five); return; }
   else if(pg==="cmp"){ renderCompass(); show(cmp); return; }
   else if(pg==="dict"||pg==="bibi"){
@@ -4279,7 +4296,7 @@ function renderPolls(){
     <div class="infocard" style="margin-bottom:10px"><p style="margin:0 0 6px;font-size:13px"><b>ערוץ 14 (NEXT DATA):</b> ליכוד 30, גוש ״ימין״ 62. <b>i24NEWS (דיירקט פולס):</b> ליכוד 26, קואליציה 59. כל שמונת הסקרים האחרים: ליכוד 17–21. הפער — 5 עד 13 מנדטים לליכוד — גדול בהרבה מכל טעות דגימה. <b>עובדות:</b> את סקר ערוץ 14 מנתח שלמה פילבר, לשעבר מנכ״ל משרד התקשורת מטעם נתניהו ועד המדינה בתיק 4000; ״מדגם של 7,936״ נשמע מרשים, אבל מדגם אינטרנטי שאינו אקראי לא מתקן את עצמו בגודל — טעות הדגימה המוצהרת לא מכסה הטיית מדגם. <b>דעתנו:</b> אל תתעלמו מהם, אבל אל תבנו עליהם. מה שחשוב: <u>גם לפי הסקרים האלה</u> לנתניהו אין 61 בלי וינטר על החסימה (i24) או בלי ספירה שונה (14). ${srch("סקר ערוץ 14 NEXT DATA פילבר ליכוד 30")}</p></div>
     <div class="ledsec">🪓 על אחוז החסימה</div>
     <div class="infocard" style="margin-bottom:10px"><ul class="psrc" style="margin:0;padding-right:16px">${below}</ul>
-    <p style="margin:8px 0 0;font-size:13px"><b>מה זה אומר:</b> וינטר (עמך ישראל) מתחת לחסימה ב־8 מתוך 10 — 2.5%–3.1% של קולות הימין שעלולים להישרף. הנדל–זליכה עוברים ב־6 סקרים (4 מנדטים) ונופלים ב־4 (2.4%–3.0%) — זה הסכין הכי חד של הבחירות האלה: 4 מנדטים שקובעים אם גוש השינוי מתקרב ל־60 או נשאר ב־52. ארבע המפלגות של המחנה הדמוקרטי — כולן עוברות בכל הסקרים. <button class='dlchip' data-pg='votes' data-k=''>🗑️ הקול השרוף</button> <button class='dlchip' data-pg='facts' data-k='גנץ פרש'>🚪 גנץ פרש</button></p></div>
+    <p style="margin:8px 0 0;font-size:13px"><b>מה זה אומר:</b> וינטר (עמך ישראל) מתחת לחסימה ב־8 מתוך 10 — 2.5%–3.1% של קולות הימין שעלולים להישרף. הנדל–זליכה עוברים ב־6 סקרים (4 מנדטים) ונופלים ב־4 (2.4%–3.0%) — זה הסכין הכי חד של הבחירות האלה: 4 מנדטים שקובעים אם גוש השינוי מתקרב ל־60 או נשאר ב־52. ארבע המפלגות של המחנה הדמוקרטי — כולן עוברות בכל הסקרים. <button class='dlchip' data-pg='votes' data-k=''>🗑️ הקול השרוף</button> <button class='dlchip' data-pg='facts' data-k='גנץ פרש'>🚪 גנץ פרש</button> <button class='dlchip gold' data-pg='next' data-k=''>🎯 מי על הקו בכל מפלגה</button></p></div>
     <div class="ledsec">🤔 המתלבטים — ומי קובע</div>
     <div class="infocard" style="margin-bottom:10px"><p style="margin:0;font-size:13px">ישראל היום: <b>7%</b> טרם החליטו. זמן ישראל: <b>13%</b> לא סגורים (8.4% בתוך הגוש, 2.4% בין הגושים), ו־25.6% כבר שינו דעתם במהלך הקמפיין. 7%–13% זה 8–15 מנדטים שעוד באוויר — יותר מההפרש בין הגושים בכל סקר. <b>דעתנו:</b> הסקרים מודדים את מי שעונה לסוקר, לא את מי שיוצא מהבית ביום שלישי. בבחירות שבהן ההפרש הוא 2–6 מנדטים, הצבעה אחת של אדם שלא תכנן להצביע שווה יותר מכל סקר. ${srch("אחוז הצבעה בחירות 2026 מתלבטים")}</p></div>
     <div class="ledsec">🎲 ההימורים — לא סקר, לא מייצג. מעניין.</div>
@@ -4295,11 +4312,47 @@ function renderPolls(){
   $("#pollsShare").onclick=async(e)=>{ const txt="כל 10 הסקרים האחרונים לפני הבחירות בטבלה אחת — גושים, מפלגות, מי על החסימה: https://petek-bakalpi.github.io/ (תכל'ס ← 📊 כל הסקרים האחרונים)"; if(navigator.share){ navigator.share({text:txt}).catch(()=>{}); } else { try{ await navigator.clipboard.writeText(txt); e.target.textContent="הועתק! ✅"; }catch(_){ e.target.textContent="לא הצלחנו להעתיק"; } } };
 }
 $("#lPolls").onclick=()=>{ lastTab="learn"; renderPolls(); show(polls); };
+/* ===== מי הבא בתור? — מי על הקו בכל מפלגה במחנה ===== */
+const NEXT_EXTRA={yashar:[[24,"שי פישר",""],[25,"ליאן פולק דוד",""],[26,"רועי כהן",""],[27,"זיו רוזן",""]]}; /* מעבר למה שבמילון — לפי הרשימה שהוגשה (מקור ראשון, 9.9.2026) */
+const NEXT_P=[["yashar","ישר!","🟡"],["byachad","ביחד","🔵"],["dem","הדמוקרטים","🔴"],["beit","ישראל ביתנו","🟢"]];
+function nextList(key,label){
+  const d=(typeof DICT_DEM!=="undefined"?DICT_DEM:[]).find(x=>x.n.split(" — ")[0]===label); const out=[];
+  if(d&&d.kn){ const re=/<b>(\d+) · ([^<]+)<\/b>[^—]*— ([^<]*)/g; let m; while((m=re.exec(d.kn))){ out.push([+m[1],m[2].trim(),m[3].replace(/<[^>]*>/g,"").split(/[;.]/)[0].trim()]); } }
+  (NEXT_EXTRA[key]||[]).forEach(x=>{ if(!out.some(o=>o[0]===x[0])) out.push(x); });
+  return {party:d,list:out.sort((a,b)=>a[0]-b[0])};
+}
+function renderNext(){
+  const main=POLLS.filter(p=>!p.out);
+  const f1=x=>(Math.round(x*10)/10).toString().replace(/\.0$/,"");
+  const cards=NEXT_P.map(([key,label,e])=>{
+    const v=main.map(p=>p.s[key]||0), avg=v.reduce((a,b)=>a+b,0)/v.length, lo=Math.min(...v), hi=Math.max(...v), a=Math.round(avg);
+    const {party,list}=nextList(key,label); const pn=party?party.n.split(" — ")[0]:label;
+    const rows=[]; for(let p=Math.max(1,lo-1);p<=hi+3;p++){ const c=list.find(x=>x[0]===p); const inN=v.filter(x=>x>=p).length;
+      const st= p<=lo?["safe","✅ נכנס בכל 8 הסקרים"]: p<=hi?["edge",`⚖️ על הקו — נכנס ב־${inN} מ־8`]: ["out",`⏭ הבא בתור — בחוץ בכל 8`];
+      const grp= p<=a&&p>a-3?(p<=lo?"👀 מהאחרונים הבטוחים":"⚠️ בסיכון"): p>a&&p<=a+3?"🎯 הבא בתור":"";
+      rows.push(`<div class="nxrow ${st[0]}${p===a?" avgline":""}"><span class="nxp">${p}</span><span class="nxn">${c?`<button class='nxname' data-party='${pn}' data-name='${c[1]}'>${c[1]}</button>`:"<i>לא ברשימה שבידינו</i>"}${c&&c[2]?`<small>${c[2]}</small>`:""}</span><span class="nxs">${grp?`<b>${grp}</b><br>`:""}${st[1]}</span></div>`); }
+    return `<div class="nxcard"><div class="nxh"><span>${e} <b>${pn}</b></span><span>ממוצע <b>${f1(avg)}</b> · טווח ${lo}–${hi}</span></div><div class="nxlegend">הקו הממוצע עובר אחרי מקום ${a}. <b>בסיכון:</b> ${a-2}–${a} · <b>הבאים בתור:</b> ${a+1}–${a+3}</div>${rows.join("")}<div class="nxfoot"><button class='dlchip' data-pg='dict' data-k='${pn}|'>📒 ${pn} במילון</button></div></div>`;
+  }).join("");
+  next.innerHTML=`
+    <h2>מי הבא בתור?<br><span class="hl">המבחן של המתלבט 🎯</span></h2>
+    <p style="text-align:center;color:var(--muted);font-size:12px">הקול שלכם לא ״מצטרף למנדט״ — הוא מכריע אחד. הוא שווה הכי הרבה במפלגה שבה מועמד עומד על הקו: קול אחד נוסף למפלגה שבין 8 ל־9 מנדטים הוא ההבדל בין מקום 9 בבית למקום 9 בכנסת. כאן: לפי 8 הסקרים הסופיים (בלי שני החורגים), מי בסיכון ומי הבא בתור בארבע מפלגות המחנה. מנדט ≈ 36 אלף קולות (2022, המכון הישראלי לדמוקרטיה).</p>
+    <div class="infocard" style="margin-bottom:8px"><p style="margin:0;font-size:12.5px"><b>איך לקרוא:</b> ✅ בטוח בכל הסקרים · ⚖️ על הקו — נכנס רק בחלק מהסקרים (זה המקום שהקול שלכם קובע) · ⏭ בחוץ בכל הסקרים — הבא בתור אם המפלגה תפתיע. הקו המקווקו = הממוצע. השמות והתיאורים — מהרשימות הרשמיות (ספטמבר 2026) כפי שבמילון; לחיצה על שם פותחת את הכרטיס. ארבע המפלגות עוברות את החסימה בכל הסקרים — אין כאן קול שרוף, רק קול מכריע.</p></div>
+    ${cards}
+    <div class="infocard" style="margin:6px 0 10px"><p style="margin:0;font-size:13px"><b>דעתנו:</b> זה כלי לבחירה <u>בתוך</u> המחנה, לא במקום הצבעה. מי שעדיין מתלבט בין שתיים — תסתכלו מי עומד על הקו בכל אחת ותשאלו את מי אתם רוצים לראות בכנסת. ואל תשכחו את הגדול מכולם: ההפרש בין הגושים הוא 2–6 מנדטים — <b>כל מפלגה במחנה שמקבלת עוד מנדט מקרבת את 61</b>. <button class='dlchip' data-pg='polls' data-k=''>📊 כל הסקרים</button> <button class='dlchip' data-pg='votes' data-k=''>🗑️ הקול השרוף</button> <button class='dlchip gold' data-pg='cmp' data-k=''>🧭 המצפן — איפה אתם</button></p></div>
+    <div style="display:flex;gap:8px;margin:4px 0"><button class="btn btn-go" id="nextShare" style="margin:0;flex:1">📤 שלחו למתלבט</button></div>
+    <button class="btn backbtn" data-back>⬅ חזרה</button>`;
+  next.querySelector("[data-back]").onclick=()=>goBack();
+  next.querySelectorAll(".dlchip").forEach(b=>b.onclick=(e)=>{ e.stopPropagation(); deepOpen(b.dataset.pg,b.dataset.k); });
+  next.querySelectorAll(".nxname").forEach(b=>b.onclick=()=>deepOpen("dict",b.dataset.party+"|"+b.dataset.name));
+  $("#nextShare").onclick=async(e)=>{ const txt="🎯 מי הבא בתור? — איפה הקול שלכם מכריע מנדט: מי על הקו בכל מפלגה במחנה, לפי 8 הסקרים הסופיים: https://petek-bakalpi.github.io/ (תכל'ס ← מי הבא בתור)"; if(navigator.share){ navigator.share({text:txt}).catch(()=>{}); } else { try{ await navigator.clipboard.writeText(txt); e.target.textContent="הועתק! ✅"; }catch(_){ e.target.textContent="לא הצלחנו להעתיק"; } } };
+}
+$("#lNext").onclick=()=>{ lastTab="learn"; renderNext(); show(next); };
+
 
 
 /* ================= TACHLES SEARCH ================= */
 const tsNorm=t=>(t||"").toString().replace(/<[^>]*>/g," ").replace(/[״"'׳’‘`\-–־—·•,.:;!?()\[\]{}]/g," ").replace(/\s+/g," ").trim().toLowerCase();
-const tsPageName={facts:"מחלקת אקטואליה",led:"פנקס הכישלונות",core:"על מה רבים — נושאי ליבה",dict:"מילון המפלגות",bibi:"גוש נתניהו — רשימת הליכוד",hot:"מחלקת הדיגיטל",five:"5 דקות לפני הקלפי",budget:"המספרים של התקציב",poison:"מכונת הרעל",votes:"הקול השרוף ובאדר–עופר",cmp:"המצפן",polls:"כל הסקרים האחרונים"};
+const tsPageName={facts:"מחלקת אקטואליה",led:"פנקס הכישלונות",core:"על מה רבים — נושאי ליבה",dict:"מילון המפלגות",bibi:"גוש נתניהו — רשימת הליכוד",hot:"מחלקת הדיגיטל",five:"5 דקות לפני הקלפי",budget:"המספרים של התקציב",poison:"מכונת הרעל",votes:"הקול השרוף ובאדר–עופר",cmp:"המצפן",polls:"כל הסקרים האחרונים",next:"מי הבא בתור?"};
 let TS_INDEX=null;
 function tsBuild(){
   const ix=[];
@@ -4317,7 +4370,7 @@ function tsBuild(){
     const re=/<b>(\d+) (?:🔒 )?· ([^<]+)<\/b> — ([^<]*)/g; let m; const html=bibi.innerHTML;
     while((m=re.exec(html))){ ix.push({e:"🔴",pg:"bibi",key:"|"+m[2].trim(),label:m[2].trim()+" · הליכוד, מקום "+m[1],sub:"רשימת הליכוד",text:m[2]+" "+m[3]}); }
   }catch(_){}
-  [["🤖","poison","מכונת הרעל — מעגל הכביסה, שופרות, בוטים, הסתה, תדרוכים"],["🗑️","votes","הקול השרוף, אחוז החסימה, באדר עופר, הגוש שבין הגושים, גנץ, הנדל, זליכה, מנדטים"],["🧭","cmp","המצפן הישראלי — מיקום המפלגות על הצירים"],["📊","polls","סקרים סקר מנדטים גושים ממוצע אחוז החסימה הימורים פולימרקט Polymarket Kalshi שוק ניבוי סיכויים חדשות 12 13 כאן מעריב ישראל היום i24 ערוץ 14 ערוץ 16 וואלה זמן ישראל קנטאר מדגם לזר דיירקט פולס NEXT DATA פילבר מתלבטים"]].forEach(([e,pg,t])=>ix.push({e,pg,key:"",label:tsPageName[pg],text:t}));
+  [["🤖","poison","מכונת הרעל — מעגל הכביסה, שופרות, בוטים, הסתה, תדרוכים"],["🗑️","votes","הקול השרוף, אחוז החסימה, באדר עופר, הגוש שבין הגושים, גנץ, הנדל, זליכה, מנדטים"],["🧭","cmp","המצפן הישראלי — מיקום המפלגות על הצירים"],["🎯","next","מי הבא בתור על הקו בסיכון מקום ברשימה קול מכריע מנדט המתלבט"],["📊","polls","סקרים סקר מנדטים גושים ממוצע אחוז החסימה הימורים פולימרקט Polymarket Kalshi שוק ניבוי סיכויים חדשות 12 13 כאן מעריב ישראל היום i24 ערוץ 14 ערוץ 16 וואלה זמן ישראל קנטאר מדגם לזר דיירקט פולס NEXT DATA פילבר מתלבטים"]].forEach(([e,pg,t])=>ix.push({e,pg,key:"",label:tsPageName[pg],text:t}));
   ix.forEach(x=>{ x.n=tsNorm(x.text); x.nl=tsNorm(x.label); x.sub=x.sub||tsPageName[x.pg]; });
   return ix;
 }
