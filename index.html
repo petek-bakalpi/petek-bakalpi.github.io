@@ -486,6 +486,7 @@
 .h4prac p{margin:0 0 8px;font-size:12.5px;line-height:1.55}
 .h4prac .slip{display:inline-block;background:#F7F8FC;color:#0F1530;border-radius:5px;padding:0 7px;font-family:'Secular One';font-size:14px;margin:0 2px}
 .h4cd{display:inline-block;font-size:12px;font-weight:700;color:var(--gold);border:1px solid rgba(245,184,65,.45);border-radius:999px;padding:3px 12px;margin:0 0 6px}
+.h4cd.urgent{color:#fff;background:var(--coral);border-color:var(--coral);animation:antwait 1.2s ease infinite}
 .tltopics{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin:2px 0 8px}
 .tlt{border:1.5px solid rgba(139,147,184,.3);background:var(--ink2);color:var(--muted);border-radius:999px;padding:5px 9px;font-family:'Heebo';font-weight:700;font-size:11.5px;cursor:pointer}
 .tlt.on{border-color:var(--gold);color:var(--gold);background:rgba(245,184,65,.12)}
@@ -992,7 +993,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="4.0.3";
+const APP_VERSION="4.0.4";
 const APP_UPDATED="26.10.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
@@ -3754,15 +3755,26 @@ function idWin(){
 $("#coreCount").textContent = CORE_ISSUES.length+" נושאים · לכל אחד כפתור 🎓 להעמקה מול טיעוני הנגד";
 
 /* countdown + version */
+function cdText(){
+  const now=new Date(), days=Math.ceil((ELECTION_DATE-now)/864e5);
+  if(days>1) return {t:"🗳️ עוד "+days+" ימים לבחירות · 27.10.2026",d:days};
+  if(days===1) return {t:"🗳️ מחר יום הבחירות! לכו לישון מוקדם",d:1};
+  if(days===0){ /* יום הבחירות: שעות עד נעילת הקלפיות (22:00) */
+    const close=new Date(ELECTION_DATE.getTime()+22*3600e3), open=new Date(ELECTION_DATE.getTime()+7*3600e3);
+    if(now<open) return {t:"🗳️ היום! הקלפיות נפתחות ב־07:00",d:0};
+    const ms=close-now; if(ms<=0) return {t:"🗳️ הקלפיות נסגרו — עכשיו סופרים",d:0,closed:true};
+    const h=Math.floor(ms/3600e3), m=Math.floor((ms%3600e3)/60e3);
+    return {t:"🗳️ לכו להצביע! נותרו "+(h>1?`${h} שעות ו־${m} דקות`:h===1?`שעה ו־${m} דקות`:`${m} דקות`)+" לקלפיות",d:0,h,m};
+  }
+  return {t:"🗳️ הבחירות מאחורינו — תודה שהצבעתם",d:-1};
+}
+function cdTick(){
+  const c=cdText(), el=$("#cdMain"), el2=$("#cdMain2"); if(el) el.textContent=c.t; if(el2){ el2.textContent=c.t; el2.classList.toggle("urgent",c.d===0&&!c.closed&&c.h!==undefined&&c.h<3); }
+  const sub=$("#h4sub"); if(sub) sub.textContent= c.d>1?`עוד ${c.d} ימים. בלי נאומים — רק מה שעוזר להחליט, ואיפה מצביעים.`: c.d===1?"מחר. בלי נאומים — רק מה שעוזר להחליט, ואיפה מצביעים.": c.d===0?(c.closed?"הקלפיות נסגרו. עכשיו — מדגמים, ספירה, ומעטפות כפולות.":"היום. הקלפיות פתוחות עד 22:00 — לפני הקפה, לפני הכול."):"הבחירות מאחורינו. תודה שהצבעתם.";
+}
 (function(){
-  const days=Math.ceil((ELECTION_DATE-new Date())/864e5);
-  const el=$("#cdMain");
-  if(days>1) el.textContent="🗳️ עוד "+days+" ימים לבחירות · 27.10.2026";
-  else if(days===1) el.textContent="🗳️ מחר יום הבחירות! לכו לישון מוקדם";
-  else if(days===0) el.textContent="🗳️ היום! לכו להצביע — עכשיו!";
-  else el.textContent="🗳️ הבחירות מאחורינו — תודה שהצבעתם";
-  const el2=$("#cdMain2"); if(el2) el2.textContent=el.textContent;
-  const sub=$("#h4sub"); if(sub) sub.textContent= days>1?`עוד ${days} ימים. בלי נאומים — רק מה שעוזר להחליט, ואיפה מצביעים.`: days===1?"מחר. בלי נאומים — רק מה שעוזר להחליט, ואיפה מצביעים.": days===0?"היום. הקלפיות פתוחות עד 22:00. בלי נאומים — רק מה שעוזר להחליט.":"הבחירות מאחורינו. תודה שהצבעתם.";
+  cdTick(); setInterval(cdTick,30e3);
+  const days=cdText().d;
   bibi.querySelectorAll(".acc-head").forEach(h=>h.onclick=()=>h.parentElement.classList.toggle("open"));
   bibi.querySelectorAll(".dlchip").forEach(bt=>bt.onclick=(e)=>{e.stopPropagation();deepOpen(bt.dataset.pg,bt.dataset.k);});
   $("#btext").textContent=BREAKING.txt;
