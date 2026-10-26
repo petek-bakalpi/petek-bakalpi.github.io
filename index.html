@@ -728,7 +728,8 @@
     <button class="menucard" id="h4Five"><span class="me">⏱️</span><span><div class="mt">יש לכם 5 דקות לפני הקלפי?</div><div class="md">10 העובדות המכריעות של הקמפיין, כל אחת עם 🔎</div></span><span class="mtime">5 דק'</span></button>
     <button class="menucard" id="h4Facts"><span class="me">🔍</span><span><div class="mt">מישהו שלח ספין בקבוצה?</div><div class="md">מחלקת אקטואליה: הטענה מול מה שנאמר באמת — ולעומק: נושאי הליבה ופנקס הכישלונות</div></span><span class="mtime">2 דק'</span></button>
     <div class="h4row"><button class="recchip" id="h4Core">🧠 נושאי הליבה</button><button class="recchip" id="h4Led">📓 פנקס הכישלונות</button><button class="recchip" id="h4Poison">🤖 מכונת הרעל</button><button class="recchip" id="h4Hot">📡 הדיגיטל</button></div>
-    <button class="menucard" id="h4Votes"><span class="me">🗑️</span><span><div class="mt">קול למפלגה קטנה — נשרף?</div><div class="md">הקול השרוף ובאדר–עופר: לאן באמת הולך קול למפלגה שלא עוברת</div></span><span class="mtime">2 דק'</span></button>
+    <button class="menucard" id="h4Votes"><span class="me">🗑️</span><span><div class="mt">קול למפלגה קטנה — נשרף?</div><div class="md">מעבדת הקול השרוף: סימולציה — 10,000 קולות ביד שלכם, תראו בעיניים לאן הם זורמים. או ההסבר בכתב על באדר–עופר</div></span><span class="mtime">2 דק'</span></button>
+    <div class="h4row"><button class="recchip" id="h4WvLab">🧪 המעבדה — סימולציה</button><button class="recchip" id="h4WvText">📖 ההסבר בכתב</button></div>
     <button class="menucard" id="h4Dict"><span class="me">📒</span><span><div class="mt">מי זה בכלל זה־וזה ברשימה?</div><div class="md">מילון המפלגות: בעד, נגד, מי ברשימה, ורשימת הליכוד. חיפוש בכל האתר</div></span><span class="mtime">∞</span></button>
     <button class="menucard" id="h4Games"><span class="me">🐜</span><span><div class="mt">עומדים בתור לקלפי?</div><div class="md">נמלים בקלפי, מי אמר?!, מנדטל ועוד 10 משחקים — ללמוד בלי להרגיש</div></span><span class="mtime">🎮</span></button>
     <div class="ledsec">🗳️ פרקטי — מה להביא ולאן</div>
@@ -991,7 +992,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="4.0.2";
+const APP_VERSION="4.0.3";
 const APP_UPDATED="26.10.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
@@ -4425,7 +4426,9 @@ $("#lTraffic").onclick=()=>{ lastTab="learn"; renderTraffic(); show(traffic); };
   $("#h4Led").onclick=()=>{ lastTab="home"; renderLedger(); show(led); };
   $("#h4Poison").onclick=()=>{ lastTab="home"; renderPoison(); show(poison); };
   $("#h4Hot").onclick=()=>{ lastTab="home"; renderHot(); show(hot); };
-  $("#h4Votes").onclick=()=>{ lastTab="home"; renderVotes(); show(votes); };
+  $("#h4Votes").onclick=()=>{ lastTab="home"; go("gWv"); };
+  $("#h4WvLab").onclick=()=>{ lastTab="home"; go("gWv"); };
+  $("#h4WvText").onclick=()=>{ lastTab="home"; renderVotes(); show(votes); };
   $("#h4Dict").onclick=()=>{ showTab("learn"); setTimeout(()=>{ const i=$("#tsq"); if(i) i.focus(); },50); };
   $("#h4Games").onclick=()=>showTab("games");
   $("#h4Disc").onclick=()=>go("toDisc");
