@@ -479,6 +479,34 @@
 .nxrow .nxs{font-size:10.5px;color:var(--muted);text-align:left;max-width:110px;line-height:1.3}
 .nxrow.edge .nxs b{color:var(--gold)}.nxrow.out .nxs b{color:var(--coral)}
 .nxfoot{margin-top:6px}
+.h4head{text-align:center;margin:2px 0 0}
+.h4title{font-size:clamp(28px,8vw,40px);margin:2px 0 0;line-height:1.05}
+.h4sub{color:var(--muted);font-size:13px;margin:4px 0 0}
+.h4row{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:-6px 0 2px}
+.h4prac p{margin:0 0 8px;font-size:12.5px;line-height:1.55}
+.h4prac .slip{display:inline-block;background:#F7F8FC;color:#0F1530;border-radius:5px;padding:0 7px;font-family:'Secular One';font-size:14px;margin:0 2px}
+#breaking2 .btrack.static{overflow:visible}
+#breaking2 .btext.static{position:static;transform:none;white-space:normal;display:inline}
+.tltopics{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin:2px 0 8px}
+.tlt{border:1.5px solid rgba(139,147,184,.3);background:var(--ink2);color:var(--muted);border-radius:999px;padding:5px 9px;font-family:'Heebo';font-weight:700;font-size:11.5px;cursor:pointer}
+.tlt.on{border-color:var(--gold);color:var(--gold);background:rgba(245,184,65,.12)}
+.tlsel{text-align:center;font-size:16px;margin-bottom:6px}
+.tlgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.tlcard{border-radius:14px;padding:10px 11px;border:1.5px solid;background:var(--ink2)}
+.tlcard.g{border-color:rgba(51,214,159,.6);background:rgba(51,214,159,.08)}
+.tlcard.y{border-color:rgba(245,184,65,.6);background:rgba(245,184,65,.08)}
+.tlcard.r{border-color:rgba(255,89,100,.6);background:rgba(255,89,100,.08)}
+.tlh{display:flex;flex-direction:column;gap:2px;font-size:13px}
+.tlh small{color:var(--muted);font-size:10.5px}
+.tlv{font-size:12px;font-weight:800}
+.tlcard p{font-size:12px;line-height:1.5;margin:6px 0;color:var(--paper)}
+.tltbl{min-width:0}
+.tltbl td:first-child,.tltbl th:first-child{position:static;box-shadow:none;text-align:right;white-space:normal;font-size:12px;font-weight:600}
+.tltbl th small{display:block;font-size:9.5px}
+.tltbl tbody tr{cursor:pointer}
+.tltbl tr.on td{background:rgba(245,184,65,.12)}
+.tldot{display:inline-block;width:14px;height:14px;border-radius:50%}
+.tldot.g{background:var(--mint)}.tldot.y{background:var(--gold)}.tldot.r{background:var(--coral)}
 .btbl{min-width:0}
 .btbl td:first-child{white-space:normal;font-size:12px;max-width:150px;position:static;box-shadow:none}
 .btbl th:first-child{position:static;box-shadow:none}
@@ -690,7 +718,37 @@
 <div id="app">
 
   <!-- INTRO -->
-  <section class="screen on" id="intro">
+  <section class="screen infopage on" id="home4">
+    <div class="countrow"><div class="countpill" id="countdown2"><span id="cdMain2"></span><span class="cp5">⏱️ 5 דקות לפני הקלפי — 10 העובדות המכריעות ←</span></div></div>
+    <button class="breaking static" id="breaking2" style="width:100%;text-align:right;font-family:'Heebo';cursor:pointer"><span class="blabel">⚡ מבזק</span><span class="btrack static"><span class="btext static" id="btext2"></span></span></button>
+    <div class="h4head"><div class="kicker">הכנסת ה־26 · 27.10.2026</div><h1 class="h4title">פתק <span class="hl">בקלפי</span></h1><p class="h4sub" id="h4sub">יום הבחירות. בלי נאומים — רק מה שעוזר להחליט, ואיפה מצביעים.</p></div>
+    <div class="ledsec">🤔 מה אתם צריכים עכשיו?</div>
+    <button class="menucard" id="h4Quiz"><span class="me">🗳️</span><span><div class="mt">עוד לא בטוחים למי?</div><div class="md">השאלון: 11 הצהרות בדקה — איזו מפלגה במחנה מתאימה לכם. או הגרסה המעמיקה, 21 שאלות ניטרליות</div></span><span class="mtime">1–3 דק'</span></button>
+    <div class="h4row"><button class="recchip" id="h4Quick">🔥 מהיר · 11</button><button class="recchip" id="h4Deep">🎓 מעמיק · 21</button><button class="recchip" id="h4Cmp">🧭 המצפן</button><button class="recchip" id="h4Last" style="display:none;border-color:rgba(245,184,65,.6);color:var(--gold)">🏆 התוצאה שלי</button></div>
+    <button class="menucard" id="h4Next"><span class="me">🎯</span><span><div class="mt">מתלבטים בין שתיים? איפה הקול שלכם מכריע מנדט?</div><div class="md">מי על הקו ומי הבא בתור בכל מפלגה במחנה — לפי 8 הסקרים הסופיים</div></span><span class="mtime">2 דק'</span></button>
+    <button class="menucard" id="h4Traffic"><span class="me">🚦</span><span><div class="mt">על מה בעצם הן חלוקות? <span class="newtag inl">חדש</span></div><div class="md">בוחרים נושא — זכויות הקהילה, גיוס, הסדר מדיני, שבת, מיסים — ורואים את ארבע המפלגות בירוק/צהוב/אדום</div></span><span class="mtime">1 דק'</span></button>
+    <button class="menucard" id="h4Polls"><span class="me">📊</span><span><div class="mt">מה אמרו הסקרים האחרונים — והמהמרים?</div><div class="md">10 הסקרים הסופיים בטבלה אחת, מי על החסימה, ושוקי ההימורים</div></span><span class="mtime">3 דק'</span></button>
+    <button class="menucard" id="h4Five"><span class="me">⏱️</span><span><div class="mt">יש לכם 5 דקות לפני הקלפי?</div><div class="md">10 העובדות המכריעות של הקמפיין, כל אחת עם 🔎</div></span><span class="mtime">5 דק'</span></button>
+    <button class="menucard" id="h4Facts"><span class="me">🔍</span><span><div class="mt">מישהו שלח ספין בקבוצה?</div><div class="md">מחלקת אקטואליה: הטענה מול מה שנאמר באמת — ואם רוצים להתאמן: ״שכנעו את הדוד״</div></span><span class="mtime">2 דק'</span></button>
+    <div class="h4row"><button class="recchip" id="h4Uncle">🧔 שכנעו את הדוד</button><button class="recchip" id="h4Poison">🤖 מכונת הרעל</button><button class="recchip" id="h4Hot">📡 הדיגיטל</button></div>
+    <button class="menucard" id="h4Votes"><span class="me">🗑️</span><span><div class="mt">קול למפלגה קטנה — נשרף?</div><div class="md">הקול השרוף ובאדר–עופר: לאן באמת הולך קול למפלגה שלא עוברת</div></span><span class="mtime">2 דק'</span></button>
+    <button class="menucard" id="h4Dict"><span class="me">📒</span><span><div class="mt">מי זה בכלל זה־וזה ברשימה?</div><div class="md">מילון המפלגות: בעד, נגד, מי ברשימה, ורשימת הליכוד. חיפוש בכל האתר</div></span><span class="mtime">∞</span></button>
+    <button class="menucard" id="h4Games"><span class="me">🐜</span><span><div class="mt">עומדים בתור לקלפי?</div><div class="md">נמלים בקלפי, מי אמר?!, מנדטל ועוד 10 משחקים — ללמוד בלי להרגיש</div></span><span class="mtime">🎮</span></button>
+    <div class="ledsec">🗳️ פרקטי — מה להביא ולאן</div>
+    <div class="infocard h4prac">
+      <p><b>שעות:</b> 07:00–22:00 ברוב הקלפיות; יישובים קטנים (עד 350), בתי חולים ובתי אבות — 08:00–20:00. <b>יום שבתון</b> — אסור לנכות מהחופשה; מי שעובד זכאי ל־200%.</p>
+      <p><b>מביאים אחד מאלה:</b> תעודת זהות · דרכון ישראלי בתוקף · רישיון נהיגה בתוקף · תעודה צבאית אישית. הודעה לבוחר — לא חובה, רק מקצרת.</p>
+      <p><b>הפתקים של המחנה:</b> ישר! — <b class="slip">דרך</b> · ביחד — <b class="slip">רק</b> · הדמוקרטים — <b class="slip">אמת</b> · ישראל ביתנו — <b class="slip">ל</b>. רק פתק מהקלפי, אחד במעטפה, לא מקומט ולא מסומן.</p>
+      <p><b>תחבורה חינם:</b> רכבת ישראל ואוטובוסים בין־עירוניים מעל 15 ק״מ — משני 20:00 עד סוף יום הבחירות (קווים עירוניים בתשלום; מוקד 8787*).</p>
+      <p><b>איפה הקלפי שלי?</b> <a class="srch" style="margin:0" target="_blank" rel="noopener" href="https://www.gov.il/he/service/vote_location">איתור קלפי לפי ת״ז (gov.il) ↗</a> · <a class="srch" style="margin:0" target="_blank" rel="noopener" href="https://bechirot.gov.il">ועדת הבחירות ↗</a>. מפונים — בקלפי ייעודית או במקום המגורים המקורי; מוגבלי ניידות — ״קלפי נגישה מיוחדת״ בכל מקום, במעטפה כפולה.</p>
+      <p class="tiny" style="margin:0">לפי מדריכי ynet ו־N12 (26.10). ספירה מ־22:00; תוצאות סופיות אחרי המעטפות הכפולות.</p>
+    </div>
+    <div style="display:flex;gap:8px;margin:6px 0 2px"><button class="btn btn-go" id="h4Share" style="margin:0;flex:1">📤 הלכתם? שלחו לאחד שעוד לא</button></div>
+    <p class="verline" id="verline2"></p>
+    <div class="recrow"><button class="recchip" id="toClassic">🏠 המסך הקלאסי — השאלון</button><button class="recchip" id="h4Disc">❓ מי עומד מאחורי זה?</button></div>
+  </section>
+  <section class="screen infopage" id="traffic"></section>
+  <section class="screen" id="intro">
     <div class="countrow"><div class="countpill" id="countdown"><span id="cdMain"></span><span class="cp5">⏱️ 5 דקות לפני הקלפי — 10 העובדות המכריעות ←</span></div><button class="tourfab" id="tourfab" title="סיור מודרך — מה יש כאן?" aria-label="סיור מודרך — מה יש כאן?">❔</button><button class="xfab" id="xfab" title="מחלקת הדיגיטל — בחירת העורך" aria-label="מחלקת הדיגיטל — בחירת העורך">📡<span class="xbadge" id="xbadge">!</span></button></div>
     <div class="breaking" id="breaking"><span class="blabel">⚡ מבזק</span><span class="btrack"><span class="btext" id="btext"></span></span></div>
     <div class="kicker">בחירות 2026 · הכנסת ה־26</div>
@@ -703,6 +761,7 @@
     <p class="tiny">המהירה — בסלנג ולפי הפרשנות של חבר שלכם 🙃 המעמיקה — מנוסחת ניטרלית, על בסיס עמדות מוצהרות של המפלגות. שתיהן פישוט, לא סקר ולא מדע. פרויקט אישי ועצמאי — פרטים בכפתור ❓</p>
     <p class="verline" id="verline"></p>
     <div class="recrow">
+      <button class="recchip" id="toHome4" style="border-color:rgba(245,184,65,.6);color:var(--gold)">🗳️ למסך יום הבחירות</button>
       <button class="recchip" id="toCmp">🧭 המצפן הישראלי</button>
       <button class="recchip" id="toCore">🔥 על מה בכלל רבים?</button>
       <button class="recchip" id="toDisc">❓ מי עומד מאחורי זה?</button>
@@ -903,6 +962,7 @@
     <div class="ledsec">🚨 חם עכשיו</div>
     <button class="menucard" id="lFive"><span class="me">⏱️</span><span><div class="mt">5 דקות לפני הקלפי</div><div class="md">10 העובדות המכריעות של הקמפיין — בלי משחקים, כל אחת עם 🔎 ועם הדרך לעומק</div></span><span class="mtime">5 דק'</span></button>
     <button class="menucard" id="lPolls"><span class="me">📊</span><span><div class="mt">כל הסקרים האחרונים <span class="newtag inl">חדש</span></div><div class="md">10 הסקרים הסופיים — האחרון של כל גוף סוקר (19–23.10) — טבלה אחת, גושים, ממוצע, מי על החסימה ומה זה אומר</div></span><span class="mtime">4 דק'</span></button>
+    <button class="menucard" id="lTraffic"><span class="me">🚦</span><span><div class="mt">הרמזור — על מה הן חלוקות <span class="newtag inl">חדש</span></div><div class="md">20 נושאים × 4 מפלגות: ירוק תומכת, צהוב מסויגת/זורמת, אדום מתנגדת — עם הערה לכל תא</div></span><span class="mtime">1 דק'</span></button>
     <button class="menucard" id="lNext"><span class="me">🎯</span><span><div class="mt">מי הבא בתור? <span class="newtag inl">חדש</span></div><div class="md">המבחן של המתלבט: איפה הקול שלכם מכריע מנדט — מי על הקו ומי הבא בתור בכל מפלגה במחנה, לפי 8 הסקרים הסופיים</div></span><span class="mtime">2 דק'</span></button>
     <button class="menucard" id="lFacts"><span class="me">🔍</span><span><div class="mt">מחלקת אקטואליה — בדיקת מציאות</div><div class="md">האשמות, ספינים וציטוטים מסולפים — מול מה שנאמר באמת</div></span></button>
     <button class="menucard" id="lHot"><span class="me">📡</span><span><div class="mt">מחלקת הדיגיטל</div><div class="md">בחירת העורך: ציוצים, פודקאסטים וסרטונים — הנקודות החכמות והחשובות מהרשת</div></span><span class="mtime">3 דק'</span></button>
@@ -934,7 +994,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="3.32";
+const APP_VERSION="4.0";
 const APP_UPDATED="26.10.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
@@ -1124,7 +1184,7 @@ function startGame(m){
 $("#startQuick").onclick=()=>startGame("quick");
 $("#startDeep").onclick=()=>startGame("deep");
 
-function show(sc){[intro,quiz,result,bibi,arab,who,coal,core,cmp,led,votes,gmenu,lmenu,quote,dict,facts,poison,budget,gov,hl,mdl,race,idle,wv,hot,uncle,memo,feed,five,polls,ants,next].forEach(x=>x.classList.remove("on"));sc.classList.add("on");sc.scrollTop=0; if(sc!==ants&&typeof antsStop==="function") antsStop();
+function show(sc){[intro,quiz,result,bibi,arab,who,coal,core,cmp,led,votes,gmenu,lmenu,quote,dict,facts,poison,budget,gov,hl,mdl,race,idle,wv,hot,uncle,memo,feed,five,polls,ants,next,home4,traffic].forEach(x=>x.classList.remove("on"));sc.classList.add("on");sc.scrollTop=0; if(sc!==ants&&typeof antsStop==="function") antsStop();
   if(sc!==arab){const m=$("#arabMore"),b=$("#proArab");if(m){m.classList.remove("on");}if(b){b.style.display="";}}}
 $("#toCore").onclick=()=>{renderCore();show(core);};
 $("#toCmp").onclick=()=>{renderCompass();show(cmp);};
@@ -1970,7 +2030,8 @@ function renderVotes(){
 }
 /* ================= TABS & MENUS ================= */
 let lastTab="home";
-const TABSCREEN={home:()=>intro, games:()=>gmenu, learn:()=>lmenu, feed:()=>{ if(!feed.querySelector(".fdwrap")) startFeed(); return feed; }};
+let homeClassic=false;
+const TABSCREEN={home:()=>homeClassic?intro:home4, games:()=>gmenu, learn:()=>lmenu, feed:()=>{ if(!feed.querySelector(".fdwrap")) startFeed(); return feed; }};
 function goBack(){ show(TABSCREEN[lastTab]()); }
 function showTab(t){
   lastTab=t; if(t!=="feed"&&typeof fdAutoStop==="function"){ fdAutoStop(); }
@@ -3702,10 +3763,14 @@ $("#coreCount").textContent = CORE_ISSUES.length+" נושאים · לכל אחד
   else if(days===1) el.textContent="🗳️ מחר יום הבחירות! לכו לישון מוקדם";
   else if(days===0) el.textContent="🗳️ היום! לכו להצביע — עכשיו!";
   else el.textContent="🗳️ הבחירות מאחורינו — תודה שהצבעתם";
+  const el2=$("#cdMain2"); if(el2) el2.textContent=el.textContent;
+  const sub=$("#h4sub"); if(sub) sub.textContent= days>1?`עוד ${days} ימים. בלי נאומים — רק מה שעוזר להחליט, ואיפה מצביעים.`: days===1?"מחר. בלי נאומים — רק מה שעוזר להחליט, ואיפה מצביעים.": days===0?"היום. הקלפיות פתוחות עד 22:00. בלי נאומים — רק מה שעוזר להחליט.":"הבחירות מאחורינו. תודה שהצבעתם.";
   bibi.querySelectorAll(".acc-head").forEach(h=>h.onclick=()=>h.parentElement.classList.toggle("open"));
   bibi.querySelectorAll(".dlchip").forEach(bt=>bt.onclick=(e)=>{e.stopPropagation();deepOpen(bt.dataset.pg,bt.dataset.k);});
   $("#btext").textContent=BREAKING.txt;
   $("#breaking").onclick=()=>deepOpen("facts",BREAKING.key);
+  const b2=$("#btext2"); if(b2){ b2.textContent=BREAKING.txt; $("#breaking2").onclick=()=>deepOpen("facts",BREAKING.key); }
+  const v2=$("#verline2"), v1=$("#verline"); if(v2&&v1) v2.textContent=v1.textContent;
   /* גלילה ב-JS עם מדידה אמיתית — חסין לכל מוזרות CSS/RTL */
   (function(){
     const track=$("#breaking .btrack"), txt=$("#btext");
@@ -3743,6 +3808,7 @@ function deepOpen(pg,key){
   else if(pg==="votes"){ renderVotes(); show(votes); return; }
   else if(pg==="polls"){ renderPolls(); show(polls); return; }
   else if(pg==="next"){ renderNext(); show(next); return; }
+  else if(pg==="traffic"){ renderTraffic(key); show(traffic); return; }
   else if(pg==="five"){ renderFive(); show(five); return; }
   else if(pg==="cmp"){ renderCompass(); show(cmp); return; }
   else if(pg==="dict"||pg==="bibi"){
@@ -4347,12 +4413,106 @@ function renderNext(){
   $("#nextShare").onclick=async(e)=>{ const txt="🎯 מי הבא בתור? — איפה הקול שלכם מכריע מנדט: מי על הקו בכל מפלגה במחנה, לפי 8 הסקרים הסופיים: https://petek-bakalpi.github.io/ (תכל'ס ← מי הבא בתור)"; if(navigator.share){ navigator.share({text:txt}).catch(()=>{}); } else { try{ await navigator.clipboard.writeText(txt); e.target.textContent="הועתק! ✅"; }catch(_){ e.target.textContent="לא הצלחנו להעתיק"; } } };
 }
 $("#lNext").onclick=()=>{ lastTab="learn"; renderNext(); show(next); };
+$("#lTraffic").onclick=()=>{ lastTab="learn"; renderTraffic(); show(traffic); };
+/* ===== מסך יום הבחירות (v4) ===== */
+(function(){
+  const go=(id)=>{ const b=$("#"+id); if(b) b.click(); };
+  $("#h4Quiz").onclick=()=>go("startQuick"); $("#h4Quick").onclick=()=>go("startQuick"); $("#h4Deep").onclick=()=>go("startDeep");
+  $("#h4Cmp").onclick=()=>{ lastTab="home"; renderCompass(); show(cmp); };
+  $("#h4Last").onclick=()=>go("lastRes");
+  $("#h4Next").onclick=()=>{ lastTab="home"; renderNext(); show(next); };
+  $("#h4Traffic").onclick=()=>{ lastTab="home"; renderTraffic(); show(traffic); };
+  $("#h4Polls").onclick=()=>{ lastTab="home"; renderPolls(); show(polls); };
+  $("#h4Five").onclick=()=>{ lastTab="home"; renderFive(); show(five); };
+  $("#h4Facts").onclick=()=>{ lastTab="home"; renderFacts(); show(facts); };
+  $("#h4Uncle").onclick=()=>{ lastTab="home"; startUncle(); };
+  $("#h4Poison").onclick=()=>{ lastTab="home"; renderPoison(); show(poison); };
+  $("#h4Hot").onclick=()=>{ lastTab="home"; renderHot(); show(hot); };
+  $("#h4Votes").onclick=()=>{ lastTab="home"; renderVotes(); show(votes); };
+  $("#h4Dict").onclick=()=>{ showTab("learn"); setTimeout(()=>{ const i=$("#tsq"); if(i) i.focus(); },50); };
+  $("#h4Games").onclick=()=>showTab("games");
+  $("#h4Disc").onclick=()=>go("toDisc");
+  $("#toClassic").onclick=()=>{ homeClassic=true; show(intro); };
+  $("#toHome4").onclick=()=>{ homeClassic=false; show(home4); };
+  $("#h4Share").onclick=async(e)=>{ const txt="🗳️ הלכתי להצביע. אם עוד לא החלטת — פתק בקלפי: שאלון בדקה, מי על הקו בכל מפלגה, ומה להביא לקלפי: https://petek-bakalpi.github.io/"; if(navigator.share){ navigator.share({text:txt}).catch(()=>{}); } else { try{ await navigator.clipboard.writeText(txt); e.target.textContent="הועתק! ✅"; }catch(_){ e.target.textContent="לא הצלחנו להעתיק"; } } };
+  /* התוצאה האחרונה — מראים את הצ'יפ גם כאן */
+  const lr=$("#lastRes"); if(lr){ const obs=new MutationObserver(()=>{ $("#h4Last").style.display=lr.style.display; }); obs.observe(lr,{attributes:true,attributeFilter:["style"]}); }
+})();
+/* ===== הרמזור — על מה המפלגות חלוקות ===== */
+const TL_P=[["yashar","ישר!","🟡","דרך"],["yachad","ביחד","🔵","רק"],["dem","הדמוקרטים","🔴","אמת"],["lib","ישראל ביתנו","🟢","ל"]];
+/* g = תומכת במפורש · y = מסויגת / לא הכריעה / זורמת · r = מתנגדת. הערה קצרה לכל תא. */
+const TL_TOPICS=[
+ {e:"🏳️‍🌈",t:"זכויות הקהילה הגאה",d:"שוויון בזוגיות, פונדקאות, איסור אפליה",
+  s:{dem:["g","במצע: שוויון מלא ונישואים לכל הזוגות; העבודה ומרצ הובילו את חקיקת הזכויות"],lib:["g","נישואים אזרחיים לכולם — דגל ותיק; תמכה בהרחבת הפונדקאות"],yachad:["y","לפיד ויש עתיד — תומכים במפורש; בנט — ״ברית זוגיות״, לא נישואים. עמדה משותפת לא פורסמה"],yashar:["y","ממלכתיות בלי הכרעה — לא במצע שפורסם. יש מקור? שלחו"]}},
+ {e:"💍",t:"נישואים אזרחיים",d:"מסלול נישואים לכל אזרח, בלי הרבנות",
+  s:{lib:["g","מהדגלים המרכזיים מאז 2019"],dem:["g","במצע"],yachad:["y","יש עתיד בעד; בנט מציע ״ברית זוגיות״"],yashar:["y","לא הכריע פומבית"]}},
+ {e:"🚌",t:"תחבורה ציבורית בשבת",d:"לפחות חלקית, לפי החלטת רשויות מקומיות",
+  s:{lib:["g","בעד — גם ברמה הארצית"],dem:["g","בעד, לפי צרכים מקומיים"],yachad:["y","יש עתיד בעד חלקית; בנט מסויג — ״סטטוס קוו גמיש״"],yashar:["y","לא הכריע"]}},
+ {e:"🪖",t:"גיוס לכולם",d:"חוק גיוס שוויוני עם סנקציות על מי שלא משרת",
+  s:{yashar:["g","״גיוס לכולם״ — מדגלי המפלגה"],yachad:["g","בנט: ״30 מיליארד מהמשתמטים״ למימון החיילים"],dem:["g","שירות לכולם — צבאי או אזרחי"],lib:["g","הדגל הוותיק ביותר; התפטר על זה ב־2018"]}},
+ {e:"📚",t:"ליבה כתנאי לתקצוב",d:"מוסדות בלי לימודי ליבה — בלי תקצוב מלא",
+  s:{lib:["g","בעד — ״בלי ליבה אין כסף״"],yachad:["g","יש עתיד הובילה את הדרישה; בנט תומך"],dem:["g","בעד"],yashar:["y","תומך בליבה; לא פירט סנקציות"]}},
+ {e:"🔍",t:"ועדת חקירה ממלכתית ל־7.10",d:"ועדה ממלכתית, לא ״ממשלתית״",
+  s:{yashar:["g","הסיבה שהמפלגה קמה — התחייבות ראשונה"],yachad:["g","התחייבות מפורשת"],dem:["g","התחייבות מפורשת"],lib:["g","התחייבות מפורשת"]}},
+ {e:"⚖️",t:"ביטול חוקי ההפיכה",d:"החזרת עילת הסבירות, עצמאות בג״ץ והיועמ״שית",
+  s:{dem:["g","ביטול מלא — בראש המצע"],yashar:["g","התחייבות; ״רפורמה רק בהסכמה רחבה״"],yachad:["g","לפיד הוביל את המאבק; בנט תומך בביטול"],lib:["g","התנגד להפיכה; תומך ברפורמה מוסכמת בלבד"]}},
+ {e:"📜",t:"חוקה / חוקי יסוד משוריינים",d:"הגבלות על כל ממשלה, מכל צד",
+  s:{dem:["g","במצע"],yashar:["g","״אמנה״ וחוקי יסוד משוריינים בהסכמה רחבה"],yachad:["g","לפיד הציע חוקה; בנט — חוקי יסוד בהסכמה"],lib:["y","לא בראש סדר היום; תומך ב״כללי משחק״ מוסכמים"]}},
+ {e:"🕊️",t:"הסדר מדיני / מדינה פלסטינית",d:"לשאוף להסדר, גם במחיר ויתורים",
+  s:{dem:["g","שתי מדינות — במצע"],yashar:["y","נגד סיפוח, בעד הפרדה והסדר אזורי; ״לא מדינה בשלב זה״"],yachad:["r","בנט: ״לא תקום מדינה פלסטינית״; לפיד תמך בעבר — העמדה המשותפת: לא"],lib:["r","מתנגד; בעבר ״חילופי שטחים ואוכלוסין״"]}},
+ {e:"🏘️",t:"סיפוח חד־צדדי ביהודה ושומרון",d:"החלת ריבונות / E1 בלי הסכם",
+  s:{dem:["r","מתנגדת"],yashar:["r","מתנגד — ״פוגע בישראל״"],yachad:["y","בנט תמך בעבר בריבונות בשטח C; היום — ״לא על הפרק״"],lib:["y","לא מקדם; ״לא עכשיו״"]}},
+ {e:"🤝",t:"ממשלה שנשענת על מפלגות ערביות",d:"רע״ם / המשותפת בקואליציה או כתומכות מבחוץ",
+  s:{dem:["g","לגיטימי — בעד"],yashar:["y","לא שלל תמיכה מבחוץ; ״כל מי שמקבל את המדינה״"],yachad:["y","לפיד ישב עם רע״ם ב־2021; בנט אומר ״לא״ הפעם"],lib:["r","מתנגד — למרות שישב בממשלת השינוי עם רע״ם"]}},
+ {e:"💸",t:"הורדת מיסים ושוק חופשי",d:"פחות מיסים ורגולציה, גם במחיר צמצום שירותים",
+  s:{lib:["g","קפיטליזם מובהק — ליבת המצע"],yachad:["g","ימין כלכלי; ״תחרות ויבוא נגד יוקר המחיה״"],yashar:["y","בלי הכרעה; ״צמצום פערים״ ו״יעילות״"],dem:["r","מעדיפה מדינת רווחה אוניברסלית"]}},
+ {e:"🏥",t:"הרחבת מדינת הרווחה",d:"בריאות, חינוך ודיור ציבורי לפני הורדת מיסים",
+  s:{dem:["g","ליבת המצע — אוניברסלי, לא סקטוריאלי"],yashar:["y","פריפריה ופערים — בלי מודל כלכלי מפורט"],yachad:["y","השקעה בחינוך ובריאות — ״לא על חשבון הצמיחה״"],lib:["r","קצבאות על בסיס עבודה; נגד הרחבה"]}},
+ {e:"✂️",t:"ממשלה של עד 18 שרים",d:"ממשלה רזה, גם במחיר איחוד משרדים",
+  s:{yachad:["g","הצעה מפורשת של בנט"],yashar:["y","״ממשלה רזה״ — בלי מספר"],dem:["y","בעד צמצום; לא נקבה במספר"],lib:["y","בעד צמצום; לא נקבה במספר"]}},
+ {e:"🗳️",t:"פריימריז ושוויון מגדרי",d:"בחירות פנימיות לרשימה וייצוג שווה",
+  s:{dem:["g","היחידה במחנה עם פריימריז מלאים ושריון שוויוני"],yashar:["r","רשימה ממונה"],yachad:["r","רשימה ממונה (יש עתיד — ללא פריימריז מאז הקמתה)"],lib:["r","רשימה ממונה"]}},
+ {e:"🚫",t:"ביטול הכספים הקואליציוניים",d:"סוף לתקציבים סקטוריאליים בהסכמים",
+  s:{lib:["g","בעד — ״כספי הכניעה״"],yachad:["g","בעד"],yashar:["g","בעד"],dem:["g","בעד — ״רווחה לכולם, לא לסקטור״"]}},
+ {e:"🕍",t:"הפרדת דת ומדינה מלאה",d:"ביטול המונופול של הרבנות, כשרות ונישואים בידי המדינה",
+  s:{lib:["g","בעד — ״חילוניות לוחמנית״"],dem:["y","חופש דת ומדת — לא הפרדה מלאה (מסורת העבודה)"],yachad:["y","יש עתיד — חלקית; בנט — נגד"],yashar:["y","לא הכריע"]}},
+ {e:"🌿",t:"לגליזציה של קנאביס",d:"הסדרה ולגליזציה לבגירים",
+  s:{lib:["g","קידמה חקיקה"],dem:["g","בעד (מורשת מרצ)"],yachad:["y","יש עתיד תמכה בלגליזציה; בנט — אי־הפללה"],yashar:["y","לא הכריע"]}},
+ {e:"🎗️",t:"עדיפות לעסקת חטופים",d:"עסקה גם במחיר הפסקת הלחימה",
+  s:{dem:["g","״בכל מחיר״"],yashar:["g","תמך בעסקאות גם במחיר סיום המלחמה"],yachad:["y","לפיד — בעד; בנט — הסתייגויות ממחיר"],lib:["y","לא מצאנו הכרעה מפורשת"]}},
+ {e:"⏳",t:"הגבלת כהונת ראש ממשלה",d:"שתי קדנציות / 8 שנים",
+  s:{yachad:["g","הצעת חוק של בנט"],lib:["y","הצעות בעבר; לא בקמפיין"],yashar:["y","תומך עקרונית; לא פורסם נוסח"],dem:["y","תומכת עקרונית"]}},
+];
+let tlSel=0;
+function renderTraffic(key){
+  if(key){ const i=TL_TOPICS.findIndex(t=>t.t.includes(key)); if(i>=0) tlSel=i; }
+  const col={g:"var(--mint)",y:"var(--gold)",r:"var(--coral)"}, lbl={g:"תומכת",y:"מסויגת / לא הכריעה",r:"מתנגדת"};
+  const t=TL_TOPICS[tlSel];
+  const cards=TL_P.map(([k,n,e,slip])=>{ const [v,note]=t.s[k]||["y","לא מצאנו"]; return `<div class="tlcard ${v}"><div class="tlh"><span>${e} <b>${n}</b> <small>פתק ${slip}</small></span><span class="tlv" style="color:${col[v]}">${v==="g"?"🟢":v==="y"?"🟡":"🔴"} ${lbl[v]}</span></div><p>${note}</p><button class='dlchip' data-pg='dict' data-k='${n}|'>📒 במילון</button></div>`; }).join("");
+  const dots=TL_P.map(([k,n,e])=>`<th>${e}<small>${n}</small></th>`).join("");
+  const matrix=TL_TOPICS.map((tp,i)=>`<tr class="${i===tlSel?"on":""}" data-i="${i}"><td>${tp.e} ${tp.t}</td>${TL_P.map(([k])=>`<td><span class="tldot ${(tp.s[k]||["y"])[0]}"></span></td>`).join("")}</tr>`).join("");
+  traffic.innerHTML=`
+    <h2>הרמזור<br><span class="hl">על מה בעצם הן חלוקות 🚦</span></h2>
+    <p style="text-align:center;color:var(--muted);font-size:12px">בוחרים נושא — ורואים את ארבע מפלגות המחנה: 🟢 תומכת במפורש · 🟡 מסויגת, לא הכריעה או ״זורמת״ · 🔴 מתנגדת. סיכום שלנו לפי מצעים והצהרות פומביות (עד 26.10) — בלי ציונים, רק עמדות. טעינו או חסר נושא? שלחו מקור.</p>
+    <div class="tltopics">${TL_TOPICS.map((tp,i)=>`<button class="tlt${i===tlSel?" on":""}" data-i="${i}">${tp.e} ${tp.t}</button>`).join("")}</div>
+    <div class="tlsel"><b>${t.e} ${t.t}</b><div style="color:var(--muted);font-size:12px">${t.d}</div></div>
+    <div class="tlgrid">${cards}</div>
+    <div class="ledsec">🧮 הכול במבט אחד</div>
+    <div class="ptwrap"><table class="ptbl tltbl"><thead><tr><th>נושא</th>${dots}</tr></thead><tbody>${matrix}</tbody></table></div>
+    <div class="infocard" style="margin:6px 0 10px"><p style="margin:0;font-size:13px"><b>מה רואים:</b> על ועדת חקירה, ביטול ההפיכה, גיוס לכולם וביטול הקואליציוניים — ארבע ירוקות. ההבדלים האמיתיים הם בכלכלה (ליברמן–בנט מול גולן), במדיני (גולן מול בנט–ליברמן, איזנקוט באמצע), ובדת ומדינה (ליברמן הכי רחוק). <b>דעתנו:</b> מי שמתלבט בתוך המחנה — שיבחר לפי השורות שבהן יש צבע שונה, לא לפי הירוקות המשותפות. <button class='dlchip' data-pg='cmp' data-k=''>🧭 המצפן</button> <button class='dlchip' data-pg='next' data-k=''>🎯 מי על הקו</button> <button class='dlchip gold' data-pg='core' data-k=''>🧠 נושאי הליבה</button></p></div>
+    <button class="btn backbtn" data-back>⬅ חזרה</button>`;
+  traffic.querySelector("[data-back]").onclick=()=>goBack();
+  traffic.querySelectorAll(".tlt").forEach(b=>b.onclick=()=>{ tlSel=+b.dataset.i; renderTraffic(); const t=traffic.querySelector(".tlsel"); try{ t.scrollIntoView({behavior:"smooth",block:"start"}); }catch(_){ t.scrollIntoView(); } });
+  traffic.querySelectorAll(".tltbl tbody tr").forEach(r=>r.onclick=()=>{ tlSel=+r.dataset.i; renderTraffic(); });
+  traffic.querySelectorAll(".dlchip").forEach(b=>b.onclick=(e)=>{ e.stopPropagation(); deepOpen(b.dataset.pg,b.dataset.k); });
+}
+
 
 
 
 /* ================= TACHLES SEARCH ================= */
 const tsNorm=t=>(t||"").toString().replace(/<[^>]*>/g," ").replace(/[״"'׳’‘`\-–־—·•,.:;!?()\[\]{}]/g," ").replace(/\s+/g," ").trim().toLowerCase();
-const tsPageName={facts:"מחלקת אקטואליה",led:"פנקס הכישלונות",core:"על מה רבים — נושאי ליבה",dict:"מילון המפלגות",bibi:"גוש נתניהו — רשימת הליכוד",hot:"מחלקת הדיגיטל",five:"5 דקות לפני הקלפי",budget:"המספרים של התקציב",poison:"מכונת הרעל",votes:"הקול השרוף ובאדר–עופר",cmp:"המצפן",polls:"כל הסקרים האחרונים",next:"מי הבא בתור?"};
+const tsPageName={facts:"מחלקת אקטואליה",led:"פנקס הכישלונות",core:"על מה רבים — נושאי ליבה",dict:"מילון המפלגות",bibi:"גוש נתניהו — רשימת הליכוד",hot:"מחלקת הדיגיטל",five:"5 דקות לפני הקלפי",budget:"המספרים של התקציב",poison:"מכונת הרעל",votes:"הקול השרוף ובאדר–עופר",cmp:"המצפן",polls:"כל הסקרים האחרונים",next:"מי הבא בתור?",traffic:"הרמזור — על מה הן חלוקות"};
 let TS_INDEX=null;
 function tsBuild(){
   const ix=[];
@@ -4370,7 +4530,7 @@ function tsBuild(){
     const re=/<b>(\d+) (?:🔒 )?· ([^<]+)<\/b> — ([^<]*)/g; let m; const html=bibi.innerHTML;
     while((m=re.exec(html))){ ix.push({e:"🔴",pg:"bibi",key:"|"+m[2].trim(),label:m[2].trim()+" · הליכוד, מקום "+m[1],sub:"רשימת הליכוד",text:m[2]+" "+m[3]}); }
   }catch(_){}
-  [["🤖","poison","מכונת הרעל — מעגל הכביסה, שופרות, בוטים, הסתה, תדרוכים"],["🗑️","votes","הקול השרוף, אחוז החסימה, באדר עופר, הגוש שבין הגושים, גנץ, הנדל, זליכה, מנדטים"],["🧭","cmp","המצפן הישראלי — מיקום המפלגות על הצירים"],["🎯","next","מי הבא בתור על הקו בסיכון מקום ברשימה קול מכריע מנדט המתלבט"],["📊","polls","סקרים סקר מנדטים גושים ממוצע אחוז החסימה הימורים פולימרקט Polymarket Kalshi שוק ניבוי סיכויים חדשות 12 13 כאן מעריב ישראל היום i24 ערוץ 14 ערוץ 16 וואלה זמן ישראל קנטאר מדגם לזר דיירקט פולס NEXT DATA פילבר מתלבטים"]].forEach(([e,pg,t])=>ix.push({e,pg,key:"",label:tsPageName[pg],text:t}));
+  [["🤖","poison","מכונת הרעל — מעגל הכביסה, שופרות, בוטים, הסתה, תדרוכים"],["🗑️","votes","הקול השרוף, אחוז החסימה, באדר עופר, הגוש שבין הגושים, גנץ, הנדל, זליכה, מנדטים"],["🧭","cmp","המצפן הישראלי — מיקום המפלגות על הצירים"],["🚦","traffic","הרמזור על מה המפלגות חלוקות השוואה עמדות זכויות הקהילה הגאה להטב נישואים אזרחיים שבת גיוס ליבה ועדת חקירה בגץ חוקה מדינה פלסטינית סיפוח ערבים קואליציה מיסים רווחה 18 שרים פריימריז קואליציוניים דת ומדינה קנאביס חטופים הגבלת כהונה"],["🎯","next","מי הבא בתור על הקו בסיכון מקום ברשימה קול מכריע מנדט המתלבט"],["📊","polls","סקרים סקר מנדטים גושים ממוצע אחוז החסימה הימורים פולימרקט Polymarket Kalshi שוק ניבוי סיכויים חדשות 12 13 כאן מעריב ישראל היום i24 ערוץ 14 ערוץ 16 וואלה זמן ישראל קנטאר מדגם לזר דיירקט פולס NEXT DATA פילבר מתלבטים"]].forEach(([e,pg,t])=>ix.push({e,pg,key:"",label:tsPageName[pg],text:t}));
   ix.forEach(x=>{ x.n=tsNorm(x.text); x.nl=tsNorm(x.label); x.sub=x.sub||tsPageName[x.pg]; });
   return ix;
 }
