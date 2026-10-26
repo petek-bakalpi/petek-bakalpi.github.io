@@ -729,8 +729,8 @@
     <button class="menucard" id="h4Traffic"><span class="me">🚦</span><span><div class="mt">על מה בעצם הן חלוקות? <span class="newtag inl">חדש</span></div><div class="md">בוחרים נושא — זכויות הקהילה, גיוס, הסדר מדיני, שבת, מיסים — ורואים את ארבע המפלגות בירוק/צהוב/אדום</div></span><span class="mtime">1 דק'</span></button>
     <button class="menucard" id="h4Polls"><span class="me">📊</span><span><div class="mt">מה אמרו הסקרים האחרונים — והמהמרים?</div><div class="md">10 הסקרים הסופיים בטבלה אחת, מי על החסימה, ושוקי ההימורים</div></span><span class="mtime">3 דק'</span></button>
     <button class="menucard" id="h4Five"><span class="me">⏱️</span><span><div class="mt">יש לכם 5 דקות לפני הקלפי?</div><div class="md">10 העובדות המכריעות של הקמפיין, כל אחת עם 🔎</div></span><span class="mtime">5 דק'</span></button>
-    <button class="menucard" id="h4Facts"><span class="me">🔍</span><span><div class="mt">מישהו שלח ספין בקבוצה?</div><div class="md">מחלקת אקטואליה: הטענה מול מה שנאמר באמת — ואם רוצים להתאמן: ״שכנעו את הדוד״</div></span><span class="mtime">2 דק'</span></button>
-    <div class="h4row"><button class="recchip" id="h4Uncle">🧔 שכנעו את הדוד</button><button class="recchip" id="h4Poison">🤖 מכונת הרעל</button><button class="recchip" id="h4Hot">📡 הדיגיטל</button></div>
+    <button class="menucard" id="h4Facts"><span class="me">🔍</span><span><div class="mt">מישהו שלח ספין בקבוצה?</div><div class="md">מחלקת אקטואליה: הטענה מול מה שנאמר באמת — ולעומק: נושאי הליבה ופנקס הכישלונות</div></span><span class="mtime">2 דק'</span></button>
+    <div class="h4row"><button class="recchip" id="h4Core">🧠 נושאי הליבה</button><button class="recchip" id="h4Led">📓 פנקס הכישלונות</button><button class="recchip" id="h4Poison">🤖 מכונת הרעל</button><button class="recchip" id="h4Hot">📡 הדיגיטל</button></div>
     <button class="menucard" id="h4Votes"><span class="me">🗑️</span><span><div class="mt">קול למפלגה קטנה — נשרף?</div><div class="md">הקול השרוף ובאדר–עופר: לאן באמת הולך קול למפלגה שלא עוברת</div></span><span class="mtime">2 דק'</span></button>
     <button class="menucard" id="h4Dict"><span class="me">📒</span><span><div class="mt">מי זה בכלל זה־וזה ברשימה?</div><div class="md">מילון המפלגות: בעד, נגד, מי ברשימה, ורשימת הליכוד. חיפוש בכל האתר</div></span><span class="mtime">∞</span></button>
     <button class="menucard" id="h4Games"><span class="me">🐜</span><span><div class="mt">עומדים בתור לקלפי?</div><div class="md">נמלים בקלפי, מי אמר?!, מנדטל ועוד 10 משחקים — ללמוד בלי להרגיש</div></span><span class="mtime">🎮</span></button>
@@ -994,7 +994,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="4.0";
+const APP_VERSION="4.0.1";
 const APP_UPDATED="26.10.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
@@ -4425,7 +4425,8 @@ $("#lTraffic").onclick=()=>{ lastTab="learn"; renderTraffic(); show(traffic); };
   $("#h4Polls").onclick=()=>{ lastTab="home"; renderPolls(); show(polls); };
   $("#h4Five").onclick=()=>{ lastTab="home"; renderFive(); show(five); };
   $("#h4Facts").onclick=()=>{ lastTab="home"; renderFacts(); show(facts); };
-  $("#h4Uncle").onclick=()=>{ lastTab="home"; startUncle(); };
+  $("#h4Core").onclick=()=>{ lastTab="home"; renderCore(); show(core); };
+  $("#h4Led").onclick=()=>{ lastTab="home"; renderLedger(); show(led); };
   $("#h4Poison").onclick=()=>{ lastTab="home"; renderPoison(); show(poison); };
   $("#h4Hot").onclick=()=>{ lastTab="home"; renderHot(); show(hot); };
   $("#h4Votes").onclick=()=>{ lastTab="home"; renderVotes(); show(votes); };
