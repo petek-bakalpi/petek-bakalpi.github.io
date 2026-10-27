@@ -479,6 +479,24 @@
 .nxrow .nxs{font-size:10.5px;color:var(--muted);text-align:left;max-width:110px;line-height:1.3}
 .nxrow.edge .nxs b{color:var(--gold)}.nxrow.out .nxs b{color:var(--coral)}
 .nxfoot{margin-top:6px}
+.turnbox{background:var(--ink2);border:1.5px solid rgba(51,214,159,.5);border-radius:16px;padding:10px 12px}
+.turnh{display:flex;justify-content:space-between;align-items:baseline;font-weight:800;font-size:14px}
+.turnbig{font-family:'Secular One';font-size:26px;color:var(--mint)}
+.turnbig small{font-family:'Heebo';font-size:11px;color:var(--muted);font-weight:700}
+.turnsub{font-size:12px;color:var(--muted);margin:2px 0 6px}
+.turnrows{display:flex;flex-direction:column;gap:3px}
+.turnrow{display:grid;grid-template-columns:42px 1fr 70px;gap:8px;align-items:center;font-size:12px}
+.turnrow.pend{opacity:.55}
+.turnrow .th{color:var(--muted);font-weight:700}
+.turnrow .tb{position:relative;height:12px;background:rgba(255,255,255,.05);border-radius:6px;overflow:hidden}
+.turnrow .tb i{position:absolute;right:0;top:0;bottom:0;background:rgba(139,147,184,.45);border-radius:6px}
+.turnrow .tb i.a{background:var(--mint)}
+.turnrow .tv{text-align:left;line-height:1.1}
+.turnrow .tv small{display:block;color:var(--muted);font-size:10px}
+.turnleg{display:flex;gap:12px;font-size:10.5px;color:var(--muted);margin:4px 0}
+.turnleg i{display:inline-block;width:10px;height:10px;border-radius:3px;background:rgba(139,147,184,.45);margin-left:4px;vertical-align:-1px}
+.turnleg i.a{background:var(--mint)}
+.turnx{margin:4px 0 0;padding-right:16px;font-size:11.5px;color:var(--paper);line-height:1.5}
 .h4head{text-align:center;margin:2px 0 0}
 .h4title{font-size:clamp(28px,8vw,40px);margin:2px 0 0;line-height:1.05}
 .h4sub{color:var(--muted);font-size:13px;margin:4px 0 0}
@@ -726,6 +744,7 @@
   <!-- INTRO -->
   <section class="screen infopage on" id="home4">
     <div class="h4head"><div class="h4cd" id="cdMain2"></div><div class="kicker">הכנסת ה־26 · 27.10.2026</div><h1 class="h4title">פתק <span class="hl">בקלפי</span></h1><p class="h4sub" id="h4sub">יום הבחירות. בלי נאומים — רק מה שעוזר להחליט, ואיפה מצביעים.</p></div>
+    <div class="turnbox" id="h4Turn"></div>
     <div class="ledsec">🤔 מה אתם צריכים עכשיו?</div>
     <button class="menucard" id="h4Rec" style="border-color:rgba(245,184,65,.55)"><span class="me">📌</span><span><div class="mt">רוצים לדעת מה אנחנו היינו עושים? <span class="newtag inl">חדש</span></div><div class="md">המלצת המערכת: דירוג ארבע מפלגות המחנה לפי סיכונים — לא לפי אידיאולוגיה. דעה, מסומנת ככזו</div></span><span class="mtime">2 דק'</span></button>
     <button class="menucard" id="h4Quiz"><span class="me">🗳️</span><span><div class="mt">עוד לא בטוחים למי?</div><div class="md">השאלון: 11 הצהרות בדקה — איזו מפלגה במחנה מתאימה לכם. או הגרסה המעמיקה, 21 שאלות ניטרליות</div></span><span class="mtime">1–3 דק'</span></button>
@@ -1002,7 +1021,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="4.1.1";
+const APP_VERSION="4.2";
 const APP_UPDATED="27.10.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
@@ -3828,6 +3847,7 @@ function deepOpen(pg,key){
   else if(pg==="next"){ renderNext(); show(next); return; }
   else if(pg==="traffic"){ renderTraffic(key); show(traffic); return; }
   else if(pg==="rec"){ renderRec(); show(rec); return; }
+  else if(pg==="home4"){ lastTab="home"; homeClassic=false; show(home4); const t=$("#h4Turn"); if(t) setTimeout(()=>t.scrollIntoView({behavior:"smooth",block:"start"}),50); return; }
   else if(pg==="five"){ renderFive(); show(five); return; }
   else if(pg==="cmp"){ renderCompass(); show(cmp); return; }
   else if(pg==="dict"||pg==="bibi"){
@@ -4461,6 +4481,24 @@ function renderRec(){
 }
 $("#lRec").onclick=()=>{ lastTab="learn"; renderRec(); show(rec); };
 
+
+/* ===== 📈 אחוז ההצבעה — מתעדכן ידנית בפריסה (המקור: ועדת הבחירות המרכזית, דרך הכתבים) ===== */
+const TURNOUT={updated:"27.10.2026 15:10",src:"https://www.ynet.co.il/news/article/bkkekx02mg",final22:70.6,
+ rows:[["10:00",16.7,15.9,"שיא ל־10:00 מאז 1981 · ~1.2 מיליון"],["12:00",31.5,28.4,"שיא ל־12:00 מאז 1973 · 2,309,587"],["14:00",44.9,38.9,"״חצינו את כל השיאים מאז 1973״ · 3.29 מיליון"],["16:00",null,47.5,""],["18:00",null,57.5,""],["20:00",null,66.3,""],["22:00",null,70.6,"סופי 2022"]],
+ extra:["🪖 חיילים: 48% עד 13:00 (2022: 44.4%) — ההצבעה בבסיסים החלה שבוע קודם, 850 קלפיות","👥 בעלי זכות בחירה: 7,331,981 · 12,018 קלפיות רגילות","⚖️ 13:48 — צו ביניים של יו״ר הוועדה: ליהדות התורה אסור לעקוב בקלפיות אחרי מי הצביע (זמן ישראל)"]};
+function renderTurnout(){
+  const el=$("#h4Turn"); if(!el) return;
+  const last=[...TURNOUT.rows].reverse().find(r=>r[1]!=null);
+  const diff=last?(last[1]-last[2]):0;
+  el.innerHTML=`<div class="turnh"><span>📈 אחוז ההצבעה הארצי</span><span class="turnbig">${last?last[1]+"%":"—"}<small> עד ${last?last[0]:""}</small></span></div>
+    <div class="turnsub">${last?`לעומת <b>${last[2]}%</b> באותה שעה ב־2022 (<b style="color:var(--mint)">+${diff.toFixed(1)}</b> נק׳) · ${last[3]}`:""}</div>
+    <div class="turnrows">${TURNOUT.rows.map(([h,a,b,n])=>`<div class="turnrow${a==null?" pend":""}"><span class="th">${h}</span><span class="tb"><i style="width:${b}%"></i><i class="a" style="width:${a||0}%"></i></span><span class="tv">${a!=null?`<b>${a}%</b>`:"<span style='color:var(--muted)'>בקרוב</span>"}<small>${b}%</small></span></div>`).join("")}</div>
+    <div class="turnleg"><span><i class="a"></i>2026</span><span><i></i>2022 (סופי ${TURNOUT.final22}%)</span></div>
+    <ul class="turnx">${TURNOUT.extra.map(x=>`<li>${x}</li>`).join("")}</ul>
+    <div class="tiny" style="margin:4px 0 0">נתוני ועדת הבחירות המרכזית כפי שדווחו (ynet, וואלה, N12, זמן ישראל). מתעדכן ידנית — עדכון אחרון ${TURNOUT.updated}. פילוח לפי יישוב לא מתפרסם במהלך היום. <a class="srch" style="margin:0" target="_blank" rel="noopener" href="${TURNOUT.src}">המקור ↗</a></div>`;
+}
+renderTurnout();
+
 /* ===== מסך יום הבחירות (v4) ===== */
 (function(){
   const go=(id)=>{ const b=$("#"+id); if(b) b.click(); };
@@ -4565,7 +4603,7 @@ function renderTraffic(key){
 
 /* ================= TACHLES SEARCH ================= */
 const tsNorm=t=>(t||"").toString().replace(/<[^>]*>/g," ").replace(/[״"'׳’‘`\-–־—·•,.:;!?()\[\]{}]/g," ").replace(/\s+/g," ").trim().toLowerCase();
-const tsPageName={facts:"מחלקת אקטואליה",led:"פנקס הכישלונות",core:"על מה רבים — נושאי ליבה",dict:"מילון המפלגות",bibi:"גוש נתניהו — רשימת הליכוד",hot:"מחלקת הדיגיטל",five:"5 דקות לפני הקלפי",budget:"המספרים של התקציב",poison:"מכונת הרעל",votes:"הקול השרוף ובאדר–עופר",cmp:"המצפן",polls:"כל הסקרים האחרונים",next:"מי הבא בתור?",traffic:"הרמזור — על מה הן חלוקות",rec:"המלצת המערכת"};
+const tsPageName={facts:"מחלקת אקטואליה",led:"פנקס הכישלונות",core:"על מה רבים — נושאי ליבה",dict:"מילון המפלגות",bibi:"גוש נתניהו — רשימת הליכוד",hot:"מחלקת הדיגיטל",five:"5 דקות לפני הקלפי",budget:"המספרים של התקציב",poison:"מכונת הרעל",votes:"הקול השרוף ובאדר–עופר",cmp:"המצפן",polls:"כל הסקרים האחרונים",next:"מי הבא בתור?",traffic:"הרמזור — על מה הן חלוקות",rec:"המלצת המערכת",home4:"📈 אחוז ההצבעה (מסך יום הבחירות)"};
 let TS_INDEX=null;
 function tsBuild(){
   const ix=[];
@@ -4583,7 +4621,7 @@ function tsBuild(){
     const re=/<b>(\d+) (?:🔒 )?· ([^<]+)<\/b> — ([^<]*)/g; let m; const html=bibi.innerHTML;
     while((m=re.exec(html))){ ix.push({e:"🔴",pg:"bibi",key:"|"+m[2].trim(),label:m[2].trim()+" · הליכוד, מקום "+m[1],sub:"רשימת הליכוד",text:m[2]+" "+m[3]}); }
   }catch(_){}
-  [["🤖","poison","מכונת הרעל — מעגל הכביסה, שופרות, בוטים, הסתה, תדרוכים"],["🗑️","votes","הקול השרוף, אחוז החסימה, באדר עופר, הגוש שבין הגושים, גנץ, הנדל, זליכה, מנדטים"],["🧭","cmp","המצפן הישראלי — מיקום המפלגות על הצירים"],["📌","rec","המלצת המערכת דירוג למי להצביע הקול הכי בטוח סילמן סיכונים ביחד הדמוקרטים ישר ליברמן בנט גולן איזנקוט"],["🚦","traffic","הרמזור על מה המפלגות חלוקות השוואה עמדות זכויות הקהילה הגאה להטב נישואים אזרחיים שבת גיוס ליבה ועדת חקירה בגץ חוקה מדינה פלסטינית סיפוח ערבים קואליציה מיסים רווחה 18 שרים פריימריז קואליציוניים דת ומדינה קנאביס חטופים הגבלת כהונה"],["🎯","next","מי הבא בתור על הקו בסיכון מקום ברשימה קול מכריע מנדט המתלבט"],["📊","polls","סקרים סקר מנדטים גושים ממוצע אחוז החסימה הימורים פולימרקט Polymarket Kalshi שוק ניבוי סיכויים חדשות 12 13 כאן מעריב ישראל היום i24 ערוץ 14 ערוץ 16 וואלה זמן ישראל קנטאר מדגם לזר דיירקט פולס NEXT DATA פילבר מתלבטים"]].forEach(([e,pg,t])=>ix.push({e,pg,key:"",label:tsPageName[pg],text:t}));
+  [["🤖","poison","מכונת הרעל — מעגל הכביסה, שופרות, בוטים, הסתה, תדרוכים"],["🗑️","votes","הקול השרוף, אחוז החסימה, באדר עופר, הגוש שבין הגושים, גנץ, הנדל, זליכה, מנדטים"],["🧭","cmp","המצפן הישראלי — מיקום המפלגות על הצירים"],["📈","home4","אחוז הצבעה אחוזי הצבעה הצבעה ארצי שיא 1973 ועדת הבחירות"],["📌","rec","המלצת המערכת דירוג למי להצביע הקול הכי בטוח סילמן סיכונים ביחד הדמוקרטים ישר ליברמן בנט גולן איזנקוט"],["🚦","traffic","הרמזור על מה המפלגות חלוקות השוואה עמדות זכויות הקהילה הגאה להטב נישואים אזרחיים שבת גיוס ליבה ועדת חקירה בגץ חוקה מדינה פלסטינית סיפוח ערבים קואליציה מיסים רווחה 18 שרים פריימריז קואליציוניים דת ומדינה קנאביס חטופים הגבלת כהונה"],["🎯","next","מי הבא בתור על הקו בסיכון מקום ברשימה קול מכריע מנדט המתלבט"],["📊","polls","סקרים סקר מנדטים גושים ממוצע אחוז החסימה הימורים פולימרקט Polymarket Kalshi שוק ניבוי סיכויים חדשות 12 13 כאן מעריב ישראל היום i24 ערוץ 14 ערוץ 16 וואלה זמן ישראל קנטאר מדגם לזר דיירקט פולס NEXT DATA פילבר מתלבטים"]].forEach(([e,pg,t])=>ix.push({e,pg,key:"",label:tsPageName[pg],text:t}));
   ix.forEach(x=>{ x.n=tsNorm(x.text); x.nl=tsNorm(x.label); x.sub=x.sub||tsPageName[x.pg]; });
   return ix;
 }
