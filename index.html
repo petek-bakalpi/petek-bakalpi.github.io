@@ -480,6 +480,33 @@
 .nxrow.edge .nxs b{color:var(--gold)}.nxrow.out .nxs b{color:var(--coral)}
 .nxfoot{margin-top:6px}
 .exitdiet{font-size:12.5px;line-height:1.5;background:rgba(245,184,65,.08);border-radius:10px;padding:7px 9px;margin:0 0 8px}
+.scenbox{display:flex;flex-direction:column;gap:8px}
+.scen{background:var(--ink2);border:1px solid rgba(139,147,184,.22);border-radius:14px;padding:10px 12px;text-align:right}
+.scen.top{border-color:rgba(245,184,65,.6)}
+.scen .sh{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-weight:800;font-size:14px}
+.scen .sh small{color:var(--muted);font-size:11px;font-weight:700;white-space:nowrap}
+.scen .sd{font-size:12.5px;line-height:1.5;margin:4px 0 6px;color:#C9D0EA}
+.scen .sd b{color:var(--paper)}
+.scen .sw{font-size:12.5px;line-height:1.5;background:rgba(255,107,107,.09);border-radius:9px;padding:6px 9px;margin:0 0 6px}
+.scen .sw b{color:var(--coral)}
+.coalbox{background:var(--ink2);border:1.5px solid rgba(42,98,222,.6);border-radius:16px;padding:10px 12px}
+.coalsrc{display:flex;flex-wrap:wrap;gap:4px;margin:0 0 6px}
+.coalsrc button{font-size:11px;border:1px solid rgba(139,147,184,.3);border-radius:999px;padding:2px 8px;background:transparent;color:var(--muted);cursor:pointer;font-family:inherit}
+.coalsrc button.on{border-color:var(--gold);color:var(--gold);font-weight:800}
+.cake{display:block;width:100%;max-width:360px;margin:0 auto}
+.coalsum{text-align:center;font-size:13px;line-height:1.45;margin:2px 0 8px}
+.coalsum .big{font-family:'Secular One';font-size:30px;line-height:1}
+.coalsum .ok{color:var(--mint)}.coalsum .mino{color:var(--gold)}.coalsum .no{color:var(--coral)}
+.coalp{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin:0 0 8px}
+.coalp button{font-size:12px;border:1.5px solid rgba(139,147,184,.3);border-radius:999px;padding:4px 10px;background:transparent;color:var(--paper);cursor:pointer;font-family:inherit;font-weight:700}
+.coalp button.in{background:var(--blue);border-color:var(--blue);color:#fff}
+.coalp button.sup{border-color:var(--mint);color:var(--mint);border-style:dashed}
+.coalp button.in.bibi{background:var(--coral);border-color:var(--coral)}
+.coalw{font-size:12px;line-height:1.5;margin:0 0 4px;padding:5px 9px;border-radius:9px;background:rgba(255,107,107,.09)}
+.coalw b{color:var(--coral)}
+.coalw.ok{background:rgba(51,214,159,.1)}.coalw.ok b{color:var(--mint)}
+.resbox{border:1px dashed rgba(139,147,184,.4);border-radius:10px;padding:7px 9px;margin:8px 0 0;font-size:12px;color:var(--muted)}
+.resbox b{color:var(--paper)}
 .exitbox{background:var(--ink2);border:1.5px solid rgba(245,184,65,.7);border-radius:16px;padding:10px 12px;margin:0 0 8px;box-shadow:0 0 0 3px rgba(245,184,65,.08)}
 .exith{display:flex;justify-content:space-between;align-items:baseline;font-weight:800;font-size:14px}
 .exith small{color:var(--muted);font-size:11px;font-weight:700}
@@ -756,33 +783,16 @@
 
   <!-- INTRO -->
   <section class="screen infopage on" id="home4">
-    <div class="h4head"><div class="h4cd" id="cdMain2"></div><div class="kicker">הכנסת ה־26 · 27.10.2026</div><h1 class="h4title">פתק <span class="hl">בקלפי</span></h1><p class="h4sub" id="h4sub">יום הבחירות. בלי נאומים — רק מה שעוזר להחליט, ואיפה מצביעים.</p></div>
+    <div class="h4head"><div class="h4cd" id="cdMain2"></div><div class="kicker">הכנסת ה־26 · התוצאות</div><h1 class="h4title">פתק <span class="hl">בקלפי</span></h1><p class="h4sub" id="h4sub">יום הבחירות. בלי נאומים — רק מה שעוזר להחליט, ואיפה מצביעים.</p></div>
     <div class="exitbox" id="h4Exit"></div>
+    <div class="ledsec">🧩 מה עכשיו? התרחישים — ומה מפריע להם</div>
+    <div class="scenbox" id="h4Scen"></div>
+    <div class="ledsec">🍰 בנו קואליציה בעצמכם</div>
+    <div class="coalbox" id="h4Coal"></div>
     <div class="turnbox" id="h4Turn"></div>
-    <div class="ledsec">🤔 מה אתם צריכים עכשיו?</div>
-    <button class="menucard" id="h4Rec" style="border-color:rgba(245,184,65,.55)"><span class="me">📌</span><span><div class="mt">רוצים לדעת מה אנחנו היינו עושים? <span class="newtag inl">חדש</span></div><div class="md">המלצת המערכת: דירוג ארבע מפלגות המחנה לפי סיכונים — לא לפי אידיאולוגיה. דעה, מסומנת ככזו</div></span><span class="mtime">2 דק'</span></button>
-    <button class="menucard" id="h4Quiz"><span class="me">🗳️</span><span><div class="mt">עוד לא בטוחים למי?</div><div class="md">השאלון: 11 הצהרות בדקה — איזו מפלגה במחנה מתאימה לכם. או הגרסה המעמיקה, 21 שאלות ניטרליות</div></span><span class="mtime">1–3 דק'</span></button>
-    <div class="h4row"><button class="recchip" id="h4Quick">🔥 מהיר · 11</button><button class="recchip" id="h4Deep">🎓 מעמיק · 21</button><button class="recchip" id="h4Cmp">🧭 המצפן</button><button class="recchip" id="h4Last" style="display:none;border-color:rgba(245,184,65,.6);color:var(--gold)">🏆 התוצאה שלי</button></div>
-    <button class="menucard" id="h4Next"><span class="me">🎯</span><span><div class="mt">מתלבטים בין שתיים? איפה הקול שלכם מכריע מנדט?</div><div class="md">מי על הקו ומי הבא בתור בכל מפלגה במחנה — לפי 8 הסקרים הסופיים</div></span><span class="mtime">2 דק'</span></button>
-    <button class="menucard" id="h4Traffic"><span class="me">🚦</span><span><div class="mt">על מה בעצם הן חלוקות? <span class="newtag inl">חדש</span></div><div class="md">בוחרים נושא — זכויות הקהילה, גיוס, הסדר מדיני, שבת, מיסים — ורואים את ארבע המפלגות בירוק/צהוב/אדום</div></span><span class="mtime">1 דק'</span></button>
-    <button class="menucard" id="h4Polls"><span class="me">📊</span><span><div class="mt">מה אמרו הסקרים האחרונים — והמהמרים?</div><div class="md">10 הסקרים הסופיים בטבלה אחת, מי על החסימה, ושוקי ההימורים</div></span><span class="mtime">3 דק'</span></button>
-    <button class="menucard" id="h4Five"><span class="me">⏱️</span><span><div class="mt">יש לכם 5 דקות לפני הקלפי?</div><div class="md">10 העובדות המכריעות של הקמפיין, כל אחת עם 🔎</div></span><span class="mtime">5 דק'</span></button>
-    <button class="menucard" id="h4Facts"><span class="me">🔍</span><span><div class="mt">מישהו שלח ספין בקבוצה?</div><div class="md">מחלקת אקטואליה: הטענה מול מה שנאמר באמת — ולעומק: נושאי הליבה ופנקס הכישלונות</div></span><span class="mtime">2 דק'</span></button>
-    <div class="h4row"><button class="recchip" id="h4Core">🧠 נושאי הליבה</button><button class="recchip" id="h4Led">📓 פנקס הכישלונות</button><button class="recchip" id="h4Poison">🤖 מכונת הרעל</button><button class="recchip" id="h4Hot">📡 הדיגיטל</button></div>
-    <button class="menucard" id="h4Votes"><span class="me">🗑️</span><span><div class="mt">קול למפלגה קטנה — נשרף?</div><div class="md">מעבדת הקול השרוף: סימולציה — 10,000 קולות ביד שלכם, תראו בעיניים לאן הם זורמים. או ההסבר בכתב על באדר–עופר</div></span><span class="mtime">2 דק'</span></button>
-    <div class="h4row"><button class="recchip" id="h4WvLab">🧪 המעבדה — סימולציה</button><button class="recchip" id="h4WvText">📖 ההסבר בכתב</button></div>
-    <button class="menucard" id="h4Dict"><span class="me">📒</span><span><div class="mt">מי זה בכלל זה־וזה ברשימה?</div><div class="md">מילון המפלגות: בעד, נגד, מי ברשימה, ורשימת הליכוד. חיפוש בכל האתר</div></span><span class="mtime">∞</span></button>
-    <button class="menucard" id="h4Games"><span class="me">🐜</span><span><div class="mt">עומדים בתור לקלפי?</div><div class="md">נמלים בקלפי, מי אמר?!, מנדטל ועוד 10 משחקים — ללמוד בלי להרגיש</div></span><span class="mtime">🎮</span></button>
-    <div class="ledsec">🗳️ פרקטי — מה להביא ולאן</div>
-    <div class="infocard h4prac">
-      <p><b>שעות:</b> 07:00–22:00 ברוב הקלפיות; יישובים קטנים (עד 350), בתי חולים ובתי אבות — 08:00–20:00. <b>יום שבתון</b> — אסור לנכות מהחופשה; מי שעובד זכאי ל־200%.</p>
-      <p><b>מביאים אחד מאלה:</b> תעודת זהות · דרכון ישראלי בתוקף · רישיון נהיגה בתוקף · תעודה צבאית אישית. הודעה לבוחר — לא חובה, רק מקצרת.</p>
-      <p><b>הפתקים של המחנה:</b> ישר! — <b class="slip">דרך</b> · ביחד — <b class="slip">רק</b> · הדמוקרטים — <b class="slip">אמת</b> · ישראל ביתנו — <b class="slip">ל</b>. רק פתק מהקלפי, אחד במעטפה, לא מקומט ולא מסומן.</p>
-      <p><b>תחבורה חינם:</b> רכבת ישראל ואוטובוסים בין־עירוניים מעל 15 ק״מ — משני 20:00 עד סוף יום הבחירות (קווים עירוניים בתשלום; מוקד 8787*).</p>
-      <p><b>איפה הקלפי שלי?</b> <a class="srch" style="margin:0" target="_blank" rel="noopener" href="https://www.gov.il/he/service/vote_location">איתור קלפי לפי ת״ז (gov.il) ↗</a> · <a class="srch" style="margin:0" target="_blank" rel="noopener" href="https://bechirot.gov.il">ועדת הבחירות ↗</a>. מפונים — בקלפי ייעודית או במקום המגורים המקורי; מוגבלי ניידות — ״קלפי נגישה מיוחדת״ בכל מקום, במעטפה כפולה.</p>
-      <p class="tiny" style="margin:0">לפי מדריכי ynet ו־N12 (26.10). ספירה מ־22:00; תוצאות סופיות אחרי המעטפות הכפולות.</p>
-    </div>
-    <div style="display:flex;gap:8px;margin:6px 0 2px"><button class="btn btn-go" id="h4Share" style="margin:0;flex:1">📤 הלכתם? שלחו לאחד שעוד לא</button></div>
+    <div class="ledsec">🧭 עוד באתר</div>
+    <div class="h4row" id="h4More"><button class="recchip" data-pg="facts" data-k="המדגמים">📺 המדגמים — הפריט</button><button class="recchip" data-pg="facts" data-k="הדאטה">📉 הדאטה</button><button class="recchip" data-pg="polls">📊 הסקרים וההימורים</button><button class="recchip" data-pg="next">🎯 מי נכנס לכנסת</button><button class="recchip" data-pg="rec">📌 ההמלצה שלנו (לפני)</button><button class="recchip" data-pg="traffic">🚦 הרמזור</button><button class="recchip" data-pg="facts">🔍 מחלקת אקטואליה</button></div>
+    <div style="display:flex;gap:8px;margin:6px 0 2px"><button class="btn btn-go" id="h4Share" style="margin:0;flex:1">📤 שלחו את התמונה האמיתית לקבוצה</button></div>
     <p class="verline" id="verline2"></p>
     <div class="recrow"><button class="recchip" id="toClassic">🏠 המסך הקלאסי — השאלון</button><button class="recchip" id="h4Disc">❓ מי עומד מאחורי זה?</button></div>
   </section>
@@ -1035,7 +1045,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="4.4";
+const APP_VERSION="4.5";
 const APP_UPDATED="27.10.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
@@ -2436,13 +2446,13 @@ const FACTS=[
   twist:"מדגם הוא לא תוצאה. ב־2022 המדגמים ב־22:00 נתנו לגוש נתניהו 61–62 והסופי היה 64 — הגושים זזים ב־2–3 מנדטים לאורך הלילה. הפעם המעטפות הכפולות (חיילים, דיפלומטים, מאושפזים, מוגבלי ניידות — מאות אלפים) נספרות רק ביום רביעי־חמישי, ואחוז הצבעה של שיא (74.3% עד 20:00) מקשה על מודל המדגם. 50 מול 52–53 זה בטווח הטעות — הכיוון ברור (אין 61 לנתניהו), ההרכב המדויק לא. ומה שבטוח: עם המשותפת (10–11) ורע״ם (7) מחוץ לשני הגושים, הקואליציה הבאה תוכרע בשאלת 17–18 המנדטים הערביים ובשאלה אם מישהו מגוש נתניהו זז.",
   bottom:"ליכוד גדול, גוש קטן. 50 בשלושה ערוצים = אין 61 לנתניהו במדגמים — ועכשיו סופרים. <button class='dlchip' data-pg='polls'>📊 מה הסקרים אמרו</button> <button class='dlchip' data-pg='next'>🎯 מי נכנס במקומות הגבוליים</button> <button class='dlchip' data-pg='votes'>🗳️ הקול השרוף</button>",
   srch:"מדגמים מדגם 22:00 ליכוד ישר ביחד הדמוקרטים גוש נתניהו 50 גוש השינוי חדשות 12 חדשות 13 כאן 11 ערוץ 14 מנו גבע קמיל פוקס מעטפות כפולות אין 61"},
-{e:"📉", t:"הדיאטה: מה באמת השתנה מהסקרים — הגדולות שתו את הקטנות, הערבים יצאו בהמוניהם, וממשלת ה־7 באוקטובר ירדה מ־64 ל־50. אין דרמה — יש ״לא״ לנתניהו (דעתנו)", dt:"27.10.2026 22:30",
+{e:"📉", t:"הדאטה: מה באמת השתנה מהסקרים — הגדולות שתו את הקטנות, הערבים יצאו בהמוניהם, וממשלת ה־7 באוקטובר ירדה מ־64 ל־50. אין דרמה — יש ״לא״ לנתניהו (דעתנו)", dt:"27.10.2026 22:30",
   url:"https://www.ynet.co.il/news/elections2026/article/syyu4or2ze",
   claim:"״דרמה במדגמים״, ״הליכוד המפלגה הגדולה בפער עצום — העם אמר את דברו״, ״מהפך״ (ערוץ 14: 60). כל ערוץ מוכר לכם לילה מותח.",
   said:"<b>מה אומרים המספרים מול ממוצע 8 הסקרים הסופיים (23.10):</b><div class='ptwrap' style='margin:8px 0'><table class='ptbl' style='min-width:0;font-size:12px'><thead><tr><th>מפלגה</th><th>ממוצע סקרים<small>8 אחרונים</small></th><th>מדגמים<small>12/13/כאן</small></th><th>שינוי</th></tr></thead><tbody><tr><td>הליכוד</td><td>19.6</td><td>24–25</td><td style='color:var(--coral);font-weight:800'>+5</td></tr><tr><td>עוצמה יהודית</td><td>8.0</td><td>6–7</td><td>−1.5</td></tr><tr><td>ש״ס</td><td>7.6</td><td>6–8</td><td>−1</td></tr><tr><td>יהדות התורה</td><td>7.5</td><td>6–7</td><td>−1</td></tr><tr><td>הציונות הדתית</td><td>6.6</td><td>6</td><td>−0.5</td></tr><tr><td>וינטר</td><td>0.5</td><td>0</td><td>לא עבר</td></tr><tr><td>גוש נתניהו</td><td class='avg'>49.9</td><td class='avg'>50</td><td class='avg'>0</td></tr><tr><td>ישר!</td><td>22.1</td><td>21–23</td><td>0</td></tr><tr><td>ביחד</td><td>13.9</td><td>12–14</td><td>−1</td></tr><tr><td>הדמוקרטים</td><td>9.0</td><td>9–10</td><td>+0.5</td></tr><tr><td>ישראל ביתנו</td><td>7.9</td><td>7–9</td><td>0</td></tr><tr><td>המילואימניקים (הנדל)</td><td>3.0</td><td>0</td><td>לא עבר</td></tr><tr><td>גוש השינוי</td><td class='avg'>52.9</td><td class='avg'>52–53</td><td class='avg'>0</td></tr><tr><td>המשותפת</td><td>8.9</td><td>10–11</td><td style='color:var(--mint);font-weight:800'>+2</td></tr><tr><td>רע״ם</td><td>5.4</td><td>7</td><td style='color:var(--mint);font-weight:800'>+1.5</td></tr><tr><td>המפלגות הערביות</td><td class='avg'>14.3</td><td class='avg'>17–18</td><td class='avg' style='color:var(--mint)'>+3.5</td></tr></tbody></table></div><b>1. הגדולות שתו את הקטנות.</b> הליכוד קפץ ב־5 — אבל הגוש לא זז (49.9 → 50): הקולות באו מעוצמה יהודית, הציונות הדתית, יהדות התורה ומווינטר שלא עבר. אותו דבר בצד השני: הנדל (3) לא עבר, וביחד/הדמוקרטים/ביתנו בטווח הסקרים. <b>2. הערבים יצאו בהמוניהם.</b> לפי ynet (22:09): אום אל־פחם 70.1% (2022: 38.3%), סח׳נין 83.5% (68.4%), רהט 79.8% (60.6%), כפר קאסם 81.3% (66.9%). המשותפת+רע״ם: 10 בכנסת ה־25 → 16–18 במדגמים (14.3 בסקרים) — מעל 15 של הרשימה המשותפת ב־2020. <b>3. ממשלת ה־7 באוקטובר.</b> ב־2022: ליכוד 32, ש״ס 11, יהדות התורה 7, הציונות הדתית–עוצמה–נעם 14 = <b>64</b>. במדגמים: <b>50</b>. מינוס 14. עם 4 המנדטים של סער ואלקין (תקווה חדשה הצטרפה בספטמבר 2024 → 68): <b>מינוס 18</b> — זו גם כותרת דה־מרקר הערב.",
   twist:"ה״דרמה״ היא פוזיציה. ערוץ 14 צריך 60 כדי שהצופים יישארו; הערוצים הגדולים צריכים ״לילה צמוד״ כדי שתישארו עד 2 בלילה. מה שהמספרים אומרים הוא משעמם ופשוט: הגוש של נתניהו קיבל בדיוק מה שהסקרים אמרו (50), הגוש השני קיבל בדיוק מה שהסקרים אמרו (52–53), ומה שהסקרים פספסו הוא רק אחד — כמה ערבים יצאו להצביע. 64 → 50 אחרי 7 באוקטובר, שלוש שנים אחרי, אחרי קטארגייט — זה לא ״הליכוד המפלגה הגדולה״. זה ציבור שאמר לא. ועדיין, בזהירות: מדגם, לא תוצאה; המעטפות הכפולות יכולות להזיז מנדט־שניים; ו־50 מול 53 לא בונה קואליציה בלי המשותפת או רע״ם — שם השאלה האמיתית של השבועות הבאים.",
   bottom:"הליכוד גדל כי בלע את הקטנות, לא כי גדל. הגוש: 50, כמו בסקרים. ממשלת ה־7 באוקטובר: מינוס 14 (ומינוס 18 עם סער). דעתנו — אבל המספרים כאן. <button class='dlchip' data-pg='facts' data-k='המדגמים'>📺 טבלת 6 הערוצים</button> <button class='dlchip' data-pg='polls'>📊 8 הסקרים הסופיים</button> <button class='dlchip' data-pg='home4'>📈 אחוז ההצבעה</button>",
-  srch:"הדיאטה ניתוח מדגמים מול סקרים הגדולות שתו את הקטנות ערבים אחוז הצבעה אום אל פחם סחנין רהט ממשלת 7 באוקטובר 64 50 מינוס 14 מינוס 18 סער אלקין תקווה חדשה דעתנו"},
+  srch:"הדאטה ניתוח מדגמים מול סקרים הגדולות שתו את הקטנות ערבים אחוז הצבעה אום אל פחם סחנין רהט ממשלת 7 באוקטובר 64 50 מינוס 14 מינוס 18 סער אלקין תקווה חדשה דעתנו"},
  {e:"🤝", t:"הפגישה החשאית: נתניהו נפגש בארבע עיניים, בקיץ 2024, עם ש׳ — הישראלי הבכיר בפרויקט ההשפעה הקטארי וחשוד בקטארגייט. לא ביומנים, ברנע לא ידע", dt:"25.10.2026",
   url:"https://www.mako.co.il/news-politics/2026_q4/Article-8658411fb3471a1026.htm",
   claim:"הקו של הליכוד מאז פרוץ הפרשה: ״קטארגייט היא פרשה של יועצים״, ״נתניהו לא ידע״, ״עלילה של המשטרה והפרקליטות״. אוריך בחקירה: ״אני מעולם לא פגעתי בביטחון המדינה״; על תיאום הפגישה — ״לא זוכר משהו ספציפי, אבל לדעתי ראש הממשלה מכיר אותו״.",
@@ -3826,7 +3836,7 @@ function cdText(){
 }
 function cdTick(){
   const c=cdText(), el=$("#cdMain"), el2=$("#cdMain2"); if(el) el.textContent=c.t; if(el2){ el2.textContent=c.t; el2.classList.toggle("urgent",c.d===0&&!c.closed&&c.h!==undefined&&c.h<3); }
-  const sub=$("#h4sub"); if(sub) sub.textContent= c.d>1?`עוד ${c.d} ימים. בלי נאומים — רק מה שעוזר להחליט, ואיפה מצביעים.`: c.d===1?"מחר. בלי נאומים — רק מה שעוזר להחליט, ואיפה מצביעים.": c.d===0?(c.closed?"הקלפיות נסגרו. עכשיו — מדגמים, ספירה, ומעטפות כפולות.":"היום. הקלפיות פתוחות עד 22:00 — לפני הקפה, לפני הכול."):"הבחירות מאחורינו. תודה שהצבעתם.";
+  const sub=$("#h4sub"); if(sub) sub.textContent= c.d>1?`עוד ${c.d} ימים. בלי נאומים — רק מה שעוזר להחליט, ואיפה מצביעים.`: c.d===1?"מחר. בלי נאומים — רק מה שעוזר להחליט, ואיפה מצביעים.": c.d===0?(c.closed?"הקלפיות נסגרו. עכשיו — מדגמים, תרחישים, וספירת האמת.":"היום. הקלפיות פתוחות עד 22:00 — לפני הקפה, לפני הכול."):"הבחירות מאחורינו. תודה שהצבעתם.";
 }
 (function(){
   cdTick(); setInterval(cdTick,30e3);
@@ -4526,6 +4536,7 @@ function renderTurnout(){
     <div class="tiny" style="margin:4px 0 0">נתוני ועדת הבחירות המרכזית כפי שדווחו (ynet, וואלה, N12, זמן ישראל). מתעדכן ידנית — עדכון אחרון ${TURNOUT.updated}. פילוח לפי יישוב לא מתפרסם במהלך היום. <a class="srch" style="margin:0" target="_blank" rel="noopener" href="${TURNOUT.src}">המקור ↗</a></div>`;
 }
 renderTurnout();
+const RESULTS={pct:null,updated:"",txt:"",src:"https://votes26.bechirot.gov.il/"};
 const EXITPOLLS={updated:"27.10.2026 22:00",
  ch:[{src:"חדשות 12",inst:"מנו גבע",s:{likud:24,yashar:22,byachad:12,joint:11,beit:9,dem:9,shas:8,raam:7,utj:6,otzma:6,rz:6}},
      {src:"חדשות 13",inst:"קמיל פוקס",s:{likud:25,yashar:23,byachad:14,joint:10,dem:9,beit:7,utj:7,raam:7,shas:6,otzma:6,rz:6}},
@@ -4541,45 +4552,101 @@ function renderExit(){
   const pts=POLL_P.filter(([k])=>main.some(c=>c.s[k])).map(([k,n,c])=>`<span class="${c}">${n} <b>${rng(k)}</b></span>`).join("");
   el.innerHTML=`<div class="exith"><span>📺 המדגמים — 22:00</span><small>6 ערוצים</small></div>
     <div class="exitlead"><b>הליכוד המפלגה הגדולה (24–25), ישר! שנייה (21–23). גוש נתניהו 50 בכל שלושת הערוצים — אין 61 לאף אחד.</b> גוש השינוי 52–53, המפלגות הערביות 17–18. וינטר והנדל לא עוברים. הערוצים הקטנים (16, i24) קרובים: 51–53 מול 49–53. ערוץ 14 לבד: 60 לגוש נתניהו.</div>
-    <div class="exitdiet"><b>📉 הדיאטה — מה באמת השתנה מהסקרים (דעתנו):</b> 1) <b>הגדולות שתו את הקטנות</b> — הליכוד מ־19.6 בממוצע הסקרים ל־24–25, על חשבון עוצמה/ציונות דתית/יהדות התורה/וינטר; הגוש נשאר 50. 2) <b>הערבים יצאו בהמוניהם</b> — אום אל־פחם 70% (2022: 38%), המפלגות הערביות מ־14 בסקרים ל־17–18. 3) <b>אין דרמה</b>: ממשלת ה־7 באוקטובר (64) ירדה ל־50 — <b>מינוס 14</b>, ומינוס 18 עם 4 המנדטים של סער ואלקין. הציבור אמר לא לנתניהו.</div>
+    <div class="exitdiet"><b>📉 הדאטה — מה באמת השתנה מהסקרים (דעתנו):</b> 1) <b>הגדולות שתו את הקטנות</b> — הליכוד מ־19.6 בממוצע הסקרים ל־24–25, על חשבון עוצמה/ציונות דתית/יהדות התורה/וינטר; הגוש נשאר 50. 2) <b>הערבים יצאו בהמוניהם</b> — אום אל־פחם 70% (2022: 38%), המפלגות הערביות מ־14 בסקרים ל־17–18. 3) <b>אין דרמה</b>: ממשלת ה־7 באוקטובר (64) ירדה ל־50 — <b>מינוס 14</b>, ומינוס 18 עם 4 המנדטים של סער ואלקין. הציבור אמר לא לנתניהו.</div>
     <div class="exitch">${bars}</div>
     <div class="turnleg" style="margin:0 0 2px"><span><i style="background:var(--blue)"></i>גוש השינוי</span><span><i style="background:var(--mint)"></i>ערבים</span><span><i style="background:var(--coral)"></i>גוש נתניהו</span></div>
     <div class="exitpt">${pts}</div>
-    <div class="h4row" style="margin:0"><button class="recchip" data-pg="facts" data-k="המדגמים" style="border-color:rgba(245,184,65,.6);color:var(--gold)">📋 הטבלה המלאה + למה מדגם ≠ תוצאה</button><button class="recchip" data-pg="facts" data-k="הדיאטה">📉 הדיאטה — הניתוח המלא</button><button class="recchip" data-pg="polls">📊 מול הסקרים</button><button class="recchip" data-pg="next">🎯 מי על הקו</button></div>
+    <div class="h4row" style="margin:0"><button class="recchip" data-pg="facts" data-k="המדגמים" style="border-color:rgba(245,184,65,.6);color:var(--gold)">📋 הטבלה המלאה + למה מדגם ≠ תוצאה</button><button class="recchip" data-pg="facts" data-k="הדאטה">📉 הדאטה — הניתוח המלא</button><button class="recchip" data-pg="polls">📊 מול הסקרים</button><button class="recchip" data-pg="next">🎯 מי על הקו</button></div>
+    <div class="resbox" id="h4Real">${RESULTS.pct==null?`🧮 <b>תוצאות האמת:</b> ספירת ועדת הבחירות טרם פורסמה — המקום הזה מתעדכן מהרגע שמתחילים לזרום מספרים (בדיקה כל חצי שעה).`:`🧮 <b>תוצאות האמת — ${RESULTS.pct}% מהקולות נספרו</b> (עדכון ${RESULTS.updated}): ${RESULTS.txt} <a class="srch" style="margin:0" target="_blank" rel="noopener" href="${RESULTS.src}">המקור ↗</a>`}</div>
     <div class="tiny" style="margin:6px 0 0">מדגמים, לא תוצאות. המעטפות הכפולות נספרות רק מחר־מחרתיים. עדכון ${EXITPOLLS.updated}. <a class="srch" style="margin:0" target="_blank" rel="noopener" href="https://www.ynet.co.il/news/article/s1l0l0002mg">המקור ↗</a></div>`;
-  el.querySelectorAll("[data-pg]").forEach(b=>b.onclick=()=>{ lastTab="home"; deepOpen(b.dataset.pg,b.dataset.k||""); });
+  el.querySelectorAll("[data-pg]").forEach(b=>b.onclick=()=>{ deepOpen(b.dataset.pg,b.dataset.k||""); lastTab="home"; });
 }
 renderExit();
 
-/* ===== מסך יום הבחירות (v4) ===== */
+/* ===== מסך התוצאות (v4.5) ===== */
+const COAL_P=[["yashar","ישר!","chg"],["byachad","ביחד","chg"],["dem","הדמוקרטים","chg"],["beit","ישראל ביתנו","chg"],["joint","המשותפת","arab"],["raam","רע״ם","arab"],["likud","הליכוד","bibi"],["shas","ש״ס","bibi"],["utj","יהדות התורה","bibi"],["otzma","עוצמה יהודית","bibi"],["rz","הציונות הדתית","bibi"]];
+const COAL_COL={yashar:"#2A62DE",byachad:"#4F86F7",dem:"#7FA8FF",beit:"#B3C9FF",joint:"#33D69F",raam:"#8FE8C8",likud:"#FF6B6B",shas:"#FF8F8F",utj:"#FFB0B0",otzma:"#FFC9C9",rz:"#FFDADA"};
+function coalAvg(){ /* ממוצע 3 הערוצים הגדולים, עיגול לפי שארית גדולה ל־120 */
+  const main=EXITPOLLS.ch.filter(c=>!c.out&&!c.small); const raw={}; COAL_P.forEach(([k])=>raw[k]=main.reduce((a,c)=>a+(c.s[k]||0),0)/main.length);
+  const out={}; let sum=0; COAL_P.forEach(([k])=>{ out[k]=Math.floor(raw[k]); sum+=out[k]; });
+  const rest=COAL_P.map(([k])=>[k,raw[k]-out[k]]).sort((a,b)=>b[1]-a[1]); for(let i=0;sum<120&&i<rest.length;i++,sum++) out[rest[i][0]]++;
+  return out;
+}
+const COAL_SRC=[["avg","ממוצע 12/13/כאן",coalAvg]].concat(EXITPOLLS.ch.map(c=>[c.src,c.src+(c.out?" ⚠️":""),()=>c.s]));
+const SCEN=[
+ {id:"min",e:"🥇",t:"ממשלת מיעוט — ישר!, ביחד, הדמוקרטים; תמיכה מבחוץ של המשותפת ורע״ם; ליברמן נגד",tag:"הסביר ביותר (דעתנו)",top:true,
+  set:{yashar:"in",byachad:"in",dem:"in",joint:"sup",raam:"sup"},
+  d:"<b>43–46 בקואליציה</b>, <b>61–63 בהצבעת האמון</b> (לפי הערוץ) עם 17–18 של המפלגות הערביות מבחוץ. איזנקוט מקיים את ההתחייבות (רע״ם ״לא תהיה חלק מהממשלה״) — והממשלה עדיין קמה. תקדים: רבין 1992–95, אחרי שש״ס פרשה.",
+  w:"<b>מה מפריע:</b> צריך שכל 17–18 יצביעו אמון — גם המשותפת, שאף מפלגה במחנה לא הציגה כשותפה; ליברמן (7–9) בחוץ ונגד; כל תקציב וכל חוק גיוס הופכים למשבר; הימין יקרא לזה ״ממשלה נתמכת טרור״ מהיום הראשון. ועדיין — זה התרחיש היחיד שלא דורש ממישהו לשבור הבטחה."},
+ {id:"raam",e:"🤝",t:"קואליציה עם רע״ם וליברמן בפנים",tag:"לא 61",
+  set:{yashar:"in",byachad:"in",dem:"in",beit:"in",raam:"in"},
+  d:"גוש השינוי (52–53) + רע״ם (7) = <b>59–60</b>. לא מגיע ל־61 גם על הנייר.",
+  w:"<b>מה מפריע:</b> המספרים — חסר מנדט־שניים; וההצהרות — איזנקוט (פגוש את העיתונות, 26.9): ״רע״ם לא תהיה חלק מהממשלה הבאה״. אם ממילא צריך את המשותפת מבחוץ — <b>עדיף מיעוט נקי</b> (דעתנו)."},
+ {id:"unity",e:"🫱🏻‍🫲🏼",t:"ממשלת אחדות עם הליכוד של נתניהו",tag:"הניסוי נכשל",
+  set:{yashar:"in",byachad:"in",likud:"in"},
+  d:"ישר! + ביחד + ליכוד = <b>57–62</b>. ״אחדות״, ״רוטציה״, ״ממשלת חירום״ — הכותרות כבר נכתבו ב־2020.",
+  w:"<b>מה מפריע:</b> אי אפשר לסמוך על נתניהו — הסכם הרוטציה עם גנץ (מאי 2020) לא קוים, הממשלה פורקה על התקציב בדצמבר 2020 בלי שגנץ קיבל את ראשות הממשלה. איזנקוט: ״לא אשב תחת נתניהו, גם לא ברוטציה״ (וואלה, 25.10). <a class='srch' style='margin:0' target='_blank' rel='noopener' href='https://www.google.com/search?q=%D7%94%D7%A1%D7%9B%D7%9D+%D7%94%D7%A8%D7%95%D7%98%D7%A6%D7%99%D7%94+%D7%92%D7%A0%D7%A5+%D7%A0%D7%AA%D7%A0%D7%99%D7%94%D7%95+2020+%D7%A4%D7%99%D7%96%D7%95%D7%A8'>🔎</a>"},
+ {id:"eis",e:"🪖",t:"ממשלה בראשות איזנקוט עם הליכוד (בלי נתניהו)",tag:"הליכוד לא יבוא",
+  set:{yashar:"in",byachad:"in",dem:"in",likud:"in"},
+  d:"ישר! + ביחד + הדמוקרטים + ליכוד = <b>66–72</b>. על הנייר — הקואליציה הרחבה והיציבה ביותר.",
+  w:"<b>מה מפריע:</b> הליכוד לא יצטרף (דעתנו): מבחינתו האופציה הטובה ביותר היא <b>בחירות חוזרות</b> — אחוז הצבעה של 74%+ לא יחזור, והליכוד ירוץ מאורגן יותר, אולי בלי השותפים שנשרו. כל עוד נתניהו שולט בליכוד אין ״ליכוד בלי נתניהו״."},
+ {id:"again",e:"🔁",t:"בחירות חוזרות",tag:"התרחיש של נתניהו",
+  set:{},
+  d:"אם אף אחד לא מרכיב: 28 יום (+14) למי שהנשיא מטיל עליו, 28 יום לשני, 21 יום לכנסת — ואז פיזור אוטומטי. כמו 2019.",
+  w:"<b>מה מפריע:</b> לציבור — כלום, זה פשוט קורה. למי שמסתכל על הדאטה: זה בדיוק מה שהליכוד רוצה, ולכן כל תרחיש אחר צריך להיסגר מהר."}];
+let coalState={}, coalSrc="avg";
+function coalSeats(){ const f=COAL_SRC.find(x=>x[0]===coalSrc)||COAL_SRC[0]; return f[2](); }
+function coalWarn(st,seats){
+  const w=[]; const inn=k=>st[k]==="in", sup=k=>st[k]==="sup", any=k=>!!st[k];
+  const chg=["yashar","byachad","dem","beit"].filter(inn), bibiP=["likud","shas","utj","otzma","rz"];
+  if(inn("likud")&&inn("yashar")) w.push("איזנקוט: ״לא אשב תחת נתניהו, גם לא ברוטציה״ (וואלה, 25.10) — ליכוד עם ישר! רק בלי נתניהו, או שמישהו שובר הבטחה.");
+  if(inn("raam")&&inn("yashar")) w.push("איזנקוט (פגוש את העיתונות, 26.9): ״רע״ם לא תהיה חלק מהממשלה הבאה״. תמיכה מבחוץ — סיפור אחר (לחיצה נוספת על רע״ם).");
+  if(inn("joint")) w.push("המשותפת בתוך קואליציה — אין תקדים; האופציה שנדונה היסטורית היא תמיכה מבחוץ (1992–95).");
+  if((any("joint")||any("raam"))&&(inn("otzma")||inn("rz"))) w.push("בן גביר/סמוטריץ׳ באותה ממשלה עם המפלגות הערביות — לא קיים.");
+  if(inn("beit")&&(inn("shas")||inn("utj"))) w.push("ליברמן פוצץ את הקואליציה במאי 2019 על חוק הגיוס ולא ישב עם החרדים מאז.");
+  if(inn("likud")&&inn("byachad")&&!inn("yashar")) w.push("ביחד עם הליכוד בלי ישר! — ממשלת 2020 בגרסה חדשה: הרוטציה עם גנץ לא קוימה.");
+  if(inn("likud")&&chg.length&&inn("otzma")) w.push("עוצמה יהודית יחד עם מפלגות המחנה — אף אחת מהן לא תשב עם בן גביר.");
+  return w;
+}
+function renderScen(){
+  const el=$("#h4Scen"); if(!el) return;
+  el.innerHTML=SCEN.map(sc=>`<div class="scen${sc.top?" top":""}"><div class="sh"><span>${sc.e} ${sc.t}</span><small>${sc.tag}</small></div><div class="sd">${sc.d}</div><div class="sw">${sc.w}</div><button class="recchip" data-scen="${sc.id}" style="margin:0">🍰 הראו לי בעוגה</button></div>`).join("")+
+   `<div class="tiny" style="margin:2px 0 0">תרחישים = דעתנו, על בסיס המדגמים (לא תוצאות) והצהרות מצוטטות. ייתכן מאוד שהמספרים יזוזו בספירה.</div>`;
+  el.querySelectorAll("[data-scen]").forEach(b=>b.onclick=()=>{ const sc=SCEN.find(x=>x.id===b.dataset.scen); coalState=Object.assign({},sc.set); renderCoal(); const c=$("#h4Coal"); if(c) c.scrollIntoView({behavior:"smooth",block:"start"}); });
+}
+function renderCoal(){
+  const el=$("#h4Coal"); if(!el) return;
+  const seats=coalSeats();
+  let inn=0,sup=0; COAL_P.forEach(([k])=>{ if(coalState[k]==="in") inn+=seats[k]||0; else if(coalState[k]==="sup") sup+=seats[k]||0; });
+  const votes=inn+sup;
+  // cake: half donut, angles from 180 (right) to 0 (left)
+  const R=150,r=80,cx=180,cy=165; let a=Math.PI; let paths="";
+  const arc=(a0,a1,fill,op)=>{ const x0=cx+R*Math.cos(a0),y0=cy-R*Math.sin(a0),x1=cx+R*Math.cos(a1),y1=cy-R*Math.sin(a1),xi0=cx+r*Math.cos(a1),yi0=cy-r*Math.sin(a1),xi1=cx+r*Math.cos(a0),yi1=cy-r*Math.sin(a0); const lg=(a0-a1)>Math.PI?1:0; return `<path d="M${x0.toFixed(1)},${y0.toFixed(1)} A${R},${R} 0 ${lg} 1 ${x1.toFixed(1)},${y1.toFixed(1)} L${xi0.toFixed(1)},${yi0.toFixed(1)} A${r},${r} 0 ${lg} 0 ${xi1.toFixed(1)},${yi1.toFixed(1)} Z" fill="${fill}" opacity="${op}"/>`; };
+  COAL_P.forEach(([k,n])=>{ const v=seats[k]||0; if(!v) return; const a1=a-Math.PI*v/120; const st=coalState[k]; paths+=arc(a,a1,COAL_COL[k],st==="in"?1:st==="sup"?0.55:0.16); const am=(a+a1)/2, tx=cx+(R+r)/2*Math.cos(am), ty=cy-(R+r)/2*Math.sin(am); if(v>=5) paths+=`<text x="${tx.toFixed(1)}" y="${(ty+4).toFixed(1)}" text-anchor="middle" font-size="12" font-weight="800" fill="${st?"#0F1530":"#C9D0EA"}" opacity="${st?1:.6}">${v}</text>`; a=a1; });
+  const m61=Math.PI-Math.PI*61/120; const lx0=cx+(r-6)*Math.cos(m61),ly0=cy-(r-6)*Math.sin(m61),lx1=cx+(R+8)*Math.cos(m61),ly1=cy-(R+8)*Math.sin(m61);
+  const status=votes>=61?(inn>=61?["ok","רוב — קואליציה של "+inn]:["mino","ממשלת מיעוט — "+inn+" בפנים + "+sup+" מבחוץ = "+votes+" בהצבעת האמון"]):["no",votes?"אין 61 — חסרים "+(61-votes):"בחרו מפלגות: לחיצה = בקואליציה · לחיצה שנייה = תמיכה מבחוץ · שלישית = בחוץ"];
+  const warns=coalWarn(coalState,seats);
+  el.innerHTML=`<div class="coalsrc">${COAL_SRC.map(([id,n])=>`<button data-src="${id}" class="${id===coalSrc?"on":""}">${n}</button>`).join("")}</div>
+    <svg class="cake" viewBox="0 -14 360 194" aria-label="עוגת הקואליציה">${paths}<line x1="${lx0.toFixed(1)}" y1="${ly0.toFixed(1)}" x2="${lx1.toFixed(1)}" y2="${ly1.toFixed(1)}" stroke="#F5B841" stroke-width="2" stroke-dasharray="4 3"/><text x="${lx1.toFixed(1)}" y="${(ly1-4).toFixed(1)}" text-anchor="middle" font-size="11" font-weight="800" fill="#F5B841">61</text></svg>
+    <div class="coalsum"><div class="big ${status[0]}">${votes}</div><div class="${status[0]}">${status[1]}</div></div>
+    <div class="coalp">${COAL_P.map(([k,n,c])=>`<button data-k="${k}" class="${coalState[k]==="in"?"in "+c:coalState[k]==="sup"?"sup":""}">${coalState[k]==="sup"?"🤝 ":""}${n} ${seats[k]||0}</button>`).join("")}</div>
+    ${warns.map(w=>`<div class="coalw"><b>⚠️ מה מפריע:</b> ${w}</div>`).join("")}
+    ${votes>=61&&!warns.length?`<div class="coalw ok"><b>✅</b> על הנייר זה עובד. עכשיו תסבירו את זה לשותפים.</div>`:""}
+    <div class="h4row" style="margin:6px 0 0"><button class="recchip" data-reset="1">🧹 נקו</button><button class="recchip" data-pg="next">🎯 מי בכלל נכנס</button><button class="recchip" data-pg="facts" data-k="הדאטה">📉 הדאטה</button></div>
+    <div class="tiny" style="margin:6px 0 0">להקמת ממשלה דרושים 61 בהצבעת האמון — כולל תומכים מבחוץ; אחרי ההקמה היא יכולה לתפקד כממשלת מיעוט. המספרים: מדגמים (${COAL_SRC.find(x=>x[0]===coalSrc)[1]}), לא תוצאות.</div>`;
+  el.querySelectorAll("[data-k]").forEach(b=>b.onclick=()=>{ const k=b.dataset.k; if(b.dataset.pg) return; coalState[k]=coalState[k]==="in"?"sup":coalState[k]==="sup"?undefined:"in"; renderCoal(); });
+  el.querySelectorAll("[data-src]").forEach(b=>b.onclick=()=>{ coalSrc=b.dataset.src; renderCoal(); });
+  const rs=el.querySelector("[data-reset]"); if(rs) rs.onclick=()=>{ coalState={}; renderCoal(); };
+  el.querySelectorAll("[data-pg]").forEach(b=>b.onclick=()=>{ deepOpen(b.dataset.pg,b.dataset.k||""); lastTab="home"; });
+}
 (function(){
   const go=(id)=>{ const b=$("#"+id); if(b) b.click(); };
-  const H4={h4Rec:()=>{ renderRec(); show(rec); },h4Quiz:()=>go("startQuick"),h4Quick:()=>go("startQuick"),h4Deep:()=>go("startDeep"),h4Cmp:()=>{ renderCompass(); show(cmp); },h4Next:()=>{ renderNext(); show(next); },h4Traffic:()=>{ renderTraffic(); show(traffic); },h4Polls:()=>{ renderPolls(); show(polls); },h4Five:()=>{ renderFive(); show(five); },h4Facts:()=>{ renderFacts(); show(facts); },h4Core:()=>{ renderCore(); show(core); },h4Led:()=>{ renderLedger(); show(led); },h4Poison:()=>{ renderPoison(); show(poison); },h4Hot:()=>{ renderHot(); show(hot); },h4Votes:()=>go("gWv"),h4WvLab:()=>go("gWv"),h4WvText:()=>{ renderVotes(); show(votes); },h4Dict:()=>{ showTab("learn"); setTimeout(()=>{ const i=$("#tsq"); if(i) i.focus(); },50); },h4Games:()=>showTab("games"),h4Disc:()=>go("toDisc"),toClassic:()=>{ homeClassic=true; show(intro); },h4Last:()=>go("lastRes")};
-  $("#home4").addEventListener("click",(e)=>{ const b=e.target.closest("button[id]"); if(!b||!H4[b.id]||b.dataset.bound) return; e.preventDefault(); lastTab="home"; try{ H4[b.id](); }catch(err){ console.error("home4",b.id,err); } });
-  $("#h4Rec").onclick=()=>{ lastTab="home"; renderRec(); show(rec); };
-  $("#h4Quiz").onclick=()=>go("startQuick"); $("#h4Quick").onclick=()=>go("startQuick"); $("#h4Deep").onclick=()=>go("startDeep");
-  $("#h4Cmp").onclick=()=>{ lastTab="home"; renderCompass(); show(cmp); };
-  $("#h4Last").onclick=()=>go("lastRes");
-  $("#h4Next").onclick=()=>{ lastTab="home"; renderNext(); show(next); };
-  $("#h4Traffic").onclick=()=>{ lastTab="home"; renderTraffic(); show(traffic); };
-  $("#h4Polls").onclick=()=>{ lastTab="home"; renderPolls(); show(polls); };
-  $("#h4Five").onclick=()=>{ lastTab="home"; renderFive(); show(five); };
-  $("#h4Facts").onclick=()=>{ lastTab="home"; renderFacts(); show(facts); };
-  $("#h4Core").onclick=()=>{ lastTab="home"; renderCore(); show(core); };
-  $("#h4Led").onclick=()=>{ lastTab="home"; renderLedger(); show(led); };
-  $("#h4Poison").onclick=()=>{ lastTab="home"; renderPoison(); show(poison); };
-  $("#h4Hot").onclick=()=>{ lastTab="home"; renderHot(); show(hot); };
-  $("#h4Votes").onclick=()=>{ lastTab="home"; go("gWv"); };
-  $("#h4WvLab").onclick=()=>{ lastTab="home"; go("gWv"); };
-  $("#h4WvText").onclick=()=>{ lastTab="home"; renderVotes(); show(votes); };
-  $("#h4Dict").onclick=()=>{ showTab("learn"); setTimeout(()=>{ const i=$("#tsq"); if(i) i.focus(); },50); };
-  $("#h4Games").onclick=()=>showTab("games");
+  renderScen(); coalState=Object.assign({},SCEN[0].set); renderCoal();
+  $("#h4More").querySelectorAll("[data-pg]").forEach(b=>b.onclick=()=>{ deepOpen(b.dataset.pg,b.dataset.k||""); lastTab="home"; });
   $("#h4Disc").onclick=()=>go("toDisc");
   $("#toClassic").onclick=()=>{ homeClassic=true; show(intro); };
   $("#toHome4").onclick=()=>{ homeClassic=false; show(home4); };
-  $("#h4Share").onclick=async(e)=>{ const txt="🗳️ הלכתי להצביע. אם עוד לא החלטת — פתק בקלפי: שאלון בדקה, מי על הקו בכל מפלגה, ומה להביא לקלפי: https://petek-bakalpi.github.io/"; if(navigator.share){ navigator.share({text:txt}).catch(()=>{}); } else { try{ await navigator.clipboard.writeText(txt); e.target.textContent="הועתק! ✅"; }catch(_){ e.target.textContent="לא הצלחנו להעתיק"; } } };
-  /* התוצאה האחרונה — מראים את הצ'יפ גם כאן */
-  const lr=$("#lastRes"); if(lr){ const obs=new MutationObserver(()=>{ $("#h4Last").style.display=lr.style.display; }); obs.observe(lr,{attributes:true,attributeFilter:["style"]}); }
+  $("#h4Share").onclick=async(e)=>{ const txt="📺 המדגמים: גוש נתניהו 50 בכל שלושת הערוצים הגדולים — אין 61. ממשלת ה־7 באוקטובר: מ־64 ל־50. התרחישים, ועוגת קואליציה שאפשר לבנות לבד: https://petek-bakalpi.github.io/"; if(navigator.share){ try{ await navigator.share({text:txt}); return; }catch(err){} } try{ await navigator.clipboard.writeText(txt); e.target.textContent="✅ הועתק"; setTimeout(()=>e.target.textContent="📤 שלחו את התמונה האמיתית לקבוצה",1800); }catch(err){} };
 })();
 /* ===== הרמזור — על מה המפלגות חלוקות ===== */
 const TL_P=[["yashar","ישר!","🟡","דרך"],["yachad","ביחד","🔵","רק"],["dem","הדמוקרטים","🔴","אמת"],["lib","ישראל ביתנו","🟢","ל"]];
