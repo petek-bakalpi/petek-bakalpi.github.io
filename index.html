@@ -1002,7 +1002,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION="4.1";
+const APP_VERSION="4.1.1";
 const APP_UPDATED="27.10.2026";
 const ELECTION_DATE=new Date("2026-10-27T00:00:00");
 /* מבזק העמוד הראשי — מחליפים כאן את הטקסט ואת מפתח הפריט (substring מכותרת הפריט באקטואליה) */
@@ -4464,6 +4464,8 @@ $("#lRec").onclick=()=>{ lastTab="learn"; renderRec(); show(rec); };
 /* ===== מסך יום הבחירות (v4) ===== */
 (function(){
   const go=(id)=>{ const b=$("#"+id); if(b) b.click(); };
+  const H4={h4Rec:()=>{ renderRec(); show(rec); },h4Quiz:()=>go("startQuick"),h4Quick:()=>go("startQuick"),h4Deep:()=>go("startDeep"),h4Cmp:()=>{ renderCompass(); show(cmp); },h4Next:()=>{ renderNext(); show(next); },h4Traffic:()=>{ renderTraffic(); show(traffic); },h4Polls:()=>{ renderPolls(); show(polls); },h4Five:()=>{ renderFive(); show(five); },h4Facts:()=>{ renderFacts(); show(facts); },h4Core:()=>{ renderCore(); show(core); },h4Led:()=>{ renderLedger(); show(led); },h4Poison:()=>{ renderPoison(); show(poison); },h4Hot:()=>{ renderHot(); show(hot); },h4Votes:()=>go("gWv"),h4WvLab:()=>go("gWv"),h4WvText:()=>{ renderVotes(); show(votes); },h4Dict:()=>{ showTab("learn"); setTimeout(()=>{ const i=$("#tsq"); if(i) i.focus(); },50); },h4Games:()=>showTab("games"),h4Disc:()=>go("toDisc"),toClassic:()=>{ homeClassic=true; show(intro); },h4Last:()=>go("lastRes")};
+  $("#home4").addEventListener("click",(e)=>{ const b=e.target.closest("button[id]"); if(!b||!H4[b.id]||b.dataset.bound) return; e.preventDefault(); lastTab="home"; try{ H4[b.id](); }catch(err){ console.error("home4",b.id,err); } });
   $("#h4Rec").onclick=()=>{ lastTab="home"; renderRec(); show(rec); };
   $("#h4Quiz").onclick=()=>go("startQuick"); $("#h4Quick").onclick=()=>go("startQuick"); $("#h4Deep").onclick=()=>go("startDeep");
   $("#h4Cmp").onclick=()=>{ lastTab="home"; renderCompass(); show(cmp); };
